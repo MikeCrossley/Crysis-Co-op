@@ -110,7 +110,7 @@ public:
 	typedef std::map<EntityId, int>							TBuildings;
 	typedef std::map<EntityId, CTimeValue>			TFrozenEntities;
 
-	typedef struct SMinimapEntity
+	struct SMinimapEntity
 	{
 		SMinimapEntity() {};
 		SMinimapEntity(EntityId id, int typ, float time)
@@ -965,7 +965,7 @@ public:
 
 	typedef std::map<int, _smart_ptr<IVoiceGroup> >		TTeamIdVoiceGroupMap;
 
-	typedef struct SEntityRespawnData
+	struct SEntityRespawnData
 	{
 		SmartScriptTable	properties;
 		Vec3							position;
@@ -979,13 +979,13 @@ public:
 #endif
 	};
 
-	typedef struct SEntityRespawn
+	struct SEntityRespawn
 	{
 		bool							unique;
 		float							timer;
 	};
 
-	typedef struct SEntityRemovalData
+	struct SEntityRemovalData
 	{
 		float							timer;
 		float							time;
