@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrysisMod", "GameDll.vcproj", "{2EB52047-0A81-4343-B703-DF221CA5CC2A}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrysisMod", "GameDll.vcxproj", "{2EB52047-0A81-4343-B703-DF221CA5CC2A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryCommon", "..\..\..\Code\CryEngine\CryCommon\CryCommon.vcproj", "{AEB958D4-45CA-478B-BA8E-D0E897CE974B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryCommon", "..\..\..\Code\CryEngine\CryCommon\CryCommon.vcxproj", "{AEB958D4-45CA-478B-BA8E-D0E897CE974B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

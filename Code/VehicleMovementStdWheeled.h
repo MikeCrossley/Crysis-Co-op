@@ -233,6 +233,12 @@ protected:
 	CMovementRequest m_aiRequest;
 
 	float m_submergedRatioMax;	// to avoid calling vehicle functions in ProcessMovement()
+
+	// Crysis Co-op
+	Vec3 m_coopLookTarget;
+	Vec3 m_coopMoveTarget;
+	float m_coopDesiredSpeed;
+	//~Crysis Co-op
 };
 
 

@@ -47,6 +47,9 @@ public:
 	ILINE bool ShouldStrengthJump() const { return m_strengthJump; };
 	ILINE void ClearStrengthJump() { m_strengthJump=false; };
 
+	//Crysis Co-op
+	CMovementRequest GetMovementReqState(){return m_state;};
+	//~Crysis Co-op
 protected:
 	bool UpdateNormal( float frameTime, SActorFrameMovementParams& params );
 	virtual void UpdateMovementState( SMovementState& state );

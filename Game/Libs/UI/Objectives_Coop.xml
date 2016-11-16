@@ -1,0 +1,27 @@
+<Root>
+  <Testmap>
+    <Objective_01 Name="Kill Captain Korea" Description="Captain Korea master of all has a nanosuit, fuck him up." />
+  </Testmap>
+  
+  <ShoreCoop>
+    <Objective_01 Name="Board the Infiltration Vehicle" Description="Leave the submarine and board the waiting boat. The boat will not depart until everyone is onboard." />
+	<Objective_02 Name="Kill Yi Sun-sin" Description="Kill the general at the North Korean HQ and clear out any resistance." />
+	<Objective_03 Name="Download Navigational Charts" Description="Download the navigational charts to allow Three Marines to make their way to the Island" MapLabel="Navigation Charts" Secondary="true"/>
+  </ShoreCoop>
+  <Island>
+	<Objective_01 Description="@Island_Goal_Rescue_Hostages_01_Text" Name="@Island_Goal_Rescue_Hostages_01"/>
+	<Objective_02 Description="" Name="@Island_Task_Land_At_LZ" MapLabel="@Island_Task_Land_At_LZ_Loc"/>
+	<Objective_03 Description="" Name="@Island_Task_Get_To_Beach" MapLabel="@Island_Task_Get_To_Beach_Loc"/>
+	<Objective_04 Description="" Name="@Island_Task_Meet_Jester" MapLabel="@Island_Task_Meet_Jester_Loc"/>
+	<Objective_05 Description="" Name="@Island_Task_Aid_Aztec" MapLabel="@Island_Task_Aid_Aztec_Loc"/>
+	<Objective_06 Description="" Name="@Island_Task_Rendezvous_At_LZ" MapLabel="@Island_Task_Rendezvous_At_LZ_Loc"/>
+	<Objective_07 Description="@Island_Task_Disable_Jammer_Text" Name="@Island_Task_Disable_Jammer" Secondary="true" MapLabel="@Island_Task_Disable_Jammer_Loc"/>
+	<Objective_08 Description="" Name="@Island_Task_Retrieve_Data" Secondary="true" MapLabel="@Island_Task_Retrieve_Data_Loc"/>
+	<Objective_09 Description="" Name="@Island_Task_Investigate_Command_Post" Secondary="true" MapLabel="@Island_Task_Investigate_Command_Post_Loc"/>
+	<Objective_9a Description="" Name="@Island_Task_Break_KPA_Checkpoint" MapLabel="@Island_Task_Break_KPA_Checkpoint_Loc"/>
+	<Objective_10 Description="" Name="@Island_Task_Rendezvous_At_Signal_Location" MapLabel="@Island_Task_Rendezvous_At_Signal_Location_Loc"> </Objective_10>
+	<Objective_11 Description="@Island_Goal_Locate_Excavation_Site_Text" Name="@Island_Goal_Locate_Excavation_Site"/>
+	<Objective_12 Description="@Island_Task_Find_Jester_Text" Name="@Island_Task_Find_Jester" MapLabel="@Island_Task_Find_Jester_Loc"/>
+	<Objective_90 Description="" Name=""/>
+  </Island>
+</Root>

@@ -1,0 +1,339 @@
+<EntityPrototypeLibrary Name="Squad_mates" SandboxVersion="1.1.1.5648">
+ <EntityPrototype Name="Squadmate_Sykes" Id="{774DDCDF-91B0-43E3-B026-35EA5585FFBB}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Hawker" Id="{9C3F123D-E410-4CD2-86F8-9470D4B50DD8}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/martin_hawker/martin_hawker.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor, Hawker" SoundPack="Jester" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="2" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="OLD.Archaeologist_Female" Id="{81159CA2-7EF2-4062-9005-16E204039704}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes" Id="{C98FF79D-C1A7-482D-BED3-91D4782498CB}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Squadmate_Chang" Id="{187605EC-BC5E-4E60-9EF5-3CB43D4BFAB0}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Cortez" Id="{B935A176-6897-478B-8A24-80C0E44EDFD5}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Rifleman" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/harry_cortez/harry_cortez.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Aztec" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Rhee" Id="{A0E67DCB-40E6-4AD2-9B8A-EB9FD2FE8396}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Squadmate_M13_temp" Id="{1189E011-88B1-48CE-A195-B89BE3D89B3A}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Davis" Id="{EF237110-E350-4D0B-A2C7-1FB78F95B0F6}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Morrison_Bloody" Id="{A7C5D5C6-9F40-44D6-943E-A50E113E3604}" Class="Civilian" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="0" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/richard_morrison/morrison.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Morrison" SoundPackAlternative="" SpawnedEntityName="" special="0" species="0" bSpeciesHostility="0" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="american01">
+   <Damage health="100" bLogDamages="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="50" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Kim" Id="{1ED46587-621B-41C0-9F70-65495CDE2A3E}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Kyong" Id="{57D03A08-15F9-4E3E-84B1-6C9FA28EA83D}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="SuitBoss" eiColliderMode="4" commrange="300" distanceToHideFrom="3" equip_EquipmentPack="Asian_Kyong" objFrozenModel="objects/characters/human/asian/nanosuit/nanosuit_asian_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/human/story/kyong/kyong.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Kyong" SoundPackAlternative="" SpawnedEntityName="" special="0" species="1" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="enemy">
+   <Damage FallPercentage="0" FallSleepTime="4" health="1600" bLogDamages="0" bNoDeath="0" bNoGrab="1"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="60" FOVSecondary="210" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="125" sightrangeVehicle="-1" stanceScale="2.2" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Squad_Player" Id="{DA097C0B-E626-49E9-BE47-ACD39F4FC379}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Aurora_Dunn" Id="{73810334-9506-40C5-95A0-E857754686C8}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Harbor" Id="{EC6FECD3-927C-47B4-B0AC-53B73417585E}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="150" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="Squad_Psycho_Harbor" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="5000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="0" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Test_Guy" Id="{C8C60803-7CF3-4C43-A41A-3F9D8F42E417}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Morrison" Id="{57BFC7AE-0F97-4A71-BF1A-428599B56BB2}" Class="Civilian" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="0" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/richard_morrison/morrison_with_hat.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Morrison" SoundPackAlternative="" SpawnedEntityName="" special="0" species="0" bSpeciesHostility="0" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="american01">
+   <Damage health="100" bLogDamages="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="50" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Squadmate_Chang_Pilot" Id="{5C1EF1FE-FFE9-429A-8DE9-91D3658D85F0}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Cortez_Dead" Id="{0973D807-F742-49CC-B63D-D4E39429EB64}" Class="DeadBody" Description="">
+  <Properties bCollidesWithPlayers="1" lying_damping="1.5" lying_gravityz="-5" Mass="80" object_Model="objects/characters/human/story/harry_cortez/harry_cortez_chute.cdf" bNoFriendlyFire="1" bPushableByPlayers="1" bResting="0" soclasses_SmartObjectClass="POI_Cortez"/>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Cover2" Id="{91057D33-556D-48A4-966E-BC6E7270106E}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="Cover2" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Barnes_Village" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Major_Strickland" Id="{33A74EE8-AC3E-4F16-A0F4-16A709E0FD99}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="150" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Gauss" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/major_strickland/major_strickland.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Majorstrickland" SoundPackAlternative="" SpawnedEntityName="" special="0" species="0" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="american01">
+   <Damage FallPercentage="0" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="250" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="125" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Cover2" Id="{956E26F5-9BB6-44C4-B601-45772E43E796}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="Cover2" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Sykes_Village" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="OLD.Archaeologist_Female1" Id="{72FC09C0-D232-4E9B-8F19-49D08D23DB89}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="OLD.Archaeologist_Female2" Id="{3966F162-1EB9-42DB-A149-26F4F2FDFD3C}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="OLD.Archaeologist_Male1" Id="{C0F479F0-1B3E-49B2-92BF-BF6B0E6756F4}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Old.Archaeologist_Male2" Id="{93822CD5-3DD1-44AE-8A14-29BAC009C77E}" Class="BasicEntity" Description="">
+  <Properties bAutoGenAIHidePts="0" bCanShatter="1" bFreezable="1" object_Model="Objects/box.cgf" object_ModelFrozen="" bPickable="0" soclasses_SmartObjectClass="" bUsable="0" UseText="">
+   <Physics Density="-1" Mass="-1" bPhysicalize="0" bPushableByPlayers="0" bRigidBody="0"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Cortez_Chute" Id="{5881CE11-D0BD-4049-BFB9-478E0F58BB26}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Rifleman" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/harry_cortez/harry_cortez_chute.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Aztec" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Hawker_Chute" Id="{A9D6B1FE-58D5-49C9-91AB-DCFCA69A7C9E}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/martin_hawker/martin_hawker_chute.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor, Hawker" SoundPack="Jester" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="2" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Chute" Id="{B21834AF-02ED-4BF9-853D-3F964677BC09}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_chute.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Chute" Id="{ACDAE29E-EE81-42FD-9CFC-382F69D8A1D8}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_chute.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Ice" Id="{9547A439-9392-4EE1-BB3A-5E567A18BE52}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="Squad_Prophet_Ice" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/us/nanosuit/nanosuit_us.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor, Suit" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Cortez_Tutorial" Id="{3B82F46D-E522-4AB4-AB23-777866CF2C71}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/harry_cortez/harry_cortez.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Aztec" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Hawker_Tutorial" Id="{1F0DBD5E-7D36-47D5-9BB3-C70426718540}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/martin_hawker/martin_hawker.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor, Hawker" SoundPack="Jester" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="2" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Tutorial" Id="{8881533A-33CF-41BE-AD35-0B4916F40706}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Tutorial" Id="{CEF36714-DF6F-4F35-AB1D-0D9F9E33EEE9}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Follower" Id="{4E12A85D-181E-4AB3-A5F8-03665E6E6F76}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="Squad_Prophet_Sphere_1" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/us/nanosuit/nanosuit_us.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor,Suit" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Hawker_Follower" Id="{DDDA5EBB-0B1E-43ED-BC8E-CF2B01258E1C}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="Squad_Jester_Island" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/martin_hawker/martin_hawker_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor,Suit" SoundPack="Jester" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Follower" Id="{56E30056-CC7B-47CD-9D68-1991EDDD53DE}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor,Suit" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Follower_Island" Id="{32F0DBB1-CC95-4FBF-AB82-28500BAC0027}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor,Suit" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Keegan" Id="{FB05F06C-E22E-43F9-ABE1-92BD14F485E5}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="150" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Rifleman" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/keegan/keegan.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="USCaucasian01" SoundPackAlternative="" SpawnedEntityName="" special="0" species="0" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="american01">
+   <Damage FallPercentage="0" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="250" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="125" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Badowsky" Id="{EB1617B6-0FB3-4A3D-80BE-B0BA52A7B7B9}" Class="DeadBody" Description="">
+  <Properties bCollidesWithPlayers="1" lying_damping="1.5" lying_gravityz="-5" Mass="80" object_Model="Objects/Characters/Human/US/Archaeologist/archaeologist_male_01.cdf" bNoFriendlyFire="1" bPushableByPlayers="1" bResting="1" soclasses_SmartObjectClass=""/>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Chute_Helmet" Id="{B5065BE2-9860-4040-BDD7-7EF67302461F}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_chute_helmet.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Cortez_Chute_Helmet" Id="{7D5F988E-E591-4242-90AB-96CAB5A973AA}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Rifleman" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/harry_cortez/harry_cortez_chute_helmet.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Aztec" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Hawker_Chute_Helmet" Id="{FE7CCBFB-5ECF-4716-AB5D-255F16E1F2B6}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/martin_hawker/martin_hawker_chute_helmet.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor, Hawker" SoundPack="Jester" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="2" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="500" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_Chute_Helmet" Id="{C0EF1AD1-0C24-4B8E-A3EC-68D69EF910B4}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_chute_helmet.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_Follower_Village" Id="{0C17CE4F-512B-42F0-A5F3-AAF6F286EB0D}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FollowerNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor,Suit" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="1" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Tim_Gillespie" Id="{442981EC-0B1F-4B7D-AC51-A21DD7546D34}" Class="Civilian" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="0" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" equip_EquipmentPack="" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/us/officer/officer_cinefleetarmory.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="USCaucasian01" SoundPackAlternative="" SpawnedEntityName="" special="0" species="0" bSpeciesHostility="0" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="american01">
+   <Damage health="100" bLogDamages="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="70" sightrangeVehicle="-1" stanceScale="1.9" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_NPC" Id="{CBAA71C8-7240-4A55-97A2-027891CA70B9}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Sykes_Village" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_NPC" Id="{D9D2950D-187F-4F47-B465-6CBD45429161}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="4" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_Barnes_Village" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes_face.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Barnes_unaware" Id="{A9C7966B-407F-46D4-A230-C2374B5F3EDD}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/laurence_barnes/laurence_barnes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Prophet" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1" sightrange="100" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+ <EntityPrototype Name="Squadmate_Sykes_unaware" Id="{2EE96D9B-6868-4D15-946B-E8CC7A6356D8}" Class="CoopGrunt" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="FriendlyNPC" eiColliderMode="4" commrange="30" distanceToHideFrom="3" equip_EquipmentPack="US_SpecialForces" objFrozenModel="Objects/Characters/Human/Asian/NK_Soldier/NK_Soldier_frozen_scatter.cgf" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="1" fileModel="objects/characters/human/story/michael_sykes/michael_sykes.cdf" nModelVariations="0" bNanoSuit="1" physicMassMult="1" preferredCombatDistance="20" ragdollPersistence="-1" rank="4" reaction="1" soclasses_SmartObjectClass="Actor" SoundPack="Psycho" SoundPackAlternative="" SpawnedEntityName="" special="1" species="0" bSpeciesHostility="1" bSquadMate="1" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="1" voiceType="american01">
+   <Damage FallPercentage="20" FallSleepTime="4" health="1000" bLogDamages="0" bNoDeath="0" bNoGrab="0"/>
+   <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="90" FOVSecondary="180" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="4" reactionSpeed="1" sightrange="175" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="0" velBase="1" velScale="0.03"/>
+  </Properties>
+  <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
+ </EntityPrototype>
+</EntityPrototypeLibrary>

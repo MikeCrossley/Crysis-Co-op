@@ -419,7 +419,8 @@ void CNanoSuit::Update(float frameTime)
 		rechargeTime=g_pGameCVars->g_AiSuitEnergyRechargeTime;
 	else
 	{
-		if (gEnv->bMultiplayer)
+		//Crysis Co-op
+		/*if (gEnv->bMultiplayer)
 			rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTimeMultiplayer;
 		else
 		{
@@ -432,7 +433,17 @@ void CNanoSuit::Update(float frameTime)
 				else
 					rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTimeArmor;
 			}
+		}*/
+		if(m_currentMode != NANOMODE_DEFENSE)
+			rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTime;
+		else
+		{
+			if(stats.speedFlat > 0.1f) //moving
+				rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTimeArmorMoving;
+			else
+				rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTimeArmor;
 		}
+		//~Crysis Co-op
 	}
 
 	recharge = NANOSUIT_ENERGY / max(0.01f, rechargeTime);
@@ -616,13 +627,15 @@ void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 	if (m_pOwner && value!=m_energy && gEnv->bServer)
 		m_pOwner->GetGameObject()->ChangedNetworkState(CPlayer::ASPECT_NANO_SUIT_ENERGY);
 
-	if (!gEnv->bMultiplayer)
-	{
+	// Crysis co-op :: removed multiplayer check
+	//if (!gEnv->bMultiplayer)
+	//{
 		if (value < m_energy)
 		{
 			m_energyRechargeDelay = g_pGameCVars->g_playerSuitEnergyRechargeDelay;
 		}
-	}
+	//}
+	// ~Crysis Co-op
 
 
 	if (value != m_energy)
@@ -656,8 +669,10 @@ void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 					pMaterialEffects->ExecuteEffect(id, params);
 				}
 			}*/
-			if (gEnv->bMultiplayer && ((value/NANOSUIT_ENERGY)<=0.2f) && (m_energy>value) && g_pGameCVars->g_mpSpeedRechargeDelay) // if we cross the 20% boundary we don't regenerate for 3secs
-				m_energyRechargeDelay=3.0f;
+			//Crysis Co-op
+			//if (gEnv->bMultiplayer && ((value/NANOSUIT_ENERGY)<=0.2f) && (m_energy>value) && g_pGameCVars->g_mpSpeedRechargeDelay) // if we cross the 20% boundary we don't regenerate for 3secs
+				//m_energyRechargeDelay=3.0f;
+			// ~Crysis Co-op
 		}
 
 		// spending energy cancels invulnerability
@@ -672,10 +687,13 @@ void CNanoSuit::Hit(int damage)
 {
 	//server only
 
-	if (gEnv->bMultiplayer)
-		m_energyRechargeDelay = MAX(m_energyRechargeDelay, 3.0f);
-	else
-		m_healthRegenDelay = fabsf(g_pGameCVars->g_playerSuitHealthRegenDelay);
+	//Crysis Co-op
+ 	//if (gEnv->bMultiplayer)
+ 	//	m_energyRechargeDelay = MAX(m_energyRechargeDelay, 3.0f);
+	// ~Crysis Co-op
+
+	// this should work in MP as well as SP now.
+	m_healthRegenDelay = fabsf(g_pGameCVars->g_playerSuitHealthRegenDelay);
 
 	if(m_pOwner && m_pOwner->IsClient())
 	{
@@ -1517,7 +1535,7 @@ void CNanoSuit::SetModeDefect(ENanoMode mode, bool defect)
 
 float CNanoSuit::GetSprintMultiplier(bool strafing)
 {
-	if(m_pOwner && !m_pOwner->GetActorStats()->inZeroG && m_currentMode == NANOMODE_SPEED && m_startedSprinting)
+	/*if(m_pOwner && !m_pOwner->GetActorStats()->inZeroG && m_currentMode == NANOMODE_SPEED && m_startedSprinting)
 	{
 		if (gEnv->bMultiplayer)
 		{
@@ -1545,7 +1563,23 @@ float CNanoSuit::GetSprintMultiplier(bool strafing)
 			else
 				return 1.3f;
 		}
+	}*/
+
+	//Crysis Co-op :: SP speed for MP
+	if(m_pOwner && !m_pOwner->GetActorStats()->inZeroG && m_currentMode == NANOMODE_SPEED && m_startedSprinting)
+	{
+		if(m_energy > NANOSUIT_ENERGY * 0.2f)
+		{
+			float time = m_now - m_startedSprinting;
+			return 1.0f + max(0.3f, g_pGameCVars->g_suitSpeedMult*min(1.0f, time*0.001f));
+		}
+		else if(m_energy > 0.0f)
+			return 1.4f;
+		else
+			return 1.3f;
 	}
+	// ~Crysis Co-op
+
 	return 1.0f;
 }
 
@@ -1589,7 +1623,11 @@ void CNanoSuit::UpdateSprinting(float &recharge, const SPlayerStats &stats, floa
 				}
 
 				//recharge -= std::max(1.0f, g_pGameCVars->g_suitSpeedEnergyConsumption*frametime);
-				float consumption=gEnv->bMultiplayer?g_pGameCVars->g_suitSpeedEnergyConsumptionMultiplayer:g_pGameCVars->g_suitSpeedEnergyConsumption;
+
+				//Crysis co-op
+				//float consumption=gEnv->bMultiplayer?g_pGameCVars->g_suitSpeedEnergyConsumptionMultiplayer:g_pGameCVars->g_suitSpeedEnergyConsumption;
+				float consumption = g_pGameCVars->g_suitSpeedEnergyConsumption;
+				//~Crysis co-op
 				recharge -= m_pOwner->ShouldSwim()?consumption*1.25f:consumption;
 			}
 			else

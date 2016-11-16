@@ -1010,7 +1010,18 @@ void CMultipleGrabHandler::Update(float frameTime)
 
 void CMultipleGrabHandler::Reset()
 {
-	std::for_each (m_handlers.begin(), m_handlers.end(), std::mem_fun (&CBaseGrabHandler::Reset));
+    // Crysis Co-op
+ 
+    // Deprecated STL:
+    // std::for_each (m_handlers.begin(), m_handlers.end(), std::mem_fun (&CBaseGrabHandler::Reset));
+   
+    // Replacement:
+    for (std::vector<CAnimatedGrabHandler*>::iterator it = m_handlers.begin(); it != m_handlers.end(); ++it)
+    {
+        (*it)->Reset();
+    }
+ 
+    // ~Crysis Co-op
 
 	std::vector <CAnimatedGrabHandler*>::iterator it = m_handlers.begin();
 	std::vector <CAnimatedGrabHandler*>::iterator end = m_handlers.end();

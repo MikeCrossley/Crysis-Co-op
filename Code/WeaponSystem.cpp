@@ -537,14 +537,23 @@ bool CWeaponSystem::ScanXML(XmlNodeRef &root, const char *xmlFile)
 
 	SAmmoTypeDesc &desc=ait->second;
 
-	if (!configName || !configName[0])
-	{
-		if (desc.params)
-			delete desc.params;
-		desc.params=pAmmoParams;
-	}
-	else
-		desc.configurations.insert(std::make_pair<string, const SAmmoParams*>(configName, pAmmoParams));
+    if (!configName || !configName[0])
+    {
+        if (desc.params)
+            delete desc.params;
+        desc.params=pAmmoParams;
+    }
+    else
+    {
+        // Crysis Co-op
+ 
+        // Deprecated STL:
+        // desc.configurations.insert(std::make_pair<string, const SAmmoParams*>(configName, pAmmoParams));
+ 
+        // Replacement:
+        desc.configurations.insert(std::pair<string, const SAmmoParams*>(configName, pAmmoParams));
+        // ~Crysis Co-op
+    }
 
 	return true;
 }

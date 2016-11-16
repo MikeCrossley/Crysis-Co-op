@@ -27,6 +27,15 @@
 #include "Trooper.h"
 //#include "Observer.h"
 #include "Shark.h"
+
+//Crysis Co-op
+#include "Coop\Actors\CoopPlayer.h"
+#include "Coop\Actors\CoopGrunt.h"
+#include "Coop\Actors\CoopScout.h"
+
+#include "Coop\Entities\EventSynchronizer.h"
+//~Crysis Co-op
+
 //
 #include "Item.h"
 #include "Weapon.h"
@@ -127,9 +136,17 @@ void InitGameFactory(IGameFramework *pFramework)
 {
   assert(pFramework);
 
-  REGISTER_FACTORY(pFramework, "Player", CPlayer, false);
+  //Crysis Co-op
+  //REGISTER_FACTORY(pFramework, "Player", CPlayer, false);
+  REGISTER_FACTORY(pFramework, "Player", CCoopPlayer, false);
+  //~Crysis Co-op
   REGISTER_FACTORY(pFramework, "Grunt", CPlayer, true);
   REGISTER_FACTORY(pFramework, "Civilian", CPlayer, true);
+
+  // Crysis Co-op
+  REGISTER_FACTORY(pFramework, "CoopGrunt", CCoopGrunt, true);
+  REGISTER_FACTORY(pFramework, "Aliens/CoopScout", CCoopScout, true);
+  //~Crysis Co-op
 
   // Items
   REGISTER_FACTORY(pFramework, "Item", CItem, false);
@@ -195,6 +212,10 @@ void InitGameFactory(IGameFramework *pFramework)
 	REGISTER_FACTORY(pFramework, "Aliens/Trooper", CTrooper, true);
 #endif
 
+	// Crysis Co-op
+	REGISTER_GAME_OBJECT(pFramework, EventSynchronizer, "Scripts/Entities/Coop/EventSynchronizer.lua");
+	//~Crysis Co-op
+
 	// Custom GameObjects
 	REGISTER_GAME_OBJECT(pFramework, Tornado, "Scripts/Entities/Environment/Tornado.lua");
 	REGISTER_GAME_OBJECT(pFramework, Shake, "Scripts/Entities/Environment/Shake.lua");
@@ -209,6 +230,10 @@ void InitGameFactory(IGameFramework *pFramework)
 	//GameRules
 	REGISTER_FACTORY(pFramework, "GameRules", CGameRules, false);
 
+	// Crysis Co-op
+	pFramework->GetIGameRulesSystem()->RegisterGameRules("Coop", "GameRules");
+	pFramework->GetIGameRulesSystem()->AddGameRulesLevelLocation("Coop", "multiplayer/coop/");
+	// ~Crysis Co-op
 
 	REGISTER_GAME_OBJECT_EXTENSION(pFramework, ScriptControlledPhysics);
 

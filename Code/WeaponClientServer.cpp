@@ -309,7 +309,9 @@ void CWeapon::SendEndReload()
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestStartFire)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	GetGameObject()->InvokeRMI(CWeapon::ClStartFire(), params, eRMI_ToOtherClients|eRMI_NoLocalCalls, 
 		m_pGameFramework->GetGameChannelId(pNetChannel));
@@ -327,7 +329,9 @@ IMPLEMENT_RMI(CWeapon, SvRequestStartFire)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestStopFire)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	GetGameObject()->InvokeRMI(CWeapon::ClStopFire(), params, eRMI_ToOtherClients|eRMI_NoLocalCalls, 
 		m_pGameFramework->GetGameChannelId(pNetChannel));
@@ -361,12 +365,15 @@ IMPLEMENT_RMI(CWeapon, ClStopFire)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestShoot)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
 
 	bool ok=true;
 	CActor *pActor=GetActorByNetChannel(pNetChannel);
-	if (!pActor || pActor->GetHealth()<=0)
-		ok=false;
+	/*if (!pActor || pActor->GetHealth()<=0)
+		ok=false;*/
+
+	// ~Crysis Co-op
 
 	ok &= !OutOfAmmo(false);
 
@@ -421,12 +428,15 @@ IMPLEMENT_RMI(CWeapon, SvRequestShoot)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestShootEx)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
 
 	bool ok=true;
 	CActor *pActor=GetActorByNetChannel(pNetChannel);
-	if (!pActor || pActor->GetHealth()<=0)
-		ok=false;
+	/*if (!pActor || pActor->GetHealth()<=0)
+		ok=false;*/
+
+	// ~Crysis Co-op
 
 	ok &= !OutOfAmmo(false);
 
@@ -482,7 +492,9 @@ IMPLEMENT_RMI(CWeapon, ClShootX)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestStartMeleeAttack)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the melee sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	GetGameObject()->InvokeRMI(CWeapon::ClStartMeleeAttack(), params, eRMI_ToOtherClients, 
 		m_pGameFramework->GetGameChannelId(pNetChannel));
@@ -508,12 +520,15 @@ IMPLEMENT_RMI(CWeapon, ClStartMeleeAttack)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestMeleeAttack)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
 
 	bool ok=true;
 	CActor *pActor=GetActorByNetChannel(pNetChannel);
-	if (pActor && pActor->GetHealth()<=0)
-		ok=false;
+	/*if (!pActor || pActor->GetHealth()<=0)
+		ok=false;*/
+
+	// ~Crysis Co-op
 
 	if (ok)
 	{
@@ -588,7 +603,9 @@ IMPLEMENT_RMI(CWeapon, ClZoom)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestFireMode)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	SetCurrentFireMode(params.id);
 
@@ -606,13 +623,16 @@ IMPLEMENT_RMI(CWeapon, ClSetFireMode)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestReload)
 {
-	CHECK_OWNER_REQUEST();
-	
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+
 	bool ok=true;
 	CActor *pActor=GetActorByNetChannel(pNetChannel);
-	if (!pActor || pActor->GetHealth()<=0)
-		ok=false;
+	/*if (!pActor || pActor->GetHealth()<=0)
+		ok=false;*/
 
+	// ~Crysis Co-op
+	
 	if (ok)
 	{
 		GetGameObject()->InvokeRMI(CWeapon::ClReload(), params, eRMI_ToOtherClients|eRMI_NoLocalCalls, m_pGameFramework->GetGameChannelId(pNetChannel));
@@ -655,7 +675,9 @@ IMPLEMENT_RMI(CWeapon, ClEndReload)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestCancelReload)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	if(m_fm)
 	{
@@ -697,7 +719,9 @@ IMPLEMENT_RMI(CWeapon, ClUnlock)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestLock)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	if (m_fm)
 		m_fm->Lock(params.entityId, params.partId);
@@ -710,7 +734,9 @@ IMPLEMENT_RMI(CWeapon, SvRequestLock)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CWeapon, SvRequestUnlock)
 {
-	CHECK_OWNER_REQUEST();
+	// Crysis Co-op :: Fixes the weapon sync for Co-op AI
+	//CHECK_OWNER_REQUEST();
+	// ~Crysis Co-op
 
 	if (m_fm)
 		m_fm->Unlock();

@@ -37,6 +37,10 @@ public:
 
 	virtual void Serialize(TSerialize &ser) {}
 
+	//Crysis Co-op
+	SMovementState GetMovementReqState(){return m_currentMovementState;};
+	//~Crysis Co-op
+
 private:
 
 	void	UpdateCurMovementState(const SActorFrameMovementParams& params);

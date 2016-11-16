@@ -4069,8 +4069,10 @@ bool CPlayer::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile
 			ser.FlagPartialRead();
 	}
 
-	if(m_pNanoSuit)													// nanosuit needs to be serialized before input
+	// Crysis Co-op :: IsPlayer check to fix AI with suits
+	if(m_pNanoSuit && IsPlayer())													// nanosuit needs to be serialized before input
 		m_pNanoSuit->Serialize(ser, aspect);	// because jumping/punching/sprinting energy consumption will vary with suit settings
+	// ~Crysis Co-op
 
 	if (aspect == IPlayerInput::INPUT_ASPECT)
 	{

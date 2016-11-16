@@ -70,7 +70,9 @@ void CGameRules::ClientHit(const HitInfo &hitInfo)
 	if((pClientActor && pClientActor->GetEntity()==pShooter) && pTarget && (pVehicle || pActor) && !dead)
 	{
 		SAFE_HUD_FUNC(GetCrosshair()->CrosshairHit());
-		SAFE_HUD_FUNC(GetTagNames()->AddEnemyTagName(pActor?pActor->GetEntityId():pVehicle->GetEntityId()));
+		// Crysis Co-op :: Removes enemy name tag in MP :: TODO Make this Coop specific
+		//SAFE_HUD_FUNC(GetTagNames()->AddEnemyTagName(pActor?pActor->GetEntityId():pVehicle->GetEntityId()));
+		// ~Crysis Co-op
 	}
 
 	if(pActor == pClientActor)
@@ -238,12 +240,34 @@ void CGameRules::ServerHit(const HitInfo &hitInfo)
 //------------------------------------------------------------------------
 void CGameRules::ProcessServerHit(HitInfo &hitInfo)
 {
-	if (m_pShotValidator && !m_pShotValidator->ProcessHit(hitInfo))
-		return;
+	//Crysis Co-op :: Removed to stop AI weapon crash in MP
+	//if (m_pShotValidator && !m_pShotValidator->ProcessHit(hitInfo))
+		//return;
+
+	//Team kill co-op checks
+	CActor* pShooter = GetActorByEntityId(hitInfo.shooterId);
+	CActor *pTarget = GetActorByEntityId(hitInfo.targetId);
+	if (pShooter && pShooter->IsPlayer() && pTarget && !pTarget->IsPlayer())
+	{
+		IScriptTable* pShooterScriptTable = pShooter->GetEntity()->GetScriptTable();
+		IScriptTable* pTargetScriptTable = pTarget->GetEntity()->GetScriptTable();
+		SmartScriptTable pShooterProperties;
+		SmartScriptTable pTargetProperties;
+		if (pShooterScriptTable->GetValue("Properties", pShooterProperties) && pTargetScriptTable->GetValue("Properties", pTargetProperties))
+		{
+			int nShooterSpecies = 0;
+			int nTargetSpecies = 0;
+			pShooterProperties->GetValue("species", nShooterSpecies);
+			pTargetProperties->GetValue("species", nTargetSpecies);
+			if (nShooterSpecies == nTargetSpecies)
+				return;
+		}
+	}
+	//~Crysis Co-op
 
 	bool ok=true;
 	// check if shooter is alive
-	CActor *pShooter=GetActorByEntityId(hitInfo.shooterId);
+	//CActor *pShooter=GetActorByEntityId(hitInfo.shooterId);
 
 	if (hitInfo.shooterId)
 	{

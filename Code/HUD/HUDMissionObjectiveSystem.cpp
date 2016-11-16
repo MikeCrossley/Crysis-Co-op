@@ -70,10 +70,13 @@ void CHUDMissionObjectiveSystem::LoadLevelObjectives(bool forceReloading)
 		m_currentMissionObjectives.clear();
 		CryFixedStringT<32> filename;
 
-		filename = "Libs/UI/Objectives_new.xml";
-		if(gEnv->bMultiplayer)
-			filename = "Libs/UI/MP_Objectives.xml";
-		LoadLevelObjectives(filename.c_str());
+		//Crysis Co-op
+		//const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+		//filename = "Libs/UI/Objectives_new.xml";
+		filename = "Libs/UI/Objectives_Coop.xml";
+		//if(gEnv->bMultiplayer && strcmp(gameRulesName, "Coop") != 0)
+			//filename = "Libs/UI/MP_Objectives.xml";
+		// ~Crysis Co-op
 
 		//additional objectives
 		if(gEnv->bEditor)

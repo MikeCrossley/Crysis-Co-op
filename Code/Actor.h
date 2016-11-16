@@ -517,7 +517,7 @@ class CItem;
 class CWeapon;
 
 class CActor :
-	public CGameObjectExtensionHelper<CActor, IActor>,
+	public CGameObjectExtensionHelper<CActor, IActor, 64>,
 	public IGameObjectView,
 	public IGameObjectProfileManager
 {
@@ -707,6 +707,46 @@ public:
 
 		eASM_Cutscene,												// HUDInterfaceEffects.cpp sets this
 	};
+
+	// Crysis Co-op
+ 
+    struct PlayReadabilitySoundParams
+    {
+    public:
+        PlayReadabilitySoundParams() : sSoundEventName(""){};
+        PlayReadabilitySoundParams(string s) : sSoundEventName(s){ }
+ 
+        string sSoundEventName;
+
+ 
+        void SerializeWith(TSerialize ser)
+        {
+            ser.Value("name", sSoundEventName);
+        }
+    };
+
+	struct SLooseHelmetParams
+	{
+		SLooseHelmetParams() {};
+		SLooseHelmetParams(Vec3 dir, Vec3 pos): 
+			hitDir(dir),
+			hitPos(pos)
+		{};
+
+		Vec3 hitDir;
+		Vec3 hitPos;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("hitDir", hitDir, 'wrld');
+			ser.Value("hitPos", hitPos, 'wrld');
+		}
+	};
+
+	DECLARE_CLIENT_RMI_PREATTACH(ClLooseHelmet, SLooseHelmetParams, eNRT_ReliableUnordered);
+ 
+    DECLARE_CLIENT_RMI_NOATTACH(ClPlayReadabilitySound, PlayReadabilitySoundParams, eNRT_ReliableOrdered);
+    // ~Crysis Co-op
 
 	DECLARE_SERVER_RMI_NOATTACH_FAST(SvRequestDropItem, DropItemParams, eNRT_ReliableOrdered);
 	DECLARE_SERVER_RMI_NOATTACH_FAST(SvRequestPickUpItem, ItemIdParam, eNRT_ReliableOrdered);
