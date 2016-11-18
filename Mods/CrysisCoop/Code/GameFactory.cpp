@@ -34,6 +34,7 @@
 #include "Coop\Actors\CoopScout.h"
 
 #include "Coop\Entities\EventSynchronizer.h"
+#include "Coop\Entities\DialogSynchronizer.h"
 //~Crysis Co-op
 
 //
@@ -214,6 +215,7 @@ void InitGameFactory(IGameFramework *pFramework)
 
 	// Crysis Co-op
 	REGISTER_GAME_OBJECT(pFramework, EventSynchronizer, "Scripts/Entities/Coop/EventSynchronizer.lua");
+	REGISTER_GAME_OBJECT(pFramework, DialogSynchronizer, "Scripts/Entities/Coop/DialogSynchronizer.lua");
 	//~Crysis Co-op
 
 	// Custom GameObjects

@@ -4,6 +4,8 @@
 #include <ILevelSystem.h>
 #include "CoopReadability.h"
 
+class CDialogSystem;
+
 class CCoopSystem 
 	: public ILevelSystemListener
 {
@@ -26,6 +28,10 @@ public:
 	bool Initialize();
 
 	// Summary:
+	//	Initialize Complete
+	void CompleteInit();
+
+	// Summary:
 	//	Shuts down the CCoopSystem instance.
 	void Shutdown();
 
@@ -42,6 +48,9 @@ public:
 	virtual void OnLoadingProgress(ILevelInfo *pLevel, int progressAmount) { };
 	// ~ILevelSystemListener
 
+
+	CDialogSystem* GetDialogSystem() { return m_pDialogSystem; }
+
 	CCoopReadability* m_pReadability;
 
 private:
@@ -55,6 +64,8 @@ private:
 	IEntityClass* m_pEntityClassHunter;
 
 private:
+
+	CDialogSystem* m_pDialogSystem;
 
 };
 

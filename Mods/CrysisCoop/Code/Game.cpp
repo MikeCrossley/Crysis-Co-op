@@ -389,6 +389,10 @@ bool CGame::CompleteInit()
 		}
 	}
 
+	//Crysis Co-op
+	CCoopSystem::GetInstance()->CompleteInit();
+	//~Crysis Co-op
+
 #ifdef GAME_DEBUG_MEM
 	DumpMemInfo("CGame::CompleteInit");
 #endif

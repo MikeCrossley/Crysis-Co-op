@@ -8,6 +8,8 @@
 #include "CoopSystem.h"
 #include "CoopCutsceneSystem.h"
 
+#include "Coop/DialogSystem/DialogSystem.h"
+
 #include <IVehicleSystem.h>
 
 // Static CCoopSystem class instance forward declaration.
@@ -48,7 +50,15 @@ bool CCoopSystem::Initialize()
 	if (pCheatCvar)
 		pCheatCvar->ForceSet("0");
 
+	m_pDialogSystem = new CDialogSystem();
+	m_pDialogSystem->Init();
+
 	return true;
+}
+
+void CCoopSystem::CompleteInit()
+{
+	gEnv->pSystem->SetIDialogSystem(m_pDialogSystem);
 }
 
 // Summary:
@@ -66,6 +76,11 @@ void CCoopSystem::Shutdown()
 
 	gEnv->pGame->GetIGameFramework()->GetILevelSystem()->RemoveListener(this);
 	SAFE_DELETE(m_pReadability);
+
+	if (m_pDialogSystem)
+		m_pDialogSystem->Shutdown();
+
+	SAFE_DELETE(m_pDialogSystem);
 }
 
 bool bReinited = false;
@@ -75,6 +90,9 @@ bool bReinited = false;
 //	Updates the CCoopSystem instance.
 void CCoopSystem::Update(float fFrameTime)
 {
+	if (m_pDialogSystem)
+		m_pDialogSystem->Update(fFrameTime);
+
 	// Registers vehicles into the AI system
 	if (gEnv->bServer)
 	{
@@ -134,6 +152,13 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 
 void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 {
+	m_pDialogSystem->Reset();
+	
+	if (CDialogSystem::sAutoReloadScripts != 0)
+		m_pDialogSystem->ReloadScripts();
+
+
+
 	/*std::set<IEntityClass*> classNames;
 
 	IEntityIt* iter = gEnv->pEntitySystem->GetEntityIterator();

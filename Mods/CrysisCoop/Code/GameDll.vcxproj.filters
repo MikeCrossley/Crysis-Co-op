@@ -97,6 +97,9 @@
     <Filter Include="Coop\Nodes">
       <UniqueIdentifier>{e562a13f-bd11-4fbd-9d40-2b76f6d1e442}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coop\DialogSystem">
+      <UniqueIdentifier>{9e6fdcf2-b851-4a6e-b2e8-66ea1f9af30e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameDll.cpp">
@@ -683,6 +686,30 @@
     <ClCompile Include="Coop\CoopReadability.cpp">
       <Filter>Coop</Filter>
     </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogActorContext.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogLoader.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogLoaderMK2.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogScript.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogSession.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogSystem.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopDialogNode.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Entities\DialogSynchronizer.cpp">
+      <Filter>Coop\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1189,6 +1216,33 @@
     </ClInclude>
     <ClInclude Include="Coop\CoopReadability.h">
       <Filter>Coop</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogActorContext.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogCommon.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogLoader.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogLoaderMK2.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogScript.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogSession.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogSystem.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\DialogSynchronizer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\DialogPlayer.h">
+      <Filter>Coop\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
