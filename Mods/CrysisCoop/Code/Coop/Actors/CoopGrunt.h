@@ -22,7 +22,6 @@ public:
 	virtual void ProcessEvent(SEntityEvent& event);
 	//~CPlayer
 
-
 	enum CoopTimers
 	{
 		eTIMER_WEAPONDELAY	= 0x110
@@ -41,44 +40,36 @@ public:
         }
     };
 
-    struct SAimParams
-    {
-		SAimParams() {};
-		SAimParams(bool baiming): 
-			bAiming(baiming) 
-		{};
-        bool bAiming;
-        void SerializeWith(TSerialize ser)
-        {
-            ser.Value("bAiming", bAiming);
-        }
-    };
-
-	int GetAlertnessState(){return m_coopAlertness;};
+	int GetAlertnessState() const { return m_nAlertness; }
 
 	DECLARE_CLIENT_RMI_NOATTACH(ClChangeSuitMode, SSuitParams, eNRT_ReliableOrdered);
- 	DECLARE_CLIENT_RMI_NOATTACH(ClChangeStance, SSuitParams, eNRT_ReliableOrdered);
-	DECLARE_CLIENT_RMI_NOATTACH(ClUpdateAiming, SAimParams, eNRT_ReliableOrdered);
 
 protected:
-	static const int ASPECT_ALIVE = eEA_GameServerDynamic;
+	static const EEntityAspects ASPECT_ALIVE = eEA_GameServerDynamic;
+	static const EEntityAspects ASPECT_HIDE = eEA_GameServerStatic;
+
+	void RegisterMultiplayerAI();
+	void UpdateMovementState();
+	void DrawDebugInfo();
 
 private:
-	Vec3 m_coopMoveTarget;
-	Vec3 m_coopAimTarget;
-	Vec3 m_coopLookTarget;
-	Vec3 m_coopBodyTarget;
-	Vec3 m_coopFireTarget;
+	Vec3 m_vMoveTarget;
+	Vec3 m_vAimTarget;
+	Vec3 m_vLookTarget;
+	Vec3 m_vBodyTarget;
+	Vec3 m_vFireTarget;
 
 	float m_fPseudoSpeed;
-	float m_fcoopDesiredSpeed;
+	float m_fDesiredSpeed;
 
-	int m_coopAlertness;
-	int m_coopStance;
-	int m_coopsuitMode;
+	int m_nAlertness;
+	int m_nStance;
+	int m_nSuitMode;
 
 	bool m_bAllowStrafing;
 	bool m_bHasAimTarget;
+
+	bool m_bHidden;
 };
 
 

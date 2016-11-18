@@ -19,7 +19,6 @@ public:
 		eTIMER_WEAPONDELAY	= 0x110
 	};
 
-
 	//CScout
 	virtual bool Init( IGameObject * pGameObject );
 	virtual void PostInit( IGameObject * pGameObject );
@@ -27,13 +26,19 @@ public:
 	virtual bool NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile, int flags );
 	virtual void ProcessEvent(SEntityEvent& event);
 	//~CScout
+
 protected:
-	static const int ASPECT_ALIVE = eEA_GameServerDynamic;
+	static const EEntityAspects ASPECT_ALIVE = eEA_GameServerDynamic;
+	static const EEntityAspects ASPECT_HIDE = eEA_GameServerStatic;
+
+	void RegisterMultiplayerAI();
+	void UpdateMovementState();
 
 private:
-	Vec3 m_coopLookTarget;
-	Vec3 m_coopAimTarget;
+	Vec3 m_vLookTarget;
+	Vec3 m_vAimTarget;
 
+	bool m_bHidden;
 };
 
 
