@@ -98,5 +98,3 @@ IMPLEMENT_RMI(CDialogSynchronizer, ClStopDialog)
 	return true;
 }
 
-
-

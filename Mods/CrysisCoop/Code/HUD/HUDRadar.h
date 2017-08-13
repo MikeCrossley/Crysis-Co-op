@@ -193,6 +193,7 @@ public:
     IEntityClass *m_pCoopGrunt;
 	IEntityClass *m_pCivilian;
 	IEntityClass *m_pCoopScout;
+	IEntityClass *m_pCoopTrooper;
     // ~Crysis Co-op
 
 	//entity classes for comparison

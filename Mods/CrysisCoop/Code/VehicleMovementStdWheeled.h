@@ -235,9 +235,9 @@ protected:
 	float m_submergedRatioMax;	// to avoid calling vehicle functions in ProcessMovement()
 
 	// Crysis Co-op
-	Vec3 m_coopLookTarget;
-	Vec3 m_coopMoveTarget;
-	float m_coopDesiredSpeed;
+	Vec3 m_vLookTarget;
+	Vec3 m_vMoveTarget;
+	float m_fDesiredSpeed;
 	//~Crysis Co-op
 };
 

@@ -32,9 +32,12 @@
 #include "Coop\Actors\CoopPlayer.h"
 #include "Coop\Actors\CoopGrunt.h"
 #include "Coop\Actors\CoopScout.h"
+#include "Coop\Actors\CoopTrooper.h"
 
 #include "Coop\Entities\EventSynchronizer.h"
 #include "Coop\Entities\DialogSynchronizer.h"
+#include "Coop\Entities\HudSynchronizer.h"
+#include "Coop\Entities\SequenceSynchronizer.h"
 //~Crysis Co-op
 
 //
@@ -147,6 +150,7 @@ void InitGameFactory(IGameFramework *pFramework)
   // Crysis Co-op
   REGISTER_FACTORY(pFramework, "CoopGrunt", CCoopGrunt, true);
   REGISTER_FACTORY(pFramework, "Aliens/CoopScout", CCoopScout, true);
+  REGISTER_FACTORY(pFramework, "Aliens/CoopTrooper", CCoopTrooper, true);
   //~Crysis Co-op
 
   // Items
@@ -214,8 +218,10 @@ void InitGameFactory(IGameFramework *pFramework)
 #endif
 
 	// Crysis Co-op
+	REGISTER_GAME_OBJECT(pFramework, SequenceSynchronizer, "Scripts/Entities/Coop/SequenceSynchronizer.lua");
 	REGISTER_GAME_OBJECT(pFramework, EventSynchronizer, "Scripts/Entities/Coop/EventSynchronizer.lua");
 	REGISTER_GAME_OBJECT(pFramework, DialogSynchronizer, "Scripts/Entities/Coop/DialogSynchronizer.lua");
+	REGISTER_GAME_OBJECT(pFramework, HUDSynchronizer, "Scripts/Entities/Coop/HUDSynchronizer.lua");
 	//~Crysis Co-op
 
 	// Custom GameObjects

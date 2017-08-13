@@ -85,9 +85,9 @@ m_netActionSync.PublishActions( CNetworkMovementStdWheeled(this) );
 	m_initialHandbreak = true;
 
 	// Crysis Co-op
-	m_coopLookTarget = Vec3(0,0,0);
-	m_coopMoveTarget = Vec3(0,0,0);
-	m_coopDesiredSpeed = 0.f;
+	m_vLookTarget = Vec3(0,0,0);
+	m_vMoveTarget = Vec3(0,0,0);
+	m_fDesiredSpeed = 0.f;
 	// ~Crysis Co-op
 }
 
@@ -882,20 +882,20 @@ void CVehicleMovementStdWheeled::Update(const float deltaTime)
 	if (pActor && !gEnv->bServer && !pActor->IsPlayer())
 	{
 		// LookTarget
-		if (m_coopLookTarget != Vec3(0,0,0))
-			m_aiRequest.SetLookTarget(m_coopLookTarget);
+		if (m_vLookTarget != Vec3(0,0,0))
+			m_aiRequest.SetLookTarget(m_vLookTarget);
 		else
 			m_aiRequest.ClearLookTarget();
 
 		//MoveTarget
-		if (m_coopMoveTarget != Vec3(0,0,0))
-			m_aiRequest.SetMoveTarget(m_coopMoveTarget);
+		if (m_vMoveTarget != Vec3(0,0,0))
+			m_aiRequest.SetMoveTarget(m_vMoveTarget);
 		else
 			m_aiRequest.ClearMoveTarget();
 
 		//Speed
-		if (m_coopDesiredSpeed > 0.f)
-			m_aiRequest.SetDesiredSpeed(m_coopDesiredSpeed);
+		if (m_fDesiredSpeed > 0.f)
+			m_aiRequest.SetDesiredSpeed(m_fDesiredSpeed);
 		else
 			m_aiRequest.ClearDesiredSpeed();
 
@@ -1818,9 +1818,9 @@ void CVehicleMovementStdWheeled::Serialize(TSerialize ser, unsigned aspects)
 		//IActor* pActor = m_pVehicle->GetDriver();
 		//if (pActor && !pActor->IsPlayer())
 		//{
-			ser.Value("lookTargt", m_coopLookTarget, 'wrld');
-			ser.Value("movTargt", m_coopMoveTarget, 'wrld');
-			ser.Value("speed", m_coopDesiredSpeed);
+			ser.Value("vLookTarget", m_vLookTarget, 'wrld');
+			ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
+			ser.Value("fDesiredSpeed", m_fDesiredSpeed);
 		//}
 		//~Crysis co-op
 

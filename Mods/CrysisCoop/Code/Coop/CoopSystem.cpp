@@ -43,12 +43,16 @@ bool CCoopSystem::Initialize()
 
 	ICVar* pAIUpdateAlways = gEnv->pConsole->GetCVar("ai_UpdateAllAlways");
 	ICVar* pCheatCvar = gEnv->pConsole->GetCVar("sv_cheatprotection");
+	ICVar* pGameRules = gEnv->pConsole->GetCVar("sv_gamerules");
 
 	if (pAIUpdateAlways)
 		pAIUpdateAlways->ForceSet("1");
 
 	if (pCheatCvar)
 		pCheatCvar->ForceSet("0");
+
+	if (pGameRules)
+		pGameRules->ForceSet("coop");
 
 	m_pDialogSystem = new CDialogSystem();
 	m_pDialogSystem->Init();

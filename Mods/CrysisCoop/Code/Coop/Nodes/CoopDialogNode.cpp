@@ -4,6 +4,31 @@
 #include "IGameObject.h"
 #include "Coop/Entities/DialogSynchronizer.h"
 
+CDialogSynchronizer* GetDialogSynchronizer()
+{
+	std::set<IEntityClass*> classNames;
+
+	IEntityIt* iter = gEnv->pEntitySystem->GetEntityIterator();
+	while (!iter->IsEnd())
+	{
+		if (IEntity* pEnt = iter->Next())
+		{
+			IEntityClass* pEntityClass = pEnt->GetClass();
+			IEntityClass* pDialogClass = gEnv->pEntitySystem->GetClassRegistry()->FindClass("DialogSynchronizer");
+
+			if (pEntityClass == pDialogClass)
+			{
+				if (IGameObject* pGameObject = gEnv->pGame->GetIGameFramework()->GetGameObject(pEnt->GetId()))
+				{
+					return (CDialogSynchronizer*)pGameObject->QueryExtension("DialogSynchronizer");
+				}
+			}
+		}
+	}
+
+	return NULL;
+}
+
 class CFlowDialogNode : public CFlowBaseNode
 {
 public:
@@ -123,7 +148,7 @@ public:
 			if (IsPortActive(pActInfo, EIP_Play))
 			{
 				if (!m_pDialogSynchronizer)
-					GetDialogSynchronizer();
+					m_pDialogSynchronizer = GetDialogSynchronizer();
 
 				if (!m_pDialogSynchronizer)
 				{
@@ -155,37 +180,12 @@ public:
 		}
 	}
 
-protected:
-	void GetDialogSynchronizer()
-	{
-		std::set<IEntityClass*> classNames;
-
-		IEntityIt* iter = gEnv->pEntitySystem->GetEntityIterator();
-		while (!iter->IsEnd())
-		{
-			if (IEntity* pEnt = iter->Next())
-			{
-				IEntityClass* pEntityClass = pEnt->GetClass();
-				IEntityClass* pDialogClass = gEnv->pEntitySystem->GetClassRegistry()->FindClass("DialogSynchronizer");
-				
-				if (pEntityClass == pDialogClass)
-				{
-					if (IGameObject* pGameObject = gEnv->pGame->GetIGameFramework()->GetGameObject(pEnt->GetId()))
-					{
-						m_pDialogSynchronizer = (CDialogSynchronizer*)pGameObject->QueryExtension("DialogSynchronizer");
-						CryLogAlways("[CCoopDialogNode] Found Dialog Synchronizer");
-						return;
-					}
-				}
-			}
-		}
-	}
-
 private:
 	SActivationInfo m_actInfo;
 	CDialogSynchronizer* m_pDialogSynchronizer;
 };
 
-
 REGISTER_FLOW_NODE( "Coop:PlayDialog", CFlowDialogNode );
+
+
 

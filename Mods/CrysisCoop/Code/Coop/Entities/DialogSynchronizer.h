@@ -8,7 +8,7 @@
 class CDialogSession;
 
 class CDialogSynchronizer 
-	:	public CGameObjectExtensionHelper<CDialogSynchronizer, IGameObjectExtension>
+	:	public CGameObjectExtensionHelper<CDialogSynchronizer, IGameObjectExtension, 16>
 {
 public:
 	CDialogSynchronizer();
@@ -91,6 +91,7 @@ public:
 
 	DECLARE_CLIENT_RMI_NOATTACH(ClPlayDialog, SDialogParams, eNRT_ReliableOrdered);
 	DECLARE_CLIENT_RMI_NOATTACH(ClStopDialog, SDialogStopParams, eNRT_ReliableOrdered);
+
 public:
 	bool PlayDialog(string sDialog, EntityId* pActors, int nAIInterrupt, float fAwareDist, float fAwareAngle, float fAwareTimeOut, int nFlags, int nFromLine);
 	bool StopDialog();
