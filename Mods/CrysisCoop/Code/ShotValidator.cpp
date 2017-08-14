@@ -103,6 +103,15 @@ bool CShotValidator::ProcessHit(const HitInfo &hitInfo)
 	CTimeValue now=gEnv->pTimer->GetFrameStartTime();
 	int channelId=m_pGameRules->GetChannelId(hitInfo.shooterId);
 
+	// Crysis Co-op
+	// Workaround: Early exit on AI shot bullets- we don't need to validate them because the AI system can obviously be trusted on server.
+	if (IActor* pShooter = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(hitInfo.shooterId))
+	{
+		if (!pShooter->IsPlayer())
+			return true;
+	}
+	// ~Crysis Co-op
+
 	TShot shot(hitInfo.seq, hitInfo.weaponId, now, 0);
 	
 	TChannelShots::iterator csit=m_shots.find(channelId);
