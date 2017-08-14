@@ -92,8 +92,8 @@ void CCoopTrooper::UpdateMovementState()
 	request.SetBodyTarget(m_vLookTarget);
 	request.SetLookTarget(m_vLookTarget);
 	request.SetAimTarget(m_vAimTarget);
-
-
+	//request.set
+	//static_cast<CCompatibilityAlienMovementController*>(GetMovementController())->RequestMovement()
 	SetActorMovement(SMovementRequestParams(request));
 }
 

@@ -3951,11 +3951,15 @@ IMPLEMENT_RMI(CActor, ClKill)
 {
 	NetKill(params.shooterId, params.weaponClassId, (int)params.damage, params.material, params.hit_type, params.healthOnKill);
 
-	CNanoSuit *pSuit = ((CPlayer*)this)->GetNanoSuit();
-	if (pSuit)
+	if (this->IsPlayer())
 	{
-		pSuit->PlayerKilled();
+		CNanoSuit *pSuit = ((CPlayer*)this)->GetNanoSuit();
+		if (pSuit)
+		{
+			pSuit->PlayerKilled();
+		}
 	}
+	
 	return true;
 }
 

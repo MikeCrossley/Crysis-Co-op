@@ -1102,12 +1102,21 @@ void CGameRules::KillPlayer(CActor *pActor, bool dropItem, bool ragdoll, EntityI
 			pActor->DropItem(itemId, 1.0f, false, true);
 	}
 
-	CNanoSuit *pSuit = ((CPlayer*)pActor)->GetNanoSuit();
-	if (pSuit)
+	// Crysis Co-op
+
+	// Only change the nanosuit stance if the actor is a player.
+	// TODO: Maybe refactor to allow NK nanosuits to behave the same.
+	if (pActor->IsPlayer())
 	{
-		pSuit->SetMode(NANOMODE_DEFENSE, true, true);
-		pSuit->SetCloakLevel(CLOAKMODE_REFRACTION);
+		CNanoSuit *pSuit = ((CPlayer*)pActor)->GetNanoSuit();
+		if (pSuit)
+		{
+			pSuit->SetMode(NANOMODE_DEFENSE, true, true);
+			pSuit->SetCloakLevel(CLOAKMODE_REFRACTION);
+		}
 	}
+
+	// ~Crysis Co-op
 
 	uint16 weaponClassId=0;
 	const char *weaponClassName="";
