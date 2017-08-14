@@ -189,6 +189,10 @@ public:
 
 	void Serialize(TSerialize ser);
 
+	// Crysis Co-op
+	IEntityClass *m_pCoopGrunt, *m_pCivilian, *m_pCoopScout, *m_pCoopTrooper;
+	// ~Crysis Co-op
+
 	//entity classes for comparison
 	IEntityClass *m_pVTOL, *m_pHeli, *m_pHunter, *m_pWarrior, *m_pAlien, *m_pTrooper, *m_pGrunt, *m_pPlayerClass,
 		*m_pScout, *m_pTankUS, *m_pTankA, *m_pLTVUS, *m_pLTVA, *m_pAAA, *m_pTruck, *m_pAPCUS, *m_pAPCA, *m_pBoatCiv,

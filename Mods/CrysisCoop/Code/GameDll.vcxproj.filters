@@ -109,6 +109,21 @@
     <Filter Include="Expansion\Weapons">
       <UniqueIdentifier>{871f2243-b970-46a5-88a6-100f10837865}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coop">
+      <UniqueIdentifier>{29b5227b-3bfb-46c4-a280-7963ca63bf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\Actors">
+      <UniqueIdentifier>{e916304a-1b06-4581-bbac-0ab2e8318733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\DialogSystem">
+      <UniqueIdentifier>{acca1580-3927-4bfb-bfd7-19c3069d7939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\Entities">
+      <UniqueIdentifier>{db5cd87a-c67e-4f51-a492-cfb82900ee57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\Nodes">
+      <UniqueIdentifier>{688f1e35-169a-4f39-a0e4-102208eb1b49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -704,6 +719,72 @@
     </ClCompile>
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="Coop\CoopCutsceneSystem.cpp">
+      <Filter>Coop</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\CoopReadability.cpp">
+      <Filter>Coop</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\CoopSystem.cpp">
+      <Filter>Coop</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Actors\CoopGrunt.cpp">
+      <Filter>Coop\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Actors\CoopPlayer.cpp">
+      <Filter>Coop\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Actors\CoopScout.cpp">
+      <Filter>Coop\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Actors\CoopTrooper.cpp">
+      <Filter>Coop\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogActorContext.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogLoader.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogLoaderMK2.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogScript.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogSession.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\DialogSystem\DialogSystem.cpp">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Entities\DialogSynchronizer.cpp">
+      <Filter>Coop\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Entities\EventSynchronizer.cpp">
+      <Filter>Coop\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Entities\HUDSynchronizer.cpp">
+      <Filter>Coop\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Entities\SequenceSynchronizer.cpp">
+      <Filter>Coop\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopDialogNode.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopGetPlayersInVehicle.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopHudNodes.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopSequenceNodes.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Nodes\CoopSpawnArchetype.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1232,6 +1313,63 @@
       <Filter>Expansion\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Coop\CoopCutsceneSystem.h">
+      <Filter>Coop</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\CoopReadability.h">
+      <Filter>Coop</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\CoopSystem.h">
+      <Filter>Coop</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\CoopGrunt.h">
+      <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\CoopPlayer.h">
+      <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\CoopScout.h">
+      <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\CoopTrooper.h">
+      <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogActorContext.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogCommon.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogLoader.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogLoaderMK2.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogScript.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogSession.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\DialogSystem\DialogSystem.h">
+      <Filter>Coop\DialogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\DialogPlayer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\DialogSynchronizer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\EventSynchronizer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\HUDSynchronizer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Entities\SequenceSynchronizer.h">
+      <Filter>Coop\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GameActions.actions">

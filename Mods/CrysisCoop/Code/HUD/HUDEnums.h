@@ -82,6 +82,7 @@ enum ELockingType
 	eLT_Static			= 2
 };
 
+//Crysis Co-op :: Added Co-op ENum
 enum EHUDGAMERULES
 {
 	EHUD_SINGLEPLAYER,
@@ -89,7 +90,9 @@ enum EHUDGAMERULES
 	EHUD_POWERSTRUGGLE,
 	EHUD_TEAMACTION,
 	EHUD_TEAMINSTANTACTION,
+	EHUD_COOP,
 };
+//~Crysis Co-op
 
 //radar objects on mini map and radar
 enum FlashRadarType	//don't change order (unless you change the flash asset)

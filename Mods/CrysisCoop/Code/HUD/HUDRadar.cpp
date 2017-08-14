@@ -32,6 +32,11 @@ History:
 #include "HUD/HUDScopes.h"
 #include "HUD/HUDVehicleInterface.h"
 
+//Crysis Co-op
+#include "Coop/Actors/CoopPlayer.h"
+#include "Coop/Actors/CoopGrunt.h"
+//~Crysis Co-op
+
 #define RANDOM() ((((float)cry_rand()/(float)RAND_MAX)*2.0f)-1.0f)
 
 const static float fRadarSizeOverTwo = 47.0f;
@@ -139,6 +144,13 @@ CHUDRadar::CHUDRadar()
 	m_pCarCiv				= pEntityClassRegistry->FindClass( "Civ_car1" );
 	m_pParachute		= pEntityClassRegistry->FindClass( "Parachute" );
 	m_pUSASV				= pEntityClassRegistry->FindClass( "US_asv" );
+
+	// Crysis Co-op
+	m_pCoopGrunt = pEntityClassRegistry->FindClass("CoopGrunt");
+	m_pCivilian = pEntityClassRegistry->FindClass("Civilian");
+	m_pCoopScout = pEntityClassRegistry->FindClass("CoopScout");
+	m_pCoopTrooper = pEntityClassRegistry->FindClass("CoopTrooper");
+	// ~Crysis Co-op
 
 	assert ( m_pLTVA && m_pLTVUS && m_pTankA && m_pTankUS && m_pWarrior && m_pHunter && m_pAlien && m_pScout && m_pGrunt && m_pHeli && m_pVTOL && m_pAAA && m_pTruck && m_pAPCUS && m_pAPCA && m_pBoatCiv && m_pHover && m_pBoatUS && m_pBoatA && m_pCarCiv && m_pParachute && m_pUSASV);
 }
@@ -743,6 +755,10 @@ void CHUDRadar::UpdateRadarEntities(CActor *pActor, float &fRadius, Matrix34 &pl
 	float fCos	= cosf(m_fTime); 
 	float lowerBoundX = m_fX - fRadarSizeOverTwo;	//used for flash radar position computation
 
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	//~Crysis Co-op
+
 	//****************************************************************************
 	//singleplayer squadmates are now 100% design controlled, see "SetTeamMate"
 
@@ -822,6 +838,11 @@ void CHUDRadar::UpdateRadarEntities(CActor *pActor, float &fRadius, Matrix34 &pl
 			//is it a team mate in multiplayer or is it a squad mate in singleplayer ?
 			if(!isOnRadar && stl::find(m_teamMates, id))
 				isOnRadar = mate = true;
+
+			// Crysis Co-op
+			if (!strcmp(gameRulesName, "Coop") && pActor && pActor->IsPlayer())
+				isOnRadar = mate = true;
+			//~Crysis Co-op
 
 			//has the object been scanned already?
 			if(!isOnRadar && IsOnRadar(id, 0, m_entitiesOnRadar.size()-1))
@@ -966,6 +987,48 @@ void CHUDRadar::UpdateRadarEntities(CActor *pActor, float &fRadius, Matrix34 &pl
 						friendly = ENeutral;
 				}
 			}
+			// Crysis Co-op
+			else if (strcmp(gameRulesName, "Coop") == 0/* && !gEnv->bServer*/)
+			{
+				if (mate)
+					friendly = EFriend;
+				else
+					friendly = EEnemy;
+
+				CCoopGrunt* pGrunt = static_cast<CCoopGrunt*>(tempActor);
+
+				int iAlertnessState = 0;
+
+				if (pGrunt)
+					iAlertnessState = pGrunt->GetAlertnessState();
+
+				if (unknownEnemyObject) //check whether the object is near enough and alerted
+				{
+					if (iAlertnessState < 1)
+						continue;
+					if (distSq > 225.0f)
+						continue;
+					else if (distSq > 25.0f)
+						fAlpha -= 0.5f - ((225.0f - distSq) * 0.0025f); //fade out with distance
+
+					if (tempActor && g_pGameCVars->g_difficultyLevel < 4) //new rule : once aggroing the player, enemies get added permanently
+						AddToRadar(id);
+				}
+
+				if (1 == iAlertnessState)
+				{
+					fAlpha = 0.65f + fCos * 0.35f;
+					friendly = EAggressor;
+				}
+				else if (2 == iAlertnessState)
+				{
+					fAlpha = 0.65f + fCos * 0.35f;
+					friendly = ESelf;
+				}
+				else
+					continue;
+
+			} // ~Crysis Co-op
 			else if(gEnv->bMultiplayer)	//treats factions in multiplayer
 			{
 				if(tempActor)
@@ -1021,8 +1084,21 @@ void CHUDRadar::UpdateRadarEntities(CActor *pActor, float &fRadius, Matrix34 &pl
 			//**********************************************************************************************
 
 			//requested by Sten : teammates should be more transparent
-			if(mate)
-				fAlpha *= 0.50f;
+
+			//Crysis Co-op :: players should be more visible than AI allies
+
+			//if(mate)
+			//fAlpha *= 0.50f;
+
+			if (mate)
+			{
+				if (pActor->IsPlayer())
+					fAlpha = 1.f;
+				else
+					fAlpha *= 0.50f;
+			}
+
+			//~Crysis Co-op
 
 			//draw entity
 			float lowerBoundY = m_fY - fRadarSizeOverTwo;
@@ -1038,6 +1114,10 @@ void CHUDRadar::UpdateRadarEntities(CActor *pActor, float &fRadius, Matrix34 &pl
 void CHUDRadar::UpdateCompassStealth(CActor *pActor, float fDeltaTime)
 {
 	IEntity *pPlayerEntity = pActor->GetEntity();
+	
+	//Crysis Co-op
+	CCoopPlayer* pPlayer = static_cast<CCoopPlayer*>(pActor);
+	//~Crysis Co-op
 
 	//**********************update flash radar values
 	float fStealthValue = 0;
@@ -1068,6 +1148,13 @@ void CHUDRadar::UpdateCompassStealth(CActor *pActor, float fDeltaTime)
 		fStealthValueStatic = fStealthValue = m_iMultiplayerEnemyNear * 10.0f;
 		m_iMultiplayerEnemyNear = 0;
 	}
+	//Crysis Co-op
+	else
+	{
+		fStealthValue = pPlayer->GetDetectionValue() * 100.0f;
+		fStealthValueStatic = pPlayer->GetDetectionValue() * 100.0f;
+	}
+	//~Crysis Co-op
 
 	if(m_fLastStealthValue != fStealthValue)
 	{
@@ -1120,7 +1207,12 @@ void CHUDRadar::UpdateCompassStealth(CActor *pActor, float fDeltaTime)
 		m_fLastFov = fFov;
 	}
 
-	if(gEnv->bMultiplayer)	//shows the player coordinates in MP
+	//Crysis Co-op
+	//if(gEnv->bMultiplayer)	//shows the player coordinates in MP
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+
+	if (gEnv->bMultiplayer && strcmp(gameRulesName, "Coop") != 0)	//shows the player coordinates in MP ( but not in coop )
+	//~Crysis Co-op
 	{
 		float fX, fY;
 		fX = fY = -1;

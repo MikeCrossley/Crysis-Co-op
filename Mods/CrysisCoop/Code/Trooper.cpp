@@ -1017,8 +1017,11 @@ void CTrooper::ProcessMovement(float frameTime)
 				pData = gEnv->pAISystem->CreateSignalExtraData();
 				pData->iValue = 1;
 			}
+
 			// send land event/signal			
-			gEnv->pAISystem->SendSignal(SIGNALFILTER_SENDER,1,"OnLand",GetEntity()->GetAI(),pData);
+			if (GetEntity()->GetAI()) //Crysis Co-op :: Fixes Crash when landing on clients
+				gEnv->pAISystem->SendSignal(SIGNALFILTER_SENDER,1,"OnLand",GetEntity()->GetAI(),pData);
+
 			if(m_jumpParams.bUseLandEvent)
 			{
 				SEntityEvent event( ENTITY_EVENT_SCRIPT_EVENT );

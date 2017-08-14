@@ -57,6 +57,10 @@
 #include "ISaveGame.h"
 #include "ILoadGame.h"
 
+//Crysis Co-op
+#include "Coop/CoopSystem.h"
+//~Crysis Co-op
+
 #include "DownloadTask.h"
 
 #define GAME_DEBUG_MEM  // debug memory usage
@@ -369,6 +373,7 @@ bool CGame::Init(IGameFramework *pFramework)
 	}
 
   m_pFramework->RegisterListener(this,"Game", FRAMEWORKLISTENERPRIORITY_GAME);
+  CCoopSystem::GetInstance()->Initialize();
 
 #ifdef GAME_DEBUG_MEM
 	DumpMemInfo("CGame::Init end");
@@ -394,6 +399,10 @@ bool CGame::CompleteInit()
 			pFactory = pFactory->m_pNext;
 		}
 	}
+
+	//Crysis Co-op
+	CCoopSystem::GetInstance()->CompleteInit();
+	//~Crysis Co-op
 
 #ifdef GAME_DEBUG_MEM
 	DumpMemInfo("CGame::CompleteInit");
@@ -535,6 +544,8 @@ string CGame::InitMapReloading()
 
 void CGame::Shutdown()
 {
+	CCoopSystem::GetInstance()->Shutdown();
+
 	if (m_pPlayerProfileManager)
 	{
 		m_pPlayerProfileManager->LogoutUser(m_pPlayerProfileManager->GetCurrentUser());
@@ -558,6 +569,7 @@ const char *CGame::GetName()
 
 void CGame::OnPostUpdate(float fDeltaTime)
 {
+	CCoopSystem::GetInstance()->Update(fDeltaTime);
 }
 
 void CGame::OnSaveGame(ISaveGame* pSaveGame)
