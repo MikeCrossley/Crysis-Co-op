@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Interfaces_h">
+      <UniqueIdentifier>{a06796c3-ad73-488e-9816-bc9c6dd0b251}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IActionMapManager.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IActorSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimatedCharacter.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimationGraph.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimationStateNode.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IDebrisMgr.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IEffectSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameObject.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameObjectSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameplayRecorder.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameRulesSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IInteractor.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IItem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IItemSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="ILevelSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="ILoadGame.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IMetadataRecorder.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IMovementController.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IPlayerProfiles.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="ISaveGame.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubtitleManager.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IUIDraw.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IVehicleSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IViewSystem.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IWeapon.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="IWorldQuery.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\NetActionSync.h">
+      <Filter>Interfaces_h</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
