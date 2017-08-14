@@ -1,0 +1,159 @@
+<Substitutions>
+  <!-- Basically you can change and old node class to a new class
+       and also reconnect edges to new ports, by remapping old ports to new ones
+       optionally you can also remap the value of an old input port to an new one,
+       when the port name has changed
+       also, you can set the input port values of the new node to reasonable/appropriate values-->
+  <!--
+	<Node OldClass="HUD:DisplayInstructionMessage" NewClass="HUD:DisplayInfoMessage" />
+	<Node OldClass="HUD:DisplayInstructionMessage" NewClass="HUD:DisplayPDAMessage">
+		<InputPort OldName="display" NewName="display" />
+		<InputPort OldName="message" NewName="objective" RemapValue="1" />
+	</Node>		
+	<Node OldClass="HUD:DisplayTimedDebugMessage" NewClass="HUD:DisplayTimedDebugMessage"> 
+		<Inputs DisplayTime="11.0" />
+	</Node>
+	-->
+
+  <Node OldClass="AI:AILookAtPoint" NewClass="AI:AILookAt" />
+  
+  <!-- Crysis Co-op Changes -->
+  <Node OldClass="Dialog:PlayDialog" NewClass="Coop:PlayDialog" /> 
+  
+  <!-- Political correctness change -> Chinese->Asian -->
+	<Node OldClass="entity:Chinese_4wd" NewClass="entity:Asian_4wd" /> 
+	<Node OldClass="entity:Chinese_AAA" NewClass="entity:Asian_aaa" /> 
+	<Node OldClass="entity:Chinese_helicopter" NewClass="entity:Asian_helicopter" /> 
+	<Node OldClass="entity:Chinese_patrolboat" NewClass="entity:Asian_patrolboat" /> 
+	<Node OldClass="entity:Chinese_tank" NewClass="entity:Asian_tank" /> 
+	<Node OldClass="entity:Chinese_truck" NewClass="entity:Asian_truck" />
+
+	<!-- MissionObjectives revamp -->
+	<Node OldClass="entity:MissionObjective" NewClass="entity:MissionObjective">
+		<InputPort  OldName="DisableObjective" NewName="Deactivate" />
+		<InputPort  OldName="EnableObjective"  NewName="Activate" />
+		<OutputPort OldName="DisableObjective" NewName="Deactivated" />
+		<OutputPort OldName="EnableObjective"  NewName="Activated" />
+	</Node>
+
+  <!-- Physics terminology correction -->
+  <Node OldClass="Physics:ActionImpulse" NewClass="Physics:ActionImpulse">
+    <InputPort OldName="impulseDirection" NewName="impulse" RemapValue="1"/>
+    <InputPort OldName="Momentum" NewName="angImpulse" RemapValue="1"/>
+  </Node>
+
+  <!-- Kirill dropped the Die/OnDeath ports. Dead remains -->
+	<Node OldClass="entity:Alien" NewClass="entity:Alien">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Civilian" NewClass="entity:Civilian">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Coordinator" NewClass="entity:Coordinator">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Grunt" NewClass="entity:Grunt">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Hunter" NewClass="entity:Hunter">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Observer" NewClass="entity:Observer">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Scout" NewClass="entity:Scout">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>
+	<Node OldClass="entity:Trooper" NewClass="entity:Trooper">
+		<OutputPort  OldName="Die" NewName="Dead" />
+		<OutputPort  OldName="OnDeath" NewName="Dead" />
+	</Node>	
+	
+	<!-- 13.04.2006 Asian truck specific Hide/Unhide replaced with common Enable/Disable -->
+	<Node OldClass="entity:Asian_truck" NewClass="entity:Asian_truck">
+  	<InputPort OldName="Unhide" NewName="Enable" />
+		<InputPort OldName="Hide" NewName="Disable" />
+		<OutputPort OldName="Unhide" NewName="Enable" />
+		<OutputPort OldName="Hide" NewName="Disable" />
+	</Node>
+
+	<!-- Oh man, marked WIP and already need to change -->
+	<Node OldClass="CrysisFX:ScreenFrost" NewClass="CrysisFX:PostFXScreenFrost" />
+
+	<Node OldClass="CrysisFX:ScreenFader" NewClass="CrysisFX:ScreenFader">
+		<InputPort OldName="FadeColor" NewName="color_FadeColor" />
+	</Node>
+	 
+ 	<Node OldClass="Mission:EndLevel" NewClass="Mission:EndLevelNew" >
+		<InputPort OldName="NextLevel" NewName="NextLevel" RemapValue="1" />
+		<InputPort OldName="t_Activate" NewName="Trigger" />
+		<OutputPort OldName="NextLevel" NewName="NextLevel" />
+	</Node>		
+
+	<!-- AlexL 03/07/2006: Dropped deprecated Trigger and Done ports -->
+	<Node OldClass="Movement:RotateEntityTo" NewClass="Movement:RotateEntityTo">
+		<InputPort OldName="Trigger" NewName="Start" />
+		<OutputPort OldName="Done" NewName="DoneTrigger" />
+	</Node>
+	<Node OldClass="Movement:MoveEntityTo" NewClass="Movement:MoveEntityTo">
+		<InputPort OldName="Trigger" NewName="Start" />
+		<OutputPort OldName="Done" NewName="DoneTrigger" />
+	</Node>
+
+	<!-- AlexL 17/07/2006: Convert all Sound:PlaySoundEvent nodes with a Voice flag to Sound:Dialog
+	     and rename event->filename
+	 -->
+  <!-- Disabled and only enabled on request
+	<Node OldClass="Sound:PlaySoundEvent" NewClass="Sound:Dialog">
+		<InputValueCond Port="Voice" Value="1" />
+		<InputPort OldName="sound_SoundEvent" NewName="sound_SoundName" Transformer="local s = string.gsub(string.lower(val), 'languages:', 'Languages/dialog/', 1); s = string.gsub(s, ':', '/'); if (string.find(s, '.wav')==nil) then s = s..'.wav'; end; return s;" />
+		<InputPort OldName="Enable" NewName="__discard__" />
+	</Node>
+   -->
+	<!-- AlexL 17/07/2006: Port cleanup Sound:Dialog node: Enable, Once and MaxRadius deleted-->
+	<Node OldClass="Sound:Dialog" NewClass="Sound:Dialog">
+		<InputPort  OldName="Enable" NewName="__discard__" />
+		<InputPort  OldName="Once"   NewName="__discard__" />
+		<OutputPort OldName="MaxRadius"  NewName="__discard__" />
+	</Node>
+
+	<!-- AlexL 29/08/2006: Ammo node change ChangeAmmo->AddAmmo -->
+	<Node OldClass="Weapon:ChangeAmmo" NewClass="Inventory:AddAmmo">
+		<InputPort  OldName="Trigger"   NewName="Add" RemapValue="0" />
+		<InputPort  OldName="Weapon"    NewName="__discard__" />
+		<InputPort  OldName="AmmoType"  NewName="Ammo" />
+		<InputPort  OldName="AmmoCount" NewName="Amount" />
+		<InputPort  OldName="ClipCount" NewName="__discard__" />
+	</Node>
+
+	<!-- AlexL 09/08/2007: ExplosionInfo Weapon input and WeaponId output removed -->
+	<Node OldClass="Crysis:ExplosionInfo" NewClass="Crysis:ExplosionInfo">
+		<InputPort  OldName="Weapon"    NewName="__discard__" />
+		<OutputPort OldName="WeaponId"  NewName="__discard__" />
+	</Node>
+
+ 	<Node OldClass="HUD:DisplayInstructionMessage" NewClass="HUD:DisplayInstructionMessage" >
+		<InputPort OldName="message" NewName="text_message" RemapValue="1" />
+	</Node>		
+	
+	<Node OldClass="AI:AIUnload" NewClass="Vehicle:Unload" />
+	<Node OldClass="AI:AIEnterVehicle" NewClass="Vehicle:Enter" />
+	
+	<!-- AlexL 25/04/2007: No spaces in port names -->
+	<Node OldClass="Logic:Once" NewClass="Logic:Once">
+  	<InputPort OldName="Input 1" NewName="Input1" />
+  	<InputPort OldName="Input 2" NewName="Input2" />
+  	<InputPort OldName="Input 3" NewName="Input3" />
+  	<InputPort OldName="Input 4" NewName="Input4" />
+  	<InputPort OldName="Input 5" NewName="Input5" />
+  	<InputPort OldName="Input 6" NewName="Input6" />
+	</Node>
+
+</Substitutions> 

@@ -1,0 +1,69 @@
+<EquipPack name="Player_Island_Full" primary="Fists">
+ <Items>
+  <Fists type="ItemGivable"/>
+  <OffHand type="ItemGivable"/>
+  <SCAR type="ItemGivable"/>
+  <Silencer type="ItemGivable"/>
+  <SOCOM type="ItemGivable"/>
+  <SOCOMSilencer type="ItemGivable"/>
+  <Reflex type="ItemGivable"/>
+  <AlienCloak type="ItemGivable"/>
+  <LAM type="ItemGivable"/>
+  <LAMFlashLight type="ItemGivable"/>
+  <LAMRifleFlashLight type="ItemGivable"/>
+ </Items>
+ <Ammos>
+  <Ammo name="50bullet" amount="0"/>
+  <Ammo name="a2ahomingmissile" amount="0"/>
+  <Ammo name="acmo" amount="0"/>
+  <Ammo name="avexplosive" amount="0"/>
+  <Ammo name="bullet" amount="200"/>
+  <Ammo name="bunkerbuster" amount="0"/>
+  <Ammo name="c4explosive" amount="0"/>
+  <Ammo name="claymoreexplosive" amount="0"/>
+  <Ammo name="dumbaamissile" amount="0"/>
+  <Ammo name="exocetmissile" amount="0"/>
+  <Ammo name="explosivegrenade" amount="0"/>
+  <Ammo name="explosivegrenadeAI" amount="0"/>
+  <Ammo name="flashbang" amount="0"/>
+  <Ammo name="gaussbullet" amount="0"/>
+  <Ammo name="heavyacmo" amount="0"/>
+  <Ammo name="helicoptermissile" amount="0"/>
+  <Ammo name="homingmissile" amount="0"/>
+  <Ammo name="hurricanebullet" amount="0"/>
+  <Ammo name="incendiarybullet" amount="0"/>
+  <Ammo name="lightacmo" amount="0"/>
+  <Ammo name="lightbullet" amount="40"/>
+  <Ammo name="rocket" amount="0"/>
+  <Ammo name="rubberbullet" amount="0"/>
+  <Ammo name="scargrenade" amount="0"/>
+  <Ammo name="scoutsingularityprojectile" amount="0"/>
+  <Ammo name="shotgunshell" amount="0"/>
+  <Ammo name="singularityprojectile" amount="0"/>
+  <Ammo name="smokegrenade" amount="0"/>
+  <Ammo name="sniperbullet" amount="0"/>
+  <Ammo name="tacbullet" amount="0"/>
+  <Ammo name="tacgunprojectile" amount="0"/>
+  <Ammo name="tacprojectile" amount="0"/>
+  <Ammo name="tagbullet" amount="0"/>
+  <Ammo name="tank125" amount="0"/>
+  <Ammo name="tank30" amount="0"/>
+  <Ammo name="tankaa" amount="0"/>
+  <Ammo name="towmissile" amount="0"/>
+  <Ammo name="FlashbangAI" amount="0"/>
+  <Ammo name="WarriorSingularityProjectile" amount="0"/>
+  <Ammo name="a2ahomingmissile_ascmod" amount="0"/>
+  <Ammo name="empgrenade" amount="0"/>
+  <Ammo name="vtol20" amount="0"/>
+  <Ammo name="MGbullet" amount="0"/>
+  <Ammo name="Tank_singularityprojectile" amount="0"/>
+  <Ammo name="fybullet" amount="0"/>
+  <Ammo name="smgbullet" amount="0"/>
+  <Ammo name="tacgunprojectileEx" amount="0"/>
+  <Ammo name="gausstankbullet" amount="0"/>
+  <Ammo name="asv20" amount="0"/>
+  <Ammo name="aybullet" amount="0"/>
+  <Ammo name="fgl40empgrenade" amount="0"/>
+  <Ammo name="fgl40fraggrenade" amount="0"/>
+ </Ammos>
+</EquipPack>
