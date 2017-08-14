@@ -239,6 +239,7 @@
     <ClCompile Include="ClientSynchedStorage.cpp" />
     <ClCompile Include="CompatibilityAlienMovementController.cpp" />
     <ClCompile Include="Coop\Actors\CoopGrunt.cpp" />
+    <ClCompile Include="Coop\Actors\CoopHunter.cpp" />
     <ClCompile Include="Coop\Actors\CoopPlayer.cpp" />
     <ClCompile Include="Coop\Actors\CoopScout.cpp" />
     <ClCompile Include="Coop\Actors\CoopTrooper.cpp" />
@@ -468,6 +469,7 @@
     <ClInclude Include="ClientSynchedStorage.h" />
     <ClInclude Include="CompatibilityAlienMovementController.h" />
     <ClInclude Include="Coop\Actors\CoopGrunt.h" />
+    <ClInclude Include="Coop\Actors\CoopHunter.h" />
     <ClInclude Include="Coop\Actors\CoopPlayer.h" />
     <ClInclude Include="Coop\Actors\CoopScout.h" />
     <ClInclude Include="Coop\Actors\CoopTrooper.h" />
