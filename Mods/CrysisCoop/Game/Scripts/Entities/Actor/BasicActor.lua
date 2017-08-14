@@ -1409,7 +1409,7 @@ end
 function BasicActor:PlayEvent(eventStr)
 	
 	local events = self.scripted_events;
-	
+
 	if (not events) then
 		return 0;
 	end
@@ -2464,7 +2464,7 @@ function BasicActor:OnSpawn()
   self.actorStats = new(self.actorStats);
   
   if (CryAction.IsServer()) then
-  	if (g_gameRules and g_gameRules.EquipActor) then
+  	if (g_gameRules and g_gameRules.EquipActor and self.actor:IsPlayer()) then
 			g_gameRules:EquipActor(self);
 		end
   end
@@ -2559,7 +2559,7 @@ function BasicActor:ScriptEvent(event,value,str)
 end
 
 function BasicActor.Client:OnAnimationEvent(animation,strPar,intPar)
-	
+
 	--function callback, if any
 	local onAnimationKey = self.onAnimationKey;
 	

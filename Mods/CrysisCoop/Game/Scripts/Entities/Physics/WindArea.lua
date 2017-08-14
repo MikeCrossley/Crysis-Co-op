@@ -14,7 +14,36 @@ WindArea = {
 		Icon = "Tornado.bmp",
 	},
 	_PhysTable = { Area={}, },
+	
+	Server = {},
+	Client = {},
 }
+-------------------------------------------------------
+Net.Expose {
+	Class = WindArea,
+	ClientMethods = {
+		ClEnableWindArea = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+	},
+	ServerMethods = {
+	},
+	ServerProperties = {
+	},
+};
+
+-------------------------------------------------------
+function WindArea.Client:ClEnableWindArea(bool)
+	if (bool) then
+		if (self.bActive ~= 1) then
+			self.bActive = 1;
+			self:PhysicalizeThis();
+		end
+	else
+		if (self.bActive ~= 0) then
+			self.bActive = 0;
+			self:PhysicalizeThis();
+		end
+	end
+end
 
 -------------------------------------------------------
 function WindArea:OnLoad(table)
@@ -78,19 +107,13 @@ end
 
 ------------------------------------------------------------------------------------------------------
 function WindArea:Event_Activate()
-	if (self.bActive ~= 1) then
-		self.bActive = 1;
-		self:PhysicalizeThis();
-	end
+	self.allClients:ClEnableWindArea(true);
 end
 
 
 ------------------------------------------------------------------------------------------------------
 function WindArea:Event_Deactivate()
-	if (self.bActive ~= 0) then
-		self.bActive = 0;
-		self:PhysicalizeThis();
-	end
+	self.allClients:ClEnableWindArea(false);
 end
 
 WindArea.FlowEvents =

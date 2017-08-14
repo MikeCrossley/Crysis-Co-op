@@ -215,6 +215,15 @@ function Player:PhysicalizeActor()
 	--BasicActor.PhysicalizeActor(self);
 end
 
+function Player:CoopForceAI()
+	AI.RegisterWithAI(self.id, AIOBJECT_PLAYER, self.Properties, self.PropertiesInstance);
+end
+
+function Player:CoopRemoveAI()
+	AI.RegisterWithAI(self.id, 0, self.Properties, self.PropertiesInstance);
+end
+
+
 
 function Player:SetModel(model, arms, frozen, fp3p)
 	if (model) then
@@ -308,7 +317,7 @@ end
 
 function Player.Server:OnUpdate(frameTime)
 	BasicActor.Server.OnUpdate(self,frameTime);
-		
+
 	--FIXME:temporary
 	if (self.stopEPATime and self.stopEPATime < 0) then
 		self.actor:SetParams({followCharacterHead = 0,});

@@ -15,14 +15,34 @@ SoundEventSpot = {
 		Model="Editor/Objects/Sound.cgf",
 		Icon="Sound.bmp",
 	},
+	
+	Server = {},
+	Client = {},
 }
+
+Net.Expose {
+	Class = SoundEventSpot,
+	ClientMethods = {
+		ClExecuteSound = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+	},
+	ServerMethods = {
+	},
+	ServerProperties = {
+	},
+};
 
 
 function SoundEventSpot:OnSpawn()
-	self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	--self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	CryAction.CreateGameObjectForEntity(self.id);
+	CryAction.BindGameObjectToNetwork(self.id);
+	CryAction.ForceGameObjectUpdate(self.id, true);	
+	
+	self.isServer=CryAction.IsServer();
+	self.isClient=CryAction.IsClient();
+	
 	Sound.Precache(self.Properties.soundName, 0);
 end
-
 
 function SoundEventSpot:OnSave(save)
 	--WriteToStream(stm,self.Properties);
@@ -125,6 +145,23 @@ SoundEventSpot["Client"] = {
 	  self.started = 0;
 	  --System.LogToConsole("Done sound "..self.Properties.soundName);
 	end,
+	ClExecuteSound = function(self, bool)
+		if (bool) then
+			if (self.soundid ~= nil) then
+				self:Stop();
+			end
+			--Log("Event_Play %d %d",self.Properties.bOnce, self.started)
+			if(self.Properties.bOnce~=0 and self.started~=0) then
+				return
+			end
+			
+			self:Play();
+		else
+			if (bStop == true) then
+				self:Stop();
+			end
+		end
+	end,
 }
 
 ----------------------------------------------------------------------------------------
@@ -185,14 +222,24 @@ end
 ----------------------------------------------------------------------------------------
 function SoundEventSpot:Event_Play( sender )
 	
-	if (self.soundid ~= nil) then
+	--[[if (self.soundid ~= nil) then
 		self:Stop();
 	end
 	--Log("Event_Play %d %d",self.Properties.bOnce, self.started)
 	if(self.Properties.bOnce~=0 and self.started~=0) then
 		return
 	end
-	self:Play();
+	self:Play();]]
+	
+	if (self.isClient) then
+		self.Client:ClExecuteSound(true);
+	end
+	
+	if (self.isServer) then
+		self.allClients:ClExecuteSound(true);
+		System.LogAlways("SoundEventSpot - Execute on Clients");
+	end
+	
 	--BroadcastEvent( self,"Play" );
 end
 
@@ -213,9 +260,18 @@ function SoundEventSpot:Event_Enable( sender, bEnable )
 end
 
 function SoundEventSpot:Event_Stop( sender, bStop )
-	if (bStop == true) then
+	--[[if (bStop == true) then
 		self:Stop();
+	end]]
+	
+	if (self.isClient) then
+		self.Client:ClExecuteSound(true);
+	end	
+	
+	if (self.isServer) then
+		self.allClients:ClExecuteSound(false);
 	end
+
 	--BroadcastEvent( self,"Stop" );
 end
 

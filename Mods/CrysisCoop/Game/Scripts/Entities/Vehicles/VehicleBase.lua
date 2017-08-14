@@ -815,7 +815,7 @@ end
 
 --------------------------------------------------------------------------
 function VehicleBase.Server:OnHit(hit)
-    
+  
   local explosion = hit.explosion or false;    
   local targetId = (explosion and hit.impact) and hit.impact_targetId or hit.targetId;
   local hitType = (explosion and hit.type == "") and "explosion" or hit.type;
@@ -885,7 +885,7 @@ end
 --------------------------------------------------------------------------
 function VehicleBase:OnActorSitDown(seatId, passengerId)
 	--Log("VehicleBase:OnActorSitDown() seatId=%s, passengerId=%s", tostring(seatId), tostring(passengerId));
-
+	
 	local passenger = System.GetEntity(passengerId);
 	if (not passenger) then
 		Log("Error: entity for player id <%s> could not be found. %s", tostring(passengerId));
@@ -975,8 +975,11 @@ function VehicleBase:OnActorSitDown(seatId, passengerId)
 	end
 end
 --------------------------------------------------------------------------
+function VehicleBase:ForceCoopAI()
+	AI.RegisterWithAI(self.id, self.AIType, self.Properties, self.PropertiesInstance, self.AIMovementAbility);
+end
+--------------------------------------------------------------------------
 function VehicleBase:OnActorChangeSeat(passengerId, exiting)
-
 	-- ai specific
 	Log("ai changed a seat");
 	local seat = self:GetSeat(passengerId);

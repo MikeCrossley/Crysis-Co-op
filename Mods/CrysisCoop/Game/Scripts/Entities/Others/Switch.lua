@@ -23,7 +23,7 @@ Switch = {
 		DestroyedSubObject	= "",
 		fHealth = 100,
 		bUsable	= 1,
-		UseMessage = "",
+		UseMessage = "USE",
 		bTurnedOn = 1,
 		Physics = {
 			bRigidBody=0,
@@ -79,6 +79,18 @@ Switch = {
 	},
 	shooterId = nil,
 }
+
+Net.Expose {
+	Class = Switch,
+	ClientMethods = {
+		ClUpdateEnabled = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+	},
+	ServerMethods = {
+		SvRequestTurnOn = { RELIABLE_UNORDERED, POST_ATTACH, ENTITYID },
+	},
+	ServerProperties = {
+	},
+};
 
 
 function Switch:OnPropertyChange()
@@ -276,15 +288,37 @@ function Switch.Client:OnInit()
 end;
 
 function Switch:OnUsed(user, idx)
-	if(self:GetState()=="TurnedOn")then
-		self:GotoState("TurnedOff");
-	elseif(self:GetState()=="TurnedOff")then
-		self:GotoState("TurnedOn");
-	elseif(self:GetState()=="Destroyed")then
+	if (CryAction.IsServer()) then
+		if(self:GetState()=="TurnedOn")then
+			self:GotoState("TurnedOff");
+		elseif(self:GetState()=="TurnedOff")then
+			self:GotoState("TurnedOn");
+			self:ActivateOutput("TurnedOn", user.id);
+		elseif(self:GetState()=="Destroyed")then
 			return
+		end;
+	else
+		self.server:SvRequestTurnOn(user.id);
 	end;
 	BroadcastEvent(self, "Used");
 end;
+
+function Switch.Server:SvRequestTurnOn(userId)
+	if (self.usable == 1) then
+		self:GotoState("TurnedOn");
+		self:ActivateOutput("TurnedOn", userId);
+	end
+end
+
+function Switch.Client:ClUpdateEnabled(bool)
+	if (bool) then
+		self.usable=1;
+		BroadcastEvent( self,"Enable" );
+	else
+		self.usable=0;
+		BroadcastEvent( self,"Disable" );
+	end;
+end
 
 function Switch:IsUsable(user)
 	if((self:GetState()~="Destroyed") and self.usable==1)then
@@ -292,7 +326,6 @@ function Switch:IsUsable(user)
 	else
 		return 0;
 	end;
-	
 end;
 
 function Switch:GetUsableMessage(idx)
@@ -359,7 +392,7 @@ function Switch:Event_Destroyed()
 end;
 
 function Switch:Event_TurnedOn()
-	BroadcastEvent(self, "TurnedOn");
+	--BroadcastEvent(self, "TurnedOn");
 	self:GotoState("TurnedOn");
 end;
 
@@ -386,11 +419,13 @@ end;
 function Switch:Event_Enable(sender)
 	self.usable=1;
 	BroadcastEvent( self,"Enable" );
+	self.allClients:ClUpdateEnabled(true);
 end;
 
 function Switch:Event_Disable(sender)
 	self.usable=0;
 	BroadcastEvent( self,"Disable" );
+	self.allClients:ClUpdateEnabled(false);
 end;
 
 
@@ -405,7 +440,7 @@ Switch.Server.TurnedOn =
 		--temporarily disabled
 		self:SetSwitch(1);
 		self:CheckSmartSwitch("TurnedOnEvent");
-		BroadcastEvent(self, "TurnedOn");
+		--BroadcastEvent(self, "TurnedOn");
 	end,
 	OnEndState = function( self )
 
@@ -456,7 +491,7 @@ Switch.FlowEvents =
 	Outputs =
 	{
 		Hit = "bool",
-		TurnedOn = "bool",
+		TurnedOn = "entity",
 		TurnedOff = "bool",
 		Destroyed = "bool",
 		Disable = "bool",

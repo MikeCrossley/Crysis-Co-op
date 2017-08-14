@@ -84,13 +84,12 @@ function Mine:OnReset()
  	local Min={x=-props.Radius/2,y=-props.Radius/2,z=-2.5/2};
 	local Max={x=props.Radius/2,y=props.Radius/2,z=2.5/2};
 	self:SetTriggerBBox(Min,Max);
-	EntityCommon.PhysicalizeRigid(self,0,self.physics,0);
- 	--change
+	
+	--Crysis Co-op :: This is causing the reconfigure error
+	--EntityCommon.PhysicalizeRigid(self,0,self.physics,0);
+
  	self:SetCurrentSlot(0);
- 	if(self.Properties.Claymore.bIsClaymore==0 and self.Properties.Options.bWaterMine==0)then
- 		--Disable for now
- 		--self:SetViewDistRatio(12);--12
- 	end;
+
  	self.health=1;
  	self.ents={};
  	--Maybe this should work differently later

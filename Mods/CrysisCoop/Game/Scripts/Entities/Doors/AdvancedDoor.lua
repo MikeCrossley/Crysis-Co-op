@@ -114,9 +114,12 @@ function AdvancedDoor:OnReset()
 	self.defaultangle=self.angle.z;
 	self:UpdateImpulsePos();
 	self:SetCurrentSlot(0);
-	self:PhysicalizeThis(0,0);
+	
+	-- Crysis Co-op :: Removed to fix reconfigure error
+	--[[self:PhysicalizeThis(0,0);
 	self:EnablePhysics(true);
 	self:AwakePhysics(0);
+	
 	self:Activate(0);
 	self.bUpdate=0;
 	self.lasttime=0;
@@ -125,6 +128,7 @@ function AdvancedDoor:OnReset()
 	self.lockbroken=0;
 	self.openpercentage=0;
 	self.health=props.fHealth;
+	
 	self.locked=self.PropertiesInstance.bLocked;
 		
 	if(self.Properties.bUsePortal==0)then
@@ -133,7 +137,8 @@ function AdvancedDoor:OnReset()
 	if(self.locked==1)then
 		AI.ModifySmartObjectStates( self.id, "Locked" );
 	end;
-	self:CheckInitalAngle();
+	
+	self:CheckInitalAngle();]]
 	
 end;
 

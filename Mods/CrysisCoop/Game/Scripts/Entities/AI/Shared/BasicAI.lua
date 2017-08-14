@@ -168,6 +168,11 @@ function BasicAI:RegisterAI()
 end
 
 -----------------------------------------------------------------------------------------------------
+function BasicAI:UnregisterAI()
+    AI.RegisterWithAI(self.id, 0, self.Properties, self.PropertiesInstance, self.AIMovementAbility,self.melee);
+end
+
+-----------------------------------------------------------------------------------------------------
 function BasicAI:OnReset()
 	if (self.ResetOnUsed) then
 		self:ResetOnUsed();
@@ -236,7 +241,7 @@ function BasicAI:OnReset()
 --	BasicPlayer.OnReset(self);
 	
 	if(Properties.bNanoSuit==1) then 
-		self.actor:ActivateNanoSuit(1);
+		--self.actor:ActivateNanoSuit(1);
 	else
 		self.actor:ActivateNanoSuit(0);
 	end
@@ -524,21 +529,6 @@ end
 --------------------------------------------------------------------------------------------------------
 function BasicAI:InsertAnimationPipe( anim_name , layer_override, signal_at_end, fBlendTime, multiplier)
 
---	AI.LogEvent("BasicAI:InsertAnimationPipe of entity "..self:GetName());
---	AI.LogEvent("    anim_name:      "..anim_name);
---	if (layer_override) then
---		AI.LogEvent("    layer_override: "..layer_override);
---	end
---	if (signal_at_end) then
---		AI.LogEvent("    signal_at_end:  "..signal_at_end);
---	end
---	if (fBlendTime) then
---		AI.LogEvent("    fBlendTime:     "..fBlendTime);
---	end
---	if (multiplier) then
---		AI.LogEvent("    multiplier:     "..multiplier);
---	end
-
 	if (fBlendTime==nil) then
 		fBlendTime = 0.33;
 	end
@@ -585,18 +575,7 @@ end
 --
 --------------------------------------------------------------------------------------------------------
 function BasicAI:NotifyGroup()
-
 	return 1
-
---	if (self.Properties.special == 1) then 
---		do return nil end
---	end
---	local anch = AI.FindObjectOfType(self.id,30,AIAnchorTable.ACTION_NOTIFY_GROUP_DELAY);		
---	if (anch) then
---		self:InsertSubpipe(0,"delay_headsup",anch);
---		return 1
---	end
---	return nil
 end
 
 --
@@ -642,17 +621,6 @@ function BasicAI:RunToAlarm()
 	if (self.Properties.special == 1) then 
 		do return end
 	end
-
-
---	local mounted = AI.FindObjectOfType(self.id,30,AIAnchorTable.USE_THIS_MOUNTED_WEAPON);		
---	if (mounted) then
---		if (AI.GetGroupCount(self.id)>1) then 
---			AI.Signal(SIGNALFILTER_NEARESTGROUP,1,"SWITCH_TO_MORTARGUY",self.id);
---		else
---			AI.Signal(0,1,"SWITCH_TO_MORTARGUY",self.id);
---			do return end;
---		end
---	end
 
 	local flare_name = AI.FindObjectOfType(self.id,10,AIAnchorTable.ACTION_THROW_FLARE);		
 	if (flare_name) then
@@ -745,29 +713,14 @@ function BasicAI:Readibility(signal,bSkipGroupCheck,priority,delayMin,delayMax)
 		end
 	end
 
---	if (bSkipGroupCheck==nil or bSkipGroupCheck==0 ) then 
---		if (AI.GetGroupCount(self.id) > 1) then	
---			AI.Signal(SIGNALID_READIBILITY, 1, signal.."_GROUP",self.id,g_SignalData);	
---		else
---			AI.Signal(SIGNALID_READIBILITY, 1, signal,self.id,g_SignalData);	
---		end
---	else
-		AI.Signal(SIGNALID_READIBILITY, 1, signal,self.id,g_SignalData);	
---	end
-
+	AI.Signal(SIGNALID_READIBILITY, 1, signal,self.id,g_SignalData);	
+	
 end
 
 --
 --
 --------------------------------------------------------------------------------------------------------
 function BasicAI:GetReadibilityLength(signal)
---	TO DO local tableIndex = self.Properties.SoundPack;
---	if(tableIndex) then
---		local table = SOUNDPACK[tableIndex];
---		if(table) then
---		local readibility = table[signal];
---		if(readibility) then
---			local sound = 
 	return 4000;
 end
 
@@ -911,47 +864,12 @@ function BasicAI:Reload()
 end
 
 
---function BasicAI:NextItem()
---	if (ItemSystem) then
---		ItemSystem:NextItem(self);
---	end
---end
---
---
---function BasicAI:PrevItem()
---	if (ItemSystem) then
---		ItemSystem:PrevItem(self);
---	end
---end
-
-
 function BasicAI:DropItem()
 	local item = self.inventory:GetCurrentItem();
 	if (item) then
 		item:Drop();
 	end
 end
-
-
--- weapon related methods
---function BasicAI:HolsterItem(holster)
-----	if(holster) then
-----		AI.LogEvent(self:GetName().." holstering weapon");
-----	else
-----		AI.LogEvent(self:GetName().." drawing weapon");
-----	end
---	if (ItemSystem) then
---		if(not holster) then
---			if (self.holsteredItemId) then
---				ItemSystem:SetActorItem(self, self.holsteredItemId);
---			end
---			self.holsteredItemId = nil;
---		else
---			self.holsteredItemId = self.currentItemId;
---			ItemSystem:UnSetActorItem(self);
---		end
---	end
---end
 
 
 function BasicAI:IsOnVehicle()
@@ -1057,74 +975,6 @@ function BasicAI:JoinFormation(groupid)
 	AI.Signal(SIGNALFILTER_LEADER,0,"ORD_FOLLOW",self.id,g_SignalData);
 end
 
-
-----------------------------------------------------------------------------------
---function BasicAI:IsUsable(user)
---	return self.bUseOrderEnabled;
---end
-----------------------------------------------------------------------------------
---
---function BasicAI:OnUsed(user)
---	if(self.bUseOrderEnabled) then
---			if(self.useAction and self.useAction>0) then 
---				AI.LogEvent("USING ME! Action = "..self.useAction);
---			else
---				AI.LogEvent("USING ME without useAction");
---			end
---			if(self.useAction ==AIUSEOP_PLANTBOMB) then
---				if(not self.bBombPlanted) then
---					local bomb_location = AI.FindObjectOfType(self.id,100,AIAnchorTable.USE_PLANT_BOMB_HERE,0, g_Vectors.temp,g_Vectors.temp_v1);
---					if(bomb_location ~=nil) then
-----						ScaleVectorInPlace(g_Vectors.temp_v1,2);
-----						g_SignalData.point = g_SignalData_point;
-----						FastSumVectors(g_SignalData.point, g_Vectors.temp, g_Vectors.temp_v1);
---						user.actor:SetExtensionParams("Interactor",{locker = self.id, lockId = NULL_ENTITY, lockIdx = 0});
---						CopyVector(g_SignalData.point, g_Vectors.temp);
---						g_SignalData.iValue = AIUSEOP_PLANTBOMB;
---						self:InsertSubpipe(0,"clear_devalued");
---						self.anchorToApproach = bomb_location;
---						AI.Signal(SIGNALFILTER_LEADER,1,"ORD_USE", self.id, g_SignalData);
---						if(g_localActor) then 		
---							g_localActor:SayOrder("executeCommand","PLANTING_BOMB",self);
---						end
---						self.bUseOrderEnabled = false;
---					else
---						AI.LogEvent("WARNING: USE_PLANT_BOMB_HERE anchor not found. Aborting plant_bomb order");
---					end
---				end
---				if (self.instructionId) then
---					HUD:SetInstructionObsolete(self.instructionId);
---				end
---				self.instructionId = nil;
---			elseif(self.useAction ==AIUSEOP_RPG and self.SpecialTarget) then
---					g_SignalData.iValue = AIUSEOP_RPG;
---					g_SignalData.id	= self.id;
---					AI.Signal(SIGNALFILTER_LEADER,1,"ORD_USE", self.id, g_SignalData);
---					if(g_localActor) then 		
---						g_localActor:SayOrder("executeCommand","",self);
---					end
---					self.bUseOrderEnabled = false;
---					if (self.instructionId) then
---						HUD:SetInstructionObsolete(self.instructionId);
---					end
---					self.instructionId = nil;
---			end
---					
---	end
---end
---
-----------------------------------------------------------------------------------
---function BasicAI:GetUsableMessage(idx)
---		if(self.useAction ==AIUSEOP_PLANTBOMB) then 
---			self.useMessage = "Press USE to order the engineer to plant the bomb";
---		elseif (self.useAction ==AIUSEOP_RPG) then 
---			self.useMessage = "Press USE to order the squad mate to use RPG";
---		else
---			self.useMessage = "";
---		end
---		return self.useMessage;
---end
-----------------------------------------------------------------------------------
 
 -- temporary; to be tuned for a more general purpose
 function BasicAI:GetAimingPoint(weaponType,target)
