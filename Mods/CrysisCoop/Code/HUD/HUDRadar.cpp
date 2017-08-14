@@ -146,10 +146,10 @@ CHUDRadar::CHUDRadar()
 	m_pUSASV				= pEntityClassRegistry->FindClass( "US_asv" );
 
 	// Crysis Co-op
-	m_pCoopGrunt = pEntityClassRegistry->FindClass("CoopGrunt");
-	m_pCivilian = pEntityClassRegistry->FindClass("Civilian");
-	m_pCoopScout = pEntityClassRegistry->FindClass("CoopScout");
-	m_pCoopTrooper = pEntityClassRegistry->FindClass("CoopTrooper");
+	m_pCoopGrunt	= pEntityClassRegistry->FindClass("CoopGrunt");
+	m_pCivilian		= pEntityClassRegistry->FindClass("Civilian");
+	m_pCoopScout	= pEntityClassRegistry->FindClass("CoopScout");
+	m_pCoopTrooper	= pEntityClassRegistry->FindClass("CoopTrooper");
 	// ~Crysis Co-op
 
 	assert ( m_pLTVA && m_pLTVUS && m_pTankA && m_pTankUS && m_pWarrior && m_pHunter && m_pAlien && m_pScout && m_pGrunt && m_pHeli && m_pVTOL && m_pAAA && m_pTruck && m_pAPCUS && m_pAPCA && m_pBoatCiv && m_pHover && m_pBoatUS && m_pBoatA && m_pCarCiv && m_pParachute && m_pUSASV);
@@ -2672,8 +2672,18 @@ FlashRadarType CHUDRadar::ChooseType(IEntity* pEntity, bool radarOnly)
 	const char* name = pEntity->GetName();
 
 	FlashRadarType returnType = ELTV;
-
-	if(pCls == m_pPlayerClass || pCls == m_pGrunt)
+	
+	// Crysis Co-op
+	if (pCls == m_pCoopGrunt)
+		returnType = EPlayer;
+	else if (pCls == m_pCivilian)
+		returnType = EPlayer;
+	else if (pCls == m_pCoopScout)
+		returnType = EHeli;
+	else if (pCls == m_pCoopTrooper)
+		returnType = EPlayer;
+	// ~Crysis Co-op
+	else if(pCls == m_pPlayerClass || pCls == m_pGrunt)
 		returnType = EPlayer;
 	else if(pCls == m_pAlien || pCls == m_pTrooper)
 		returnType = EPlayer;
