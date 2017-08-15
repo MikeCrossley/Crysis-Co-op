@@ -1842,6 +1842,8 @@ end;
 
 function BasicActor:Kill(ragdoll, shooterId, weaponId, freeze)
 
+	System.LogAlways("BasicActor::Kill");
+
 	self.actor:Kill();
 	
 	self:StopEvent("all");

@@ -458,6 +458,35 @@ CoopScout_x =
 
 }
 
+function CoopScout_x:Expose()
+	Net.Expose{
+		Class = self,
+		ClientMethods = {
+			ClKill = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+		},
+		ServerMethods = {
+		},
+		ServerProperties = {
+		}
+	};
+end
+
+function CoopScout_x.Client:ClKill(bKill)
+	self:EnableSearchBeam(false);
+
+	-- Make the scout a dead projectile.
+	self.foreignCollisionDamageMult = 1;
+
+	--explosion		
+	Particle.SpawnEffect("alien_special.scout.ScoutCrashA", pos, g_Vectors.v001, 1.5);
+	self:PlaySoundEvent(self.gameParams.death_explode_sound, g_Vectors.v000, g_Vectors.v010, 0, SOUND_SEMANTIC_EXPLOSION);
+	self:ResetDamageEffects();
+
+	self.InitiateAutoDestruction(self);
+
+	self.actor:SetPhysicalizationProfile("ragdoll");
+end
+
 -----------------------------------------------------------------------------------------------------
 function CoopScout_x:OnResetCustom()
 
@@ -518,8 +547,6 @@ function CoopScout_x.Client:OnUpdate(frameTime)
 end
 
 function CoopScout_x:UpdateArmor(frameTime)
-	
-
 end
 
 function CoopScout_x:OnShoot()
@@ -535,7 +562,7 @@ function CoopScout_x:ResetAnimation()
 end
 
 function CoopScout_x:DoPlayerSeen()
-	
+
 	BasicAlien.DoPlayerSeen(self);
 	
 	self.actor:QueueAnimationState("EnemySight");
@@ -580,6 +607,8 @@ end
 function CoopScout_x:Kill(ragdoll, shooterId, weaponId)
 	--Log ("CoopScout_x:Kill() called");
 	
+		System.LogAlways("[CoopScout_x] kill server");
+	
 		local health = self.actor:GetHealth();
 	if ( health > 0 ) then
 		Log("ERROR:SCOUT is Killed though he has a health still.");
@@ -588,7 +617,11 @@ function CoopScout_x:Kill(ragdoll, shooterId, weaponId)
 	BasicAlien.Kill(self,ragdoll,shooterId,weaponId);
 	
 	self:EnableSearchBeam(false);
-
+	
+	-- Crysis Co-op
+	self.allClients:ClKill(true);
+	-- ~Crysis Co-op
+	
 	-- Make the scout a dead projectile.
 	self.foreignCollisionDamageMult = 1;
 
@@ -835,7 +868,6 @@ function CoopScout_x.Client:OnHit(hit, remote)
 	end	
 	
 end
-
 
 function CoopScout_x.Server:OnHit(hit)--(shooterId, weaponId, matName, damage, hitType, pos, normal, partId, radius)
 
