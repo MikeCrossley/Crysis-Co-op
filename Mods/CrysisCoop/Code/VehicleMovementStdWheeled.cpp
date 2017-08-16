@@ -84,6 +84,12 @@ m_netActionSync.PublishActions( CNetworkMovementStdWheeled(this) );
 	m_submergedRatioMax = 0.0f;
 	m_initialHandbreak = true;
 
+	//Crysis Co-op
+	m_vLookTarget = Vec3(ZERO);
+	m_vMoveTarget = Vec3(ZERO);
+	m_fDesiredSpeed = 0.f;
+	//~Crysis Co-op
+
 }
 
 //------------------------------------------------------------------------
@@ -869,6 +875,32 @@ void CVehicleMovementStdWheeled::Update(const float deltaTime)
 
 	const SVehicleDamageParams& damageParams = m_pVehicle->GetDamageParams();
 	m_submergedRatioMax = damageParams.submergedRatioMax;
+
+	// Crysis Co-op
+	IActor* pActor = m_pVehicle->GetDriver();
+	if (pActor && !gEnv->bServer && !pActor->IsPlayer())
+	{
+		// LookTarget
+		if (m_vLookTarget != Vec3(0, 0, 0))
+			m_aiRequest.SetLookTarget(m_vLookTarget);
+		else
+			m_aiRequest.ClearLookTarget();
+
+		//MoveTarget
+		if (m_vMoveTarget != Vec3(0, 0, 0))
+			m_aiRequest.SetMoveTarget(m_vMoveTarget);
+		else
+			m_aiRequest.ClearMoveTarget();
+
+		//Speed
+		if (m_fDesiredSpeed > 0.f)
+			m_aiRequest.SetDesiredSpeed(m_fDesiredSpeed);
+		else
+			m_aiRequest.ClearDesiredSpeed();
+
+		RequestMovement(m_aiRequest);
+	}
+	//~Crysis co-op
 }
 
 //------------------------------------------------------------------------
@@ -1781,6 +1813,16 @@ void CVehicleMovementStdWheeled::Serialize(TSerialize ser, unsigned aspects)
 
 	if (ser.GetSerializationTarget() == eST_Network)
 	{
+		// Crysis co-op
+		//IActor* pActor = m_pVehicle->GetDriver();
+		//if (pActor && !pActor->IsPlayer())
+		//{
+		ser.Value("vLookTarget", m_vLookTarget, 'wrld');
+		ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
+		ser.Value("fDesiredSpeed", m_fDesiredSpeed);
+		//}
+		//~Crysis co-op
+
 		if (aspects&CNetworkMovementStdWheeled::CONTROLLED_ASPECT)
 			m_netActionSync.Serialize(ser, aspects);
 	}

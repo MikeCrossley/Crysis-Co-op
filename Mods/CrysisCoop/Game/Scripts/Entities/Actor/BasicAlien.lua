@@ -204,7 +204,7 @@ function CreateAlien(child)
 end
 
 function BasicAlien:Reset()
-  --Log("BasicAlien:Reset()");	
+  --Log("BasicAlien:Reset()");
   
 	BasicActor.ResetCommon(self);
 		

@@ -857,7 +857,6 @@ function Coop.Server:OnPlayerKilled(hit)
 	target.death_pos=target:GetWorldPos(target.death_pos);
 	
 	self.game:KillPlayer(hit.targetId, true, true, hit.shooterId, hit.weaponId, hit.damage, hit.materialId, hit.typeId, hit.dir);
-	self:ProcessScores(hit);
 end
 
 
@@ -999,13 +998,6 @@ function Coop:ShatterEntity(entityId, hit)
 	damage=math.max(20, damage);
 	self.game:ShatterEntity(entityId, hit.pos, vecScale(hit.dir, damage));
 
-	-- do the scores here	
-	if (entity) then
-		if (entity.actor and entity.actor:IsPlayer() and (not dead)) then
-			self:ProcessScores(hit);
-		end
-	end
-	
 	if (entity.Server and entity.Server.OnShattered) then
 		entity.Server.OnShattered(entity, hit);
 	end	
@@ -1060,64 +1052,6 @@ end
 ----------------------------------------------------------------------------------------------------
 function Coop:GetPlayerDeaths(playerId)
 	return self.game:GetSynchedEntityValue(playerId, self.SCORE_DEATHS_KEY, 0) or 0;
-end
-
-
-----------------------------------------------------------------------------------------------------
-function Coop:Award(player, deaths, kills, headshots)
-	if (player) then
-		local ckills=kills + (self.game:GetSynchedEntityValue(player.id, self.SCORE_KILLS_KEY) or 0);
-		local cdeaths=deaths + (self.game:GetSynchedEntityValue(player.id, self.SCORE_DEATHS_KEY) or 0);
-		local cheadshots=headshots + (self.game:GetSynchedEntityValue(player.id, self.SCORE_HEADSHOTS_KEY) or 0);
-		
-		self.game:SetSynchedEntityValue(player.id, self.SCORE_KILLS_KEY, ckills);
-		self.game:SetSynchedEntityValue(player.id, self.SCORE_DEATHS_KEY, cdeaths);
-		self.game:SetSynchedEntityValue(player.id, self.SCORE_HEADSHOTS_KEY, cheadshots);
-		
-		if (kills and kills~=0) then
-			CryAction.SendGameplayEvent(player.id, eGE_Scored, "kills", ckills);
-		end
-				
-		if (deaths and deaths~=0) then
-			CryAction.SendGameplayEvent(player.id, eGE_Scored, "deaths", cdeaths);
-		end
-		
-		if (headshots and headshots~=0) then
-			CryAction.SendGameplayEvent(player.id, eGE_Scored, "headshots", cheadshots);
-		end
-
-		if (self.CheckPlayerScoreLimit) then
-			self:CheckPlayerScoreLimit(player.id, ckills);
-		end
-	end
-end
-
-
-----------------------------------------------------------------------------------------------------
-function Coop:ProcessScores(hit)
-	if (self:GetState()=="PostGame") then return; end
-
-
-	local target=hit.target;
-	local shooter=hit.shooter;
-	local headshot=self:IsHeadShot(hit);
-
-	local h=0;
-	if (headshot) then
-		h=1;
-	end
-	
-	if (target.actor and target.actor:IsPlayer()) then
-		self:Award(target, 1, 0, 0);
-	end
-	
-	if (shooter and shooter.actor and shooter.actor:IsPlayer()) then
-		if (target ~= shooter) then
-			self:Award(shooter, 0, 1, h);
-		else
-			self:Award(shooter, 0, -1, 0);
-		end
-	end
 end
 
 
@@ -1513,12 +1447,6 @@ end
 
 ----------------------------------------------------------------------------------------------------
 function Coop.Server.InGame:OnTick()
---	if (not System.IsDevModeEnable()) then
---		if (not self:PlayerCountOk()) then
---			self:GotoState("Reset");
---			self.game:ResetEntities();
---		end
---	end
 end
 
 
@@ -1600,47 +1528,6 @@ function Coop:EquipPlayer(actor, additionalEquip)
 	ItemSystem.GiveItem("LAM", actor.id, true);
 	ItemSystem.GiveItem("LAMFlashLight", actor.id, true);
 	ItemSystem.GiveItem("LAMRifleFlashLight", actor.id, true);
-end
-
-
-----------------------------------------------------------------------------------------------------
-function Coop:PrecacheLevel()
-	local list={ "SOCOM", "OffHand", "Fists" };
-	
-	for i,v in ipairs(list) do
-		CryAction.CacheItemGeometry(v);
-		CryAction.CacheItemSound(v);
-	end
-end
-
-
-----------------------------------------------------------------------------------------------------
-function SetSpawnGroup(player, group)
-	local p;
-	local gid;
-	
-	if (type(player)=="table") then
-		p=player;
-	elseif (type(player)=="userdata") then
-		p=System.GetEntity(player);
-	elseif (type(player)=="string") then
-		p=EntityNamed(player);
-	end
-	
-	if (type(group)=="table") then
-		gid=group.id;
-	elseif (type(player)=="userdata") then
-		gid=group;
-	elseif (type(player)=="string") then
-		local ge=EntityNamed(group);
-		if (ge) then
-			gid=ge.id;
-		end
-	end
-	
-	if (p and gid) then
-		g_gameRules:SetPlayerSpawnGroup(p, gid);
-	end	
 end
 
 ----------------------------------------------------------------------------------------------------
