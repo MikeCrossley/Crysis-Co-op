@@ -118,7 +118,7 @@ AIBehaviour.ScoutMOACIdle = {
 	--------------------------------------------------	
 	ACT_DROP_OBJECT = function( self, entity, sender, data )
 
-		entity:PlaySoundEvent("Sounds/alien:scout:drop_trooper", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+		entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:drop_trooper", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 		entity:DropObject( true, data.point, 0 );
 		entity:InsertSubpipe( AIGOALPIPE_SAMEPRIORITY, "action_dummy", nil, data.iValue );
 	end,

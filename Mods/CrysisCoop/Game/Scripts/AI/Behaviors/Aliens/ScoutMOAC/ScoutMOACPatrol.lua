@@ -279,7 +279,7 @@ AIBehaviour.ScoutMOACPatrol = {
 		AI.SetForcedNavigation( entity.id, vVelRot );
 
 		if ( System.GetCurrTime() - entity.AI.bLock > 7.0 ) then
-			entity:PlaySoundEvent("Sounds/alien:scout:searching", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:searching", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 			entity:EnableSearchBeam(entity.AI.bEnableBeam);
 			entity.AI.bLock = System.GetCurrTime();
 		end
@@ -364,7 +364,7 @@ AIBehaviour.ScoutMOACPatrol = {
 		AI.SetForcedNavigation( entity.id, vVelRot );
 
 		if ( System.GetCurrTime() - entity.AI.bLock > 10.0 ) then
-			entity:PlaySoundEvent("Sounds/alien:scout:searching", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:searching", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 			entity:EnableSearchBeam(entity.AI.bEnableBeam);
 			entity.AI.bLock = System.GetCurrTime();
 		end

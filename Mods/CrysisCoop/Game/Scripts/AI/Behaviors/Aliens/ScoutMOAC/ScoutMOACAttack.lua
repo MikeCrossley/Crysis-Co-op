@@ -394,7 +394,7 @@ AIBehaviour.ScoutMOACAttack = {
 			local res = AIBehaviour.SCOUTDEFAULT:ScoutCheckClearanceMain( entity, vTmp, 1.0, 5.0 );
 			if ( res == 0 )then
 				AI.Animation(entity.id,AIANIM_SIGNAL,animationName);
-				entity:SetAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
+				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 			end
 		end
 
@@ -429,9 +429,9 @@ AIBehaviour.ScoutMOACAttack = {
 				entity.AI.bLockInterrupt2 = true;
 				entity.AI.bLockInterrupt3 = 0;
 				if ( entity.AI.bBigRolloff and entity.AI.bBigRolloff == true ) then
-					entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+					entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				else
-					entity:PlaySoundEvent("Sounds/alien:scout:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+					entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				end
 			end
 		end
@@ -791,9 +791,9 @@ AIBehaviour.ScoutMOACAttack = {
 				if ( entity.AI.bCloseScout == true ) then
 					if ( movingTime > 0.0 ) then
 						if ( entity.AI.bBigRolloff and entity.AI.bBigRolloff == true ) then
-							entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+							entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 						else
-							entity:PlaySoundEvent("sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+							entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 						end
 						local groupCount = AI.GetGroupCount( entity.id, GROUP_ENABLED );
 						if ( groupCount > 1 ) then
@@ -1144,7 +1144,7 @@ AIBehaviour.ScoutMOACAttack = {
 				NormalizeVector( vTmp );
 				NormalizeVector( vTmp2 );
 				if ( dotproduct3d( vTmp, vTmp2 ) > 0.0 and res == 0 ) then
-					--entity:PlaySoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+					--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
 				end
 				entity.AI.bLock = true;
@@ -1183,7 +1183,7 @@ AIBehaviour.ScoutMOACAttack = {
 
 		entity.gameParams.forceView = 0.0;
 		entity.actor:SetParams(entity.gameParams);
-		--entity:PlaySoundEvent("Sounds/alien:scout:singularity", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+		--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:singularity", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 
 		AI.SetForcedNavigation( entity.id, entity.AI.vZero );
 
@@ -1616,7 +1616,7 @@ AIBehaviour.ScoutMOACAttack = {
 			entity:SelectPipe(0,"do_nothing");
 			entity:SelectPipe(0,"ScoutMOACFire");
 
-		--	entity:PlaySoundEvent("sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+		--	entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 
 		end
 
@@ -2179,7 +2179,7 @@ AIBehaviour.ScoutMOACAttack = {
 						if ( dotproduct3d( vTmp, vTmp2 ) > 0.0 ) then
 							AI.SetForcedNavigation( entity.id, entity.AI.vZero );
 							AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
-							--entity:PlaySoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+							--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 						end
 					end
 				end
@@ -2534,12 +2534,12 @@ AIBehaviour.ScoutMOACAttack = {
 					return;
 				elseif ( rand > 100 ) then
 					if ( entity.AI.direc == true ) then
-						--entity:PlaySoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+						--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					end
 					entity.AI.direc = false;
 				else
 					if ( entity.AI.direc == false ) then
-						--entity:PlaySoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+						--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					end
 					entity.AI.direc = true;
 				end
@@ -2556,12 +2556,12 @@ AIBehaviour.ScoutMOACAttack = {
 					return;
 				elseif ( rand > 50 ) then
 					if ( entity.AI.direc == true ) then
-						--entity:PlaySoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+						--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					end
 					entity.AI.direc = false;
 				else
 					if ( entity.AI.direc == false ) then
-						--entity:PlaySoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+						--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:anticipation_call", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					end
 					entity.AI.direc = true;
 				end
@@ -2679,7 +2679,7 @@ AIBehaviour.ScoutMOACAttack = {
 	
 			local res = AIBehaviour.SCOUTDEFAULT:ScoutCheckClearanceMain( entity, vTmp, 1.0, 5.0 );
 			if ( res == 0 ) then
-				--entity:PlaySoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+				--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
 			end			
 
@@ -3088,8 +3088,8 @@ AIBehaviour.ScoutMOACAttack = {
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
 				end
-				entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
-				entity:SetAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
+				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 				entity.AI.bLock3 = true;
 			end
 
@@ -3339,8 +3339,8 @@ AIBehaviour.ScoutMOACAttack = {
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
 				end
-				entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
-				entity:SetAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
+				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 				entity.AI.bLock3 = true;
 			end
 
@@ -3383,7 +3383,7 @@ AIBehaviour.ScoutMOACAttack = {
 				entity.gameParams.forceView = 0.0;
 				entity.actor:SetParams(entity.gameParams);
 
-				--entity:PlaySoundEvent("Sounds/alien:scout:singularity", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+				--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:singularity", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 
 				entity:SelectPrimaryWeapon();
 				entity:SelectSecondaryWeapon();
@@ -3497,7 +3497,7 @@ AIBehaviour.ScoutMOACAttack = {
 	
 			entity.AI.circleSec = System.GetCurrTime();
 
-			--entity:PlaySoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 
 			entity.AI.CurrentHook = fSCOUTMOACATTACK_VSAIR3;
 
@@ -3614,8 +3614,8 @@ AIBehaviour.ScoutMOACAttack = {
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
 				end
-				entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
-				entity:SetAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
+				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 				entity.AI.bLock3 = true;
 			end
 
@@ -3767,8 +3767,8 @@ AIBehaviour.ScoutMOACAttack = {
 			entity.AI.bLock = true;
 			entity.AI.CurrentHook = fSCOUTMOACATTACK_VSAIRUP;
 
-			entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
-			entity:SetAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
+			entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 
 			AI.SetForcedNavigation( entity.id, entity.AI.vDirectionRsv );
 

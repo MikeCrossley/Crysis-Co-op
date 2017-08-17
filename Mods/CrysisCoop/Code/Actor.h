@@ -727,6 +727,57 @@ public:
 		}
 	};
 
+	struct SPlayNetworkedSoundEvent
+	{
+	public:
+		SPlayNetworkedSoundEvent() {};
+		SPlayNetworkedSoundEvent(const char *sSoundOrEventName, Vec3 vOffset, Vec3 vDirection, uint32 nSoundFlags, uint32 nSemantic)
+			: sSoundOrEventName(sSoundOrEventName), vOffset(vOffset), vDirection(vDirection), nSoundFlags(nSoundFlags), nSemantic(nSemantic) 
+		{ }
+
+		string sSoundOrEventName;
+		Vec3 vOffset;
+		Vec3 vDirection;
+		uint32 nSoundFlags;
+		uint32 nSemantic;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("sSoundOrEventName", sSoundOrEventName);
+			ser.Value("vOffset", vOffset);
+			ser.Value("vDirection", vDirection);
+			ser.Value("nSoundFlags", nSoundFlags);
+			ser.Value("nSemantic", nSemantic);
+		}
+	};
+
+	struct SNetworkedAttachmentEffect
+	{
+		SNetworkedAttachmentEffect() {};
+		SNetworkedAttachmentEffect(int characterSlot, const char *attachmentName, const char *effectName, Vec3 offset, Vec3 dir, float scale, int flags)
+			: characterSlot(characterSlot), attachmentName(attachmentName), effectName(effectName), offset(offset), dir(dir), scale(scale), flags(flags)
+		{ }
+
+		int characterSlot;
+		string attachmentName;
+		string effectName;
+		Vec3 offset;
+		Vec3 dir;
+		float scale;
+		int flags;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("characterSlot", characterSlot);
+			ser.Value("attachmentName", attachmentName);
+			ser.Value("effectName", effectName);
+			ser.Value("offset", offset);
+			ser.Value("dir", dir);
+			ser.Value("scale", scale);
+			ser.Value("flags", flags);
+		}
+	};
+
 	struct SLooseHelmetParams
 	{
 		SLooseHelmetParams() {};
@@ -746,6 +797,9 @@ public:
 	};
 
 	DECLARE_CLIENT_RMI_PREATTACH(ClLooseHelmet, SLooseHelmetParams, eNRT_ReliableUnordered);
+
+	DECLARE_CLIENT_RMI_NOATTACH(ClPlayNetworkedSoundEvent, SPlayNetworkedSoundEvent, eNRT_ReliableUnordered);
+	DECLARE_CLIENT_RMI_NOATTACH(ClSetNetworkedAttachmentEffect, SNetworkedAttachmentEffect, eNRT_ReliableUnordered);
 
 	DECLARE_CLIENT_RMI_NOATTACH(ClPlayReadabilitySound, PlayReadabilitySoundParams, eNRT_ReliableOrdered);
 	// ~Crysis Co-op

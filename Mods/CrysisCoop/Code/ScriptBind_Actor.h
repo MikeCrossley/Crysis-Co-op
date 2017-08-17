@@ -121,6 +121,11 @@ public:
 	virtual int GoLimp(IFunctionHandler *pH);
 	virtual int StandUp(IFunctionHandler *pH);
 
+	//Crysis Co-op
+	virtual int PlayNetworkedSoundEvent(IFunctionHandler *pH, const char *sSoundOrEventName, Vec3 vOffset, Vec3 vDirection, uint32 nSoundFlags, uint32 nSemantic);
+	virtual int SetNetworkedAttachmentEffect(IFunctionHandler *pH, int characterSlot, const char *attachmentName, const char *effectName, Vec3 offset, Vec3 dir, float scale, int flags);
+	//~Crysis Co-op
+
 	//------------------------------------------------------------------------
 	// ITEM STUFF
 	//------------------------------------------------------------------------

@@ -2455,6 +2455,9 @@ function BasicActor:OnLoad(saved)
 	--end
 end
 
+function BasicActor.OnResetClient()
+end
+
 function BasicActor:OnResetLoad()
 	self.actor:SetPhysicalizationProfile("alive");
 end

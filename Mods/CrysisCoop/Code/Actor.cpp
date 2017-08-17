@@ -3397,6 +3397,57 @@ IMPLEMENT_RMI(CActor, ClLooseHelmet)
 }
 
 //------------------------------------------------------------------------
+IMPLEMENT_RMI(CActor, ClPlayNetworkedSoundEvent)
+{
+	IEntity* pEntity = GetEntity();
+
+	// Get or Create sound proxy if necessary.
+	IEntitySoundProxy *pSoundProxy = (IEntitySoundProxy*)pEntity->GetProxy(ENTITY_PROXY_SOUND);
+	if (!pSoundProxy)
+		if (GetEntity()->CreateProxy(ENTITY_PROXY_SOUND))
+			pSoundProxy = (IEntitySoundProxy*)GetEntity()->GetProxy(ENTITY_PROXY_SOUND);
+
+	if (pSoundProxy)
+	{
+		tSoundID ID = INVALID_SOUNDID;
+		EntityId pSkipEnts[1];
+		int nSkipEnts = 0;
+
+		if (params.nSoundFlags & FLAG_SOUND_OBSTRUCTION)
+		{
+			pSkipEnts[0] = pEntity->GetId();
+			nSkipEnts = 1;
+		}
+
+		if (pSoundProxy)
+			ID = pSoundProxy->PlaySound(params.sSoundOrEventName, params.vOffset, params.vDirection, params.nSoundFlags, (ESoundSemantic)params.nSemantic, pSkipEnts, nSkipEnts);
+	}
+	return true;
+}
+
+//------------------------------------------------------------------------
+IMPLEMENT_RMI(CActor, ClSetNetworkedAttachmentEffect)
+{
+	ICharacterInstance *pCharacter = GetEntity()->GetCharacter(params.characterSlot);
+	
+	if (!pCharacter)
+		return true;
+
+	IAttachmentManager *pIAttachmentManager = pCharacter->GetIAttachmentManager();
+	IAttachment *pIAttachment = pIAttachmentManager->GetInterfaceByName(params.attachmentName);
+
+	if (!pIAttachment)
+		return true;
+
+	CEffectAttachment *pEffectAttachment = new CEffectAttachment(params.effectName, params.offset, params.dir, params.scale);
+
+	pIAttachment->AddBinding(pEffectAttachment);
+	pIAttachment->HideAttachment(0);
+
+	return true;
+}
+
+//------------------------------------------------------------------------
 IMPLEMENT_RMI(CActor, ClPlayReadabilitySound)
 {
 	IEntitySoundProxy* pSoundProxy = (IEntitySoundProxy*)GetEntity()->GetProxy(ENTITY_PROXY_SOUND);

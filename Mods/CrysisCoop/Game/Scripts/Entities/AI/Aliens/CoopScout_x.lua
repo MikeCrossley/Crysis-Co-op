@@ -484,7 +484,7 @@ function CoopScout_x.Client:ClKill(bKill)
 
 	self.InitiateAutoDestruction(self);
 
-	self.actor:SetPhysicalizationProfile("ragdoll");
+	BasicAlien.StopSounds(self);
 end
 
 -----------------------------------------------------------------------------------------------------
@@ -512,6 +512,25 @@ function CoopScout_x:OnResetCustom()
 	
 	--System.Log("RESET COSTOME");
 	
+end
+
+function CoopScout_x:OnResetClient()
+	-- create attachment points	
+	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_1");
+	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_2");
+	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_3");
+	self:CreateBoneAttachment(0, "Bip01 Head", "dodge");
+	self:CreateBoneAttachment(0, "weapon_bone", "right_item_attachment");
+	
+	--sounds
+	self:StopSounds();
+	BasicActor.InitSoundTables(self);
+	
+	--play the idle sound in loop
+	self:PlayIdleSound(self.voiceTable.idle);
+	
+	self.firstCrash = nil;
+	self.waterCrash = nil;	
 end
 
 function CoopScout_x.Client:OnUpdate(frameTime)

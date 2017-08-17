@@ -177,6 +177,8 @@ function BasicAI:OnReset()
 	if (self.ResetOnUsed) then
 		self:ResetOnUsed();
 	end
+	
+	System.LogAlways("BasicAI:OnReset");
 
 	self.ignorant = nil;
 	self.isFallen = nil;
@@ -326,6 +328,9 @@ end
 
 --------------------------------------------------------------------------------------------------------
 function BasicAI.Client:OnInit()
+	if( self.OnResetClient ) then
+		self:OnResetClient();
+	end 
 end
 
 

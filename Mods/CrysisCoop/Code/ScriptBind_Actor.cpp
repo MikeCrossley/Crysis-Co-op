@@ -123,6 +123,11 @@ CScriptBind_Actor::CScriptBind_Actor(ISystem *pSystem)
 	SCRIPT_REG_TEMPLFUNC(GoLimp,"");
 	SCRIPT_REG_TEMPLFUNC(StandUp,"");
 
+	//Crysis Co-op
+	SCRIPT_REG_TEMPLFUNC(PlayNetworkedSoundEvent, "sSoundOrEventName, vOffset, vDirection, nFlags, nSemantic");
+	SCRIPT_REG_TEMPLFUNC(SetNetworkedAttachmentEffect, "characterSlot, attachmentName, effectName, offset, dir, scale, flags");
+	//~Crysis Co-op
+
 	SCRIPT_REG_TEMPLFUNC(ActivateNanoSuit,"on");
 	SCRIPT_REG_TEMPLFUNC(SetNanoSuitMode,"mode");
 	SCRIPT_REG_FUNC(GetNanoSuitMode);
@@ -1778,3 +1783,30 @@ int CScriptBind_Actor::IsFlying(IFunctionHandler *pH)
 
 	return pH->EndFunction();
 }
+
+//Crysis Co-op
+int CScriptBind_Actor::PlayNetworkedSoundEvent(IFunctionHandler *pH, const char *sSoundOrEventName, Vec3 vOffset, Vec3 vDirection, uint32 nSoundFlags, uint32 nSemantic)
+{
+	CActor *pActor = GetActor(pH);
+	if (!pActor)
+		return pH->EndFunction();
+
+	pActor->GetGameObject()->InvokeRMI(CActor::ClPlayNetworkedSoundEvent(), CActor::SPlayNetworkedSoundEvent(sSoundOrEventName, vOffset, vDirection, nSoundFlags, nSemantic), eRMI_ToAllClients);
+
+	return pH->EndFunction();
+}
+
+int CScriptBind_Actor::SetNetworkedAttachmentEffect(IFunctionHandler *pH, int characterSlot, const char *attachmentName, const char *effectName, Vec3 offset, Vec3 dir, float scale, int flags)
+{
+	CActor *pActor = GetActor(pH);
+	if (!pActor)
+		return pH->EndFunction();
+
+	CryLogAlways("SetNetworkedAttachmentEffect");
+
+	pActor->GetGameObject()->InvokeRMI(CActor::ClSetNetworkedAttachmentEffect(), CActor::SNetworkedAttachmentEffect(characterSlot, attachmentName, effectName, offset, dir, scale, flags), eRMI_ToAllClients);
+
+	return pH->EndFunction();
+}
+
+//~Crysis Co-op

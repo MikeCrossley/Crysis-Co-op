@@ -173,9 +173,9 @@ AIBehaviour.ScoutMOACDefault = {
 		end
 
 		if ( entity.AI.bBigRolloff and entity.AI.bBigRolloff == true ) then
-			entity:PlaySoundEvent("sounds/alien:scout_big_rolloff:anticipation_response", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:anticipation_response", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 		else
-			entity:PlaySoundEvent("sounds/alien:scout:anticipation_response", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
+			entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout:anticipation_response", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 		end
 	end,
 

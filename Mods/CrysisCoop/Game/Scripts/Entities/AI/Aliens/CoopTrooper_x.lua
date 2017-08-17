@@ -457,6 +457,15 @@ function CoopTrooper_x:OnResetCustom()
 
 end
 
+function CoopTrooper_x:OnResetClient()
+	--sounds
+	self:StopSounds();
+	BasicActor.InitSoundTables(self);
+	
+	--play the idle sound in loop
+	self:PlayIdleSound(self.voiceTable.idle);
+end
+
 --Server:OnUpdate just for testing, to be removed
 --function CoopTrooper_x.Server:OnUpdate(frameTime)
 --	BasicAlien.Server.OnUpdate(self,frameTime);
