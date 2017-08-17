@@ -364,6 +364,11 @@ void CNanoSuit::Update(float frameTime)
 	if (!m_pOwner || m_pOwner->GetHealth()<=0)
 		return;
 
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	//~Crysis Co-op
+
 	// invulnerability effect works even with a powered down suit
 	// it's a spawn protection mechanism, so we need to make sure
 	// nanogrenades don't disrupt this spawn protection
@@ -448,7 +453,7 @@ void CNanoSuit::Update(float frameTime)
 		rechargeTime=g_pGameCVars->g_AiSuitEnergyRechargeTime;
 	else
 	{
-		if (gEnv->bMultiplayer)
+		if (gEnv->bMultiplayer && !bIsCoop)
 			rechargeTime=g_pGameCVars->g_playerSuitEnergyRechargeTimeMultiplayer;
 		else
 		{
@@ -641,11 +646,17 @@ void CNanoSuit::Balance(float energy)
 
 void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 {
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	//~Crysis Co-op
+
 	value = clamp(value, 0.0f, NANOSUIT_ENERGY);
 	if (m_pOwner && value!=m_energy && gEnv->bServer)
 		m_pOwner->GetGameObject()->ChangedNetworkState(CPlayer::ASPECT_NANO_SUIT_ENERGY);
 
-	if (!gEnv->bMultiplayer)
+
+	if (!gEnv->bMultiplayer || bIsCoop)
 	{
 		if (value < m_energy)
 		{
@@ -699,9 +710,14 @@ void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 
 void CNanoSuit::Hit(int damage)
 {
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	//~Crysis Co-op
+
 	//server only
 
- 	if (gEnv->bMultiplayer)
+ 	if (gEnv->bMultiplayer && !bIsCoop)
  		m_energyRechargeDelay = MAX(m_energyRechargeDelay, 3.0f);
 
 	// this should work in MP as well as SP now.
@@ -1594,9 +1610,17 @@ void CNanoSuit::SetModeDefect(ENanoMode mode, bool defect)
 
 float CNanoSuit::GetSprintMultiplier(bool strafing)
 {
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	//~Crysis Co-op
+
 	if(m_pOwner && !m_pOwner->GetActorStats()->inZeroG && m_currentMode == NANOMODE_SPEED && m_startedSprinting)
 	{
-		if (gEnv->bMultiplayer)
+		//Crysis Co-op
+		//if (gEnv->bMultiplayer)
+		if (gEnv->bMultiplayer && !bIsCoop)
+		//~Crysis Co-op
 		{
 			if(m_energy >= 1.0f)
 			{
@@ -1628,6 +1652,11 @@ float CNanoSuit::GetSprintMultiplier(bool strafing)
 
 void CNanoSuit::UpdateSprinting(float &recharge, const SPlayerStats &stats, float frametime)
 {
+	//Crysis Co-op
+	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	//~Crysis Co-op
+
 	if(!stats.inZeroG)
 	{
 		if (m_currentMode == NANOMODE_SPEED && stats.bSprinting)
@@ -1666,7 +1695,10 @@ void CNanoSuit::UpdateSprinting(float &recharge, const SPlayerStats &stats, floa
 				}
 
 				//recharge -= std::max(1.0f, g_pGameCVars->g_suitSpeedEnergyConsumption*frametime);
-				float consumption=gEnv->bMultiplayer?g_pGameCVars->g_suitSpeedEnergyConsumptionMultiplayer:g_pGameCVars->g_suitSpeedEnergyConsumption;
+				//Crysis Co-op
+				//float consumption=gEnv->bMultiplayer?g_pGameCVars->g_suitSpeedEnergyConsumptionMultiplayer:g_pGameCVars->g_suitSpeedEnergyConsumption;
+				float consumption = (gEnv->bMultiplayer && !bIsCoop) ? g_pGameCVars->g_suitSpeedEnergyConsumptionMultiplayer : g_pGameCVars->g_suitSpeedEnergyConsumption;
+				//~Crysis Co-op
 				recharge -= m_pOwner->ShouldSwim()?consumption*1.25f:consumption;
 
 				// if player is not moving much, don't reduce energy
