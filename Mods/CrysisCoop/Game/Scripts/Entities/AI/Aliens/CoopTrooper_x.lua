@@ -609,6 +609,26 @@ function CoopTrooper_x:Reset()
 	self:ResetTimers();
 end
 
+function CoopTrooper_x:Expose()
+	Net.Expose{
+		Class = self,
+		ClientMethods = {
+			ClKill = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+		},
+		ServerMethods = {
+		},
+		ServerProperties = {
+		}
+	};
+end
+
+function CoopTrooper_x.Client:ClKill(bKill)
+	self:SetAttachmentEffect(0, "damage_effect_1", "alien_special.Trooper.WoundedPlasma_death", g_Vectors.v000, g_Vectors.v010, 1, 0);
+
+	self:InitiateAutoDestruction();
+
+	BasicAlien.StopSounds(self);
+end
 
 function CoopTrooper_x:Kill(ragdoll, shooterId, weaponId)
 	if(ragdoll and 	self.exploded) then
@@ -617,6 +637,10 @@ function CoopTrooper_x:Kill(ragdoll, shooterId, weaponId)
 	BasicAlien.Kill(self,ragdoll,shooterId,weaponId);
 	
 	Trooper_Death(self);--,autoDestructing); -- let AI do something with this corpse
+	
+	-- Crysis Co-op
+	self.allClients:ClKill(true);
+	-- ~Crysis Co-op
 	
 	self:ResetTimers();
 	
@@ -1428,6 +1452,9 @@ end
 
 
 function CoopTrooper_x:AnimationEvent(event,value)
+	
+	System.LogAlways("AnimationEvent: "..event);
+
 	if ( event == "Jump" ) then
 		if(self.AI.doubleJump) then 
 			self:SetTimer(TROOPER_JUMP_TIMER,self.AI.firstJumpTime*1000);
