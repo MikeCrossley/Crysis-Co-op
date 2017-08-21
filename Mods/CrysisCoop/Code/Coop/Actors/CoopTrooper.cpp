@@ -73,8 +73,12 @@ void CCoopTrooper::Update(SEntityUpdateContext& ctx, int updateSlot)
 	{
 		SMovementState currMovement = static_cast<CCompatibilityAlienMovementController*>(GetMovementController())->GetMovementReqState();
 
+		// Vec3
 		m_vLookTarget = currMovement.eyePosition + currMovement.bodyDirection;
 		m_vAimTarget = currMovement.eyePosition + currMovement.aimDirection;
+
+		// Int
+		m_nStance = (int)currMovement.stance;
 
 		if (GetHealth() > 0.f)
 			GetGameObject()->ChangedNetworkState(ASPECT_ALIVE);
@@ -92,6 +96,9 @@ void CCoopTrooper::UpdateMovementState()
 	request.SetBodyTarget(m_vLookTarget);
 	request.SetLookTarget(m_vLookTarget);
 	request.SetAimTarget(m_vAimTarget);
+
+	request.SetStance((EStance)m_nStance);
+
 	//request.set
 	//static_cast<CCompatibilityAlienMovementController*>(GetMovementController())->RequestMovement()
 	SetActorMovement(SMovementRequestParams(request));
@@ -157,8 +164,13 @@ bool CCoopTrooper::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 pr
 	{
 		case ASPECT_ALIVE:
 		{
+			//Vec3
 			ser.Value("vLookTarget", m_vLookTarget, 'wrld');
 			ser.Value("vAimTarget", m_vAimTarget, 'wrld');
+
+			//Int
+			ser.Value("nStance", m_nStance, 'i8');
+
 			break;
 		}
 		case ASPECT_HIDE:
