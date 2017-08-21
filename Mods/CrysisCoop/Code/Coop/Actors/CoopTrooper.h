@@ -38,6 +38,8 @@ private:
 	Vec3 m_vLookTarget;
 	Vec3 m_vAimTarget;
 
+	int m_nStance;
+
 	bool m_bHidden;
 };
 

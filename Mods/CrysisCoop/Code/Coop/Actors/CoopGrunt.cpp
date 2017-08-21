@@ -104,7 +104,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 	CPlayer::Update(ctx, updateSlot);
 
 	// Register AI System in MP
-	if (/*gEnv->bServer && */!gEnv->bEditor)
+	if (gEnv->bServer && !gEnv->bEditor)
 		RegisterMultiplayerAI();
 	
 	// Movement reqeust stuff so proper anims play on client
