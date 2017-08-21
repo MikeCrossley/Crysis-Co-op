@@ -34,6 +34,7 @@ public:
 	virtual void Serialize(TSerialize &ser) {}
 
 	//Crysis Co-op
+	CMovementRequest GetMovementReq() { return m_currentMovementRequest; };
 	SMovementState GetMovementReqState() { return m_currentMovementState; };
 	//~Crysis Co-op
 

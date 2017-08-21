@@ -178,8 +178,6 @@ function BasicAI:OnReset()
 		self:ResetOnUsed();
 	end
 	
-	System.LogAlways("BasicAI:OnReset");
-
 	self.ignorant = nil;
 	self.isFallen = nil;
 

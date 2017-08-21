@@ -191,7 +191,7 @@ AIBehaviour.GuardNeueIdle = {
 				if (dt > 1.5) then
 				
 					local sound = GetRandomSound(entity.voiceTable.accelerate);
-					entity:PlaySoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
+					entity.actor:PlayNetworkedSoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
 				
 					entity:SelectPipe(0,"grn_MeleeDodge");
 					entity.AI.lastDodgeTime = _time;
@@ -206,7 +206,7 @@ AIBehaviour.GuardNeueIdle = {
 				if (dt > 2.5) then
 				
 					local sound = GetRandomSound(entity.voiceTable.accelerate);
-					entity:PlaySoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
+					entity.actor:PlayNetworkedSoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
 				
 					entity:SelectPipe(0,"grn_HideDodge");
 					entity.AI.lastDodgeTime = _time;
@@ -303,7 +303,7 @@ AIBehaviour.GuardNeueIdle = {
 	---------------------------------------------
 	ACC_READABILITY = function (self, entity)
 		local sound = GetRandomSound(entity.voiceTable.accelerate);
-		entity:PlaySoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
+		entity.actor:PlayNetworkedSoundEvent(sound[1], g_Vectors.v000, g_Vectors.v010, SOUND_DEFAULT_3D, SOUND_SEMANTIC_LIVING_ENTITY);
 	end,
 
 	---------------------------------------------

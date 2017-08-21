@@ -1,6 +1,6 @@
 <EntityPrototypeLibrary Name="Aliens" SandboxVersion="1.1.1.5681">
- <EntityPrototype Name="NakedAliens.Alien" Id="{478136C0-74CC-401D-9F44-3F27924882C7}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien" Id="{478136C0-74CC-401D-9F44-3F27924882C7}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="200" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="40" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -43,7 +43,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Reinforcement" Id="{7152E3F4-7A29-40BC-96DF-221F9EA8DAB1}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Reinforcement" Id="{7152E3F4-7A29-40BC-96DF-221F9EA8DAB1}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, AlienReinforcement_Giver" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -52,7 +52,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Transport" Id="{5E73E766-1D47-42FF-9EEA-EC43BF31AA63}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Transport" Id="{5E73E766-1D47-42FF-9EEA-EC43BF31AA63}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, AlienTransport" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -61,7 +61,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.AlienTransport2" Id="{61703202-FBB3-489B-923A-B2CB16B3F715}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.AlienTransport2" Id="{61703202-FBB3-489B-923A-B2CB16B3F715}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardEvade" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, AlienTransport2" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="2" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
@@ -70,7 +70,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Patrol" Id="{E92EF7F2-802B-43F3-AD23-42B3B87ABBB8}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Patrol" Id="{E92EF7F2-802B-43F3-AD23-42B3B87ABBB8}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Patrol" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -79,8 +79,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Defend" Id="{92350E98-87DE-4F49-8598-B67020A7C9A9}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Defend" Id="{92350E98-87DE-4F49-8598-B67020A7C9A9}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="70" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -88,7 +88,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Defend_Patrol" Id="{F9953E3C-A1E4-492B-A6C8-5B316EF82522}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Defend_Patrol" Id="{F9953E3C-A1E4-492B-A6C8-5B316EF82522}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Patrol" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
@@ -97,7 +97,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_PatrolCoward" Id="{19E381A7-B339-4152-B445-67549C042C13}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_PatrolCoward" Id="{19E381A7-B339-4152-B445-67549C042C13}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Patrol" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="3" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -106,8 +106,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Noise_Patrol" Id="{63D9939E-C07A-41E2-A017-42EB4BAF1468}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Noise_Patrol" Id="{63D9939E-C07A-41E2-A017-42EB4BAF1468}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardAssault" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
    <Perception audioScale="2" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="80" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -115,7 +115,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Defend_Patrol_Reinf_On_Death" Id="{E07F37E9-AB0F-4702-B39B-EE360B28A27B}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Defend_Patrol_Reinf_On_Death" Id="{E07F37E9-AB0F-4702-B39B-EE360B28A27B}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Patrol, AlienReinforcement_Caller" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="2" cloakLevel="0" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
@@ -124,8 +124,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Ambush" Id="{58525509-8C43-47B4-A523-A67742A79107}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardEvade" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Ambush" Id="{58525509-8C43-47B4-A523-A67742A79107}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardEvade" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="80"/>
    <Damage health="600" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="160" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="70" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -133,8 +133,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Melee" Id="{4885B14E-F7A0-4AE9-B4EC-258E1238B5E4}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase_noweapon.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Melee" Id="{4885B14E-F7A0-4AE9-B4EC-258E1238B5E4}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase_noweapon.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="400" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="270" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="70" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -142,7 +142,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Scavenger" Id="{5882989B-24EB-49CA-8919-97931D27C68D}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Scavenger" Id="{5882989B-24EB-49CA-8919-97931D27C68D}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardMelee" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Scavenger" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -151,7 +151,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Scavenger_Reinforcement_Caller" Id="{7D2F684F-1ED9-4312-8A97-231B59CBBE95}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Scavenger_Reinforcement_Caller" Id="{7D2F684F-1ED9-4312-8A97-231B59CBBE95}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardMelee" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Scavenger, AlienReinforcement_Caller" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="3" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="600" bLogDamages="0"/>
@@ -160,7 +160,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Scavenger_Attack_From_Anchor" Id="{12D2ABE2-A067-4FF1-A074-CA5B63371FCD}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Scavenger_Attack_From_Anchor" Id="{12D2ABE2-A067-4FF1-A074-CA5B63371FCD}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardMeleeDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Scavenger" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="10"/>
    <Damage health="600" bLogDamages="0"/>
@@ -169,7 +169,7 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Scavenger_Attack_From_Anchor_Reinf_Caller" Id="{5836051D-C462-4A03-A671-6890A74775AF}" Class="Alien" Description="">
+ <EntityPrototype Name="NakedAliens.Alien_Scavenger_Attack_From_Anchor_Reinf_Caller" Id="{5836051D-C462-4A03-A671-6890A74775AF}" Class="CoopAlien" Description="">
   <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardMeleeDefend" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien, Alien_Scavenger, AlienReinforcement_Caller" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="16"/>
    <Damage health="600" bLogDamages="0"/>
@@ -390,8 +390,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Range_Weapon" Id="{97DD72C4-52DC-4C5A-9CCE-6A3683101DDE}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Range_Weapon" Id="{97DD72C4-52DC-4C5A-9CCE-6A3683101DDE}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="Alien_naked" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="400" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="270" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="70" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>
@@ -467,8 +467,8 @@
   </Properties>
   <ObjectVars OutdoorOnly="0" CastShadow="1" MotionBlurMultiplier="1" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0"/>
  </EntityPrototype>
- <EntityPrototype Name="NakedAliens.Alien_Melee_High_Health" Id="{378D4265-DAF3-4C53-81A5-7CC5171E67E5}" Class="Alien" Description="">
-  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase_noweapon.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="Alien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
+ <EntityPrototype Name="NakedAliens.Alien_Melee_High_Health" Id="{378D4265-DAF3-4C53-81A5-7CC5171E67E5}" Class="CoopAlien" Description="">
+  <Properties accuracy="1" AnimPack="Basic" attackrange="70" awarenessOfPlayer="0" bCannotSwim="0" aicharacter_character="GuardNeue" eiColliderMode="0" commrange="70" damageScale="1" equip_EquipmentPack="" bExactPos="0" objFrozenModel="" bGrenades="0" fGroupHostility="0" IdleSequence="None" bIdleStartOnSpawn="0" bInvulnerable="0" fileModel="objects/characters/alien/alienbase/alienbase_noweapon.cdf" nModelVariations="0" bNanoSuit="0" physicMassMult="1" ragdollPersistence="0" rank="4" reaction="1" soclasses_SmartObjectClass="CoopAlien" SoundPack="Alien" SoundPackAlternative="" SpawnedEntityName="" special="0" species="2" bSpeciesHostility="1" bSquadMate="0" bSquadMateIncendiary="0" bTrackable="1" bUsable="0" UseText="" nVoiceID="0" voiceType="alien">
    <Behavior alarmLevel="1" cloakLevel="0" targetEntity="" targetRange="18"/>
    <Damage health="5000" bLogDamages="0"/>
    <Perception audioScale="1" camoScale="1" collisionReactionScale="1" FOVPrimary="80" FOVSecondary="270" heatScale="1" bIsAffectedByLight="0" minAlarmLevel="0" persistence="0" reactionSpeed="1.5" sightrange="70" sightrangeVehicle="-1" stanceScale="1.8" stuntReactionTimeOut="3" bThermalVision="1" velBase="1" velScale="0.03"/>

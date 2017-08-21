@@ -238,6 +238,7 @@
     <ClCompile Include="Claymore.cpp" />
     <ClCompile Include="ClientSynchedStorage.cpp" />
     <ClCompile Include="CompatibilityAlienMovementController.cpp" />
+    <ClCompile Include="Coop\Actors\CoopAlien.cpp" />
     <ClCompile Include="Coop\Actors\CoopGrunt.cpp" />
     <ClCompile Include="Coop\Actors\CoopHunter.cpp" />
     <ClCompile Include="Coop\Actors\CoopPlayer.cpp" />
@@ -468,6 +469,7 @@
     <ClInclude Include="Claymore.h" />
     <ClInclude Include="ClientSynchedStorage.h" />
     <ClInclude Include="CompatibilityAlienMovementController.h" />
+    <ClInclude Include="Coop\Actors\CoopAlien.h" />
     <ClInclude Include="Coop\Actors\CoopGrunt.h" />
     <ClInclude Include="Coop\Actors\CoopHunter.h" />
     <ClInclude Include="Coop\Actors\CoopPlayer.h" />

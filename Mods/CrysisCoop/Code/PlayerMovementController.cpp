@@ -106,9 +106,12 @@ bool CPlayerMovementController::RequestMovement( CMovementRequest& request )
 		{
 			if (IMovementController* pController = pVehicle->GetPassengerMovementController(m_pPlayer->GetEntityId()))
 			{
-        IVehicleSeat* pSeat = pVehicle->GetSeatForPassenger(m_pPlayer->GetEntityId());
-        if (!pSeat->IsDriver())
-				  pController->RequestMovement(request);
+				IVehicleSeat* pSeat = pVehicle->GetSeatForPassenger(m_pPlayer->GetEntityId());
+				// Crysis Co-op
+				//if (!pSeat->IsDriver())
+				if (!pSeat->IsDriver() || (gEnv->bClient && gEnv->bMultiplayer))
+					 pController->RequestMovement(request);
+				 //~Crysis Co-op
 			}
 		}
 	}

@@ -1842,8 +1842,6 @@ end;
 
 function BasicActor:Kill(ragdoll, shooterId, weaponId, freeze)
 
-	System.LogAlways("BasicActor::Kill");
-
 	self.actor:Kill();
 	
 	self:StopEvent("all");
@@ -2491,7 +2489,6 @@ end
 --end
 
 function BasicActor:ScriptEvent(event,value,str)
-	
 	if (event == "cloaking") then
 		self:OnCloaking(value);
 	elseif (event == "animationevent") then

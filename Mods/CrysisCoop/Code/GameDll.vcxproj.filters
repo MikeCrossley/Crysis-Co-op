@@ -788,6 +788,9 @@
     <ClCompile Include="Coop\Actors\CoopHunter.cpp">
       <Filter>Coop\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="Coop\Actors\CoopAlien.cpp">
+      <Filter>Coop\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1374,6 +1377,9 @@
       <Filter>Coop\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Coop\Actors\CoopHunter.h">
+      <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\CoopAlien.h">
       <Filter>Coop\Actors</Filter>
     </ClInclude>
   </ItemGroup>

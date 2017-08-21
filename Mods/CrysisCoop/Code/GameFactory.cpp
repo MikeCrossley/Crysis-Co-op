@@ -35,6 +35,7 @@
 #include "Coop/Actors/CoopScout.h"
 #include "Coop/Actors/CoopTrooper.h"
 #include "Coop/Actors/CoopHunter.h"
+#include "Coop/Actors/CoopAlien.h"
 
 
 #include "Coop/Entities/EventSynchronizer.h"
@@ -160,6 +161,7 @@ void InitGameFactory(IGameFramework *pFramework)
 	REGISTER_FACTORY(pFramework, "Aliens/CoopScout", CCoopScout, true);
 	REGISTER_FACTORY(pFramework, "Aliens/CoopTrooper", CCoopTrooper, true);
 	REGISTER_FACTORY(pFramework, "Aliens/CoopHunter", CCoopHunter, true);
+	REGISTER_FACTORY(pFramework, "Aliens/CoopAlien", CCoopAlien, true);
 	//~Crysis Co-op
 
   // Weapons
