@@ -244,6 +244,7 @@
     <ClCompile Include="Coop\Actors\CoopPlayer.cpp" />
     <ClCompile Include="Coop\Actors\CoopScout.cpp" />
     <ClCompile Include="Coop\Actors\CoopTrooper.cpp" />
+    <ClCompile Include="Coop\Actors\Movement\CoopGruntMovementController.cpp" />
     <ClCompile Include="Coop\CoopCutsceneSystem.cpp" />
     <ClCompile Include="Coop\CoopReadability.cpp" />
     <ClCompile Include="Coop\CoopSystem.cpp" />
@@ -475,6 +476,7 @@
     <ClInclude Include="Coop\Actors\CoopPlayer.h" />
     <ClInclude Include="Coop\Actors\CoopScout.h" />
     <ClInclude Include="Coop\Actors\CoopTrooper.h" />
+    <ClInclude Include="Coop\Actors\Movement\CoopGruntMovementController.h" />
     <ClInclude Include="Coop\CoopCutsceneSystem.h" />
     <ClInclude Include="Coop\CoopReadability.h" />
     <ClInclude Include="Coop\CoopSystem.h" />
