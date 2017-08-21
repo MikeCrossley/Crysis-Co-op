@@ -49,6 +49,12 @@ public:
 	// ~ILevelSystemListener
 
 
+	// Summary:
+	//	Dumps debug information about entities to the console.
+	void DumpEntityDebugInformation();
+
+
+
 	CDialogSystem* GetDialogSystem() { return m_pDialogSystem; }
 
 	CCoopReadability* m_pReadability;

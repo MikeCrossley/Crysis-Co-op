@@ -16,8 +16,8 @@
 CCoopSystem CCoopSystem::s_instance = CCoopSystem();
 
 CCoopSystem::CCoopSystem() :
-	m_nInitialized(0),
-	m_pReadability(NULL)
+m_nInitialized(0),
+m_pReadability(NULL)
 {
 }
 
@@ -31,7 +31,7 @@ bool CCoopSystem::Initialize()
 {
 	gEnv->pGame->GetIGameFramework()->GetILevelSystem()->AddListener(this);
 	m_pReadability = new CCoopReadability();
-	
+
 	CCoopCutsceneSystem::GetInstance()->Register();
 
 	IScriptSystem *pSS = gEnv->pScriptSystem;
@@ -103,12 +103,12 @@ void CCoopSystem::Update(float fFrameTime)
 		IVehicleIteratorPtr iter = gEnv->pGame->GetIGameFramework()->GetIVehicleSystem()->CreateVehicleIterator();
 		while (IVehicle* pVehicle = iter->Next())
 		{
-			if(IEntity *pEntity = pVehicle->GetEntity())
+			if (IEntity *pEntity = pVehicle->GetEntity())
 			{
 				if (!pEntity->GetAI())
 				{
 					gEnv->bMultiplayer = false;
-										
+
 					HSCRIPTFUNCTION scriptFunction(0);
 					IScriptSystem*	pIScriptSystem = gEnv->pScriptSystem;
 					if (IScriptTable* pScriptTable = pEntity->GetScriptTable())
@@ -144,8 +144,12 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 	gEnv->pAISystem->FlushSystem();
 	gEnv->pAISystem->Enable();
 
+	gEnv->pAISystem->ReloadSmartObjectRules();
+	gEnv->pAISystem->ReloadActions();
 	gEnv->pAISystem->LoadNavigationData(pLevel->GetPath(), "mission0");
-	gEnv->bMultiplayer = true;
+	//gEnv->pAISystem->loadcover
+	//gEnv->pAISystem->load
+	//gEnv->bMultiplayer = true;
 
 	ICVar* pSystemUpdate = gEnv->pConsole->GetCVar("ai_systemupdate");
 	if (gEnv->bServer)
@@ -157,7 +161,7 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 {
 	m_pDialogSystem->Reset();
-	
+
 	if (CDialogSystem::sAutoReloadScripts != 0)
 		m_pDialogSystem->ReloadScripts();
 
@@ -168,24 +172,94 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 	IEntityIt* iter = gEnv->pEntitySystem->GetEntityIterator();
 	while (!iter->IsEnd())
 	{
-		if (IEntity * pEnt = iter->Next())
-		{
-			string classname = pEnt->GetClass()->GetName();
+	if (IEntity * pEnt = iter->Next())
+	{
+	string classname = pEnt->GetClass()->GetName();
 
-			if (classNames.find(pEnt->GetClass()) == classNames.end())
-			{
-				classNames.insert(pEnt->GetClass());
-				CryLogAlways("Class: %s", classname);
-			}
-		}
+	if (classNames.find(pEnt->GetClass()) == classNames.end())
+	{
+	classNames.insert(pEnt->GetClass());
+	CryLogAlways("Class: %s", classname);
+	}
+	}
 	}*/
+
+	if (!gEnv->bEditor)
+	{
+		this->DumpEntityDebugInformation();
+	}
+
 
 	if (gEnv->bEditor) return;
 
 	int nInitialized = 0;
 	gEnv->bMultiplayer = false;
 	m_nInitialized = 1;
-	
+
 	gEnv->pAISystem->Reset(IAISystem::RESET_ENTER_GAME);
 	gEnv->bMultiplayer = true;
+}
+
+// Summary:
+//	Dumps debug information about entities to the console.
+void CCoopSystem::DumpEntityDebugInformation()
+{
+	#define AITypeCase(Name) case Name: sType = #Name; break;
+
+	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
+	while (!pIterator->IsEnd())
+	{
+		if (IEntity* pEntity = pIterator->This())
+		{
+			CryLogAlways("[Entity] Name: %s, Id: %d, Class: %s, Archetype: %s, Active: %s, Initialized: %s, Hidden: %s", 
+				pEntity->GetName(), 
+				pEntity->GetId(), 
+				pEntity->GetClass() ? pEntity->GetClass()->GetName() : "NULL", 
+				pEntity->GetArchetype() ? pEntity->GetArchetype()->GetName() : "NULL",
+				pEntity->IsActive() ? "Yes" : "No",
+				pEntity->IsInitialized() ? "Yes" : "No",
+				pEntity->IsHidden() ? "Yes" : "No");
+			if (IAIObject* pAI = pEntity->GetAI())
+			{
+				const char* sType = "Unknown";
+
+				switch (pAI->GetAIType())
+				{
+					AITypeCase(AIOBJECT_NONE)
+						AITypeCase(AIOBJECT_DUMMY)
+						AITypeCase(AIOBJECT_AIACTOR)
+						AITypeCase(AIOBJECT_CAIACTOR)
+						AITypeCase(AIOBJECT_PIPEUSER)
+						AITypeCase(AIOBJECT_CPIPEUSER)
+						AITypeCase(AIOBJECT_PUPPET)
+						AITypeCase(AIOBJECT_CPUPPET)
+						AITypeCase(AIOBJECT_VEHICLE)
+						AITypeCase(AIOBJECT_CVEHICLE)
+						AITypeCase(AIOBJECT_AWARE)
+						AITypeCase(AIOBJECT_ATTRIBUTE)
+						AITypeCase(AIOBJECT_WAYPOINT)
+						AITypeCase(AIOBJECT_HIDEPOINT)
+						AITypeCase(AIOBJECT_SNDSUPRESSOR)
+						AITypeCase(AIOBJECT_HELICOPTER)
+						AITypeCase(AIOBJECT_CAR)
+						AITypeCase(AIOBJECT_BOAT)
+						AITypeCase(AIOBJECT_AIRPLANE)
+						AITypeCase(AIOBJECT_2D_FLY)
+						AITypeCase(AIOBJECT_MOUNTEDWEAPON)
+						AITypeCase(AIOBJECT_GLOBALALERTNESS)
+						AITypeCase(AIOBJECT_LEADER)
+						AITypeCase(AIOBJECT_ORDER)
+						AITypeCase(AIOBJECT_PLAYER)
+						AITypeCase(AIOBJECT_GRENADE)
+						AITypeCase(AIOBJECT_RPG)
+				}
+
+
+				CryLogAlways("[AI] Name: %s, Type: %s", pAI->GetName(), sType);
+			}
+			CryLogAlways("[SmartObject] %s", pEntity->GetSmartObject() ? "Yes" : "No");
+			CryLogAlways("[Network] Bound: %s", gEnv->pGame->GetIGameFramework()->GetNetContext()->IsBound(pEntity->GetId()) ? "Yes" : "No");
+		}
+		pIterator->Next();
+	}
 }
