@@ -186,7 +186,7 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 
 	if (!gEnv->bEditor)
 	{
-		this->DumpEntityDebugInformation();
+	//	this->DumpEntityDebugInformation();
 	}
 
 
@@ -204,21 +204,64 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 //	Dumps debug information about entities to the console.
 void CCoopSystem::DumpEntityDebugInformation()
 {
-	#define AITypeCase(Name) case Name: sType = #Name; break;
+	// List of used entity classes.
+	std::list<string> stlUsedClasses = std::list<string>();
 
+	#define AITypeCase(Name) case Name: sType = #Name; break;
+	#define EntityFlagState(Name) if((nFlags & EEntityFlags::Name) != 0) sFlags += #Name " | ";
 	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
 	while (!pIterator->IsEnd())
 	{
 		if (IEntity* pEntity = pIterator->This())
 		{
-			CryLogAlways("[Entity] Name: %s, Id: %d, Class: %s, Archetype: %s, Active: %s, Initialized: %s, Hidden: %s", 
+			string sFlags = "";
+			uint nFlags = pEntity->GetFlags();
+
+			// Push entity class to the used entity classes list.
+			stlUsedClasses.push_back(pEntity->GetClass()->GetName());
+
+			EntityFlagState(ENTITY_FLAG_CASTSHADOW);
+			EntityFlagState(ENTITY_FLAG_UNREMOVABLE);
+			EntityFlagState(ENTITY_FLAG_GOOD_OCCLUDER);
+			EntityFlagState(ENTITY_FLAG_WRITE_ONLY);
+			EntityFlagState(ENTITY_FLAG_NOT_REGISTER_IN_SECTORS);
+			EntityFlagState(ENTITY_FLAG_CALC_PHYSICS);
+			EntityFlagState(ENTITY_FLAG_CLIENT_ONLY);
+			EntityFlagState(ENTITY_FLAG_SERVER_ONLY);
+			EntityFlagState(ENTITY_FLAG_CUSTOM_VIEWDIST_RATIO);
+			EntityFlagState(ENTITY_FLAG_CALCBBOX_USEALL);
+			EntityFlagState(ENTITY_FLAG_VOLUME_SOUND);
+			EntityFlagState(ENTITY_FLAG_HAS_AI);
+			EntityFlagState(ENTITY_FLAG_TRIGGER_AREAS);
+			EntityFlagState(ENTITY_FLAG_NO_SAVE);
+			EntityFlagState(ENTITY_FLAG_NET_PRESENT);
+			EntityFlagState(ENTITY_FLAG_CLIENTSIDE_STATE);
+			EntityFlagState(ENTITY_FLAG_SEND_RENDER_EVENT);
+			EntityFlagState(ENTITY_FLAG_NO_PROXIMITY);
+			EntityFlagState(ENTITY_FLAG_ON_RADAR);
+			EntityFlagState(ENTITY_FLAG_UPDATE_HIDDEN);
+			EntityFlagState(ENTITY_FLAG_NEVER_NETWORK_STATIC);
+			EntityFlagState(ENTITY_FLAG_IGNORE_PHYSICS_UPDATE);
+			EntityFlagState(ENTITY_FLAG_SPAWNED);
+			EntityFlagState(ENTITY_FLAG_SLOTS_CHANGED);
+			EntityFlagState(ENTITY_FLAG_MODIFIED_BY_PHYSICS);
+			EntityFlagState(ENTITY_FLAG_OUTDOORONLY);
+			EntityFlagState(ENTITY_FLAG_SEND_NOT_SEEN_TIMEOUT);
+			EntityFlagState(ENTITY_FLAG_RECVWIND);
+			EntityFlagState(ENTITY_FLAG_LOCAL_PLAYER);
+			EntityFlagState(ENTITY_FLAG_AI_HIDEABLE);
+			
+			CryLogAlways("[Entity] Name: %s, Id: %d, Class: %s, Archetype: %s, Active: %s, Initialized: %s, Hidden: %s, Flags: %s", 
 				pEntity->GetName(), 
 				pEntity->GetId(), 
 				pEntity->GetClass() ? pEntity->GetClass()->GetName() : "NULL", 
 				pEntity->GetArchetype() ? pEntity->GetArchetype()->GetName() : "NULL",
 				pEntity->IsActive() ? "Yes" : "No",
 				pEntity->IsInitialized() ? "Yes" : "No",
-				pEntity->IsHidden() ? "Yes" : "No");
+				pEntity->IsHidden() ? "Yes" : "No",
+				sFlags.c_str());
+
+			
 			if (IAIObject* pAI = pEntity->GetAI())
 			{
 				const char* sType = "Unknown";
@@ -253,13 +296,23 @@ void CCoopSystem::DumpEntityDebugInformation()
 						AITypeCase(AIOBJECT_GRENADE)
 						AITypeCase(AIOBJECT_RPG)
 				}
-
-
+				
 				CryLogAlways("[AI] Name: %s, Type: %s", pAI->GetName(), sType);
 			}
+
 			CryLogAlways("[SmartObject] %s", pEntity->GetSmartObject() ? "Yes" : "No");
 			CryLogAlways("[Network] Bound: %s", gEnv->pGame->GetIGameFramework()->GetNetContext()->IsBound(pEntity->GetId()) ? "Yes" : "No");
 		}
 		pIterator->Next();
 	}
+
+	stlUsedClasses.unique();
+	stlUsedClasses.sort();
+
+	CryLogAlways("[Classes]");
+	for (std::list<string>::iterator it = stlUsedClasses.begin(); it != stlUsedClasses.end(); ++it)
+	{
+		CryLogAlways(" - %s", it->c_str());
+	}
+
 }
