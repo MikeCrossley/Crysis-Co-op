@@ -1,0 +1,228 @@
+<EntityScheduler>
+	<!-- game rules -->
+	<Class name="InstantAction" policy="rule"/>
+	<Class name="TeamAction" policy="rule"/>
+	<Class name="TeamInstantAction" policy="rule"/>
+	<Class name="PowerStruggle" policy="rule"/>
+	<!-- actors -->
+	<Class name="Player" policy="dude" own="own"/>
+	<!-- weapons -->
+	<Class name="AlienMount" policy="gun"/>
+	<Class name="AutoTurret" policy="gun"/>
+	<Class name="AutoTurretAA" policy="gun"/>
+	<Class name="Binoculars" policy="gun"/>
+	<Class name="C4" policy="gun"/>
+	<Class name="AVMine" policy="gun"/>
+	<Class name="Claymore" policy="gun"/>
+	<Class name="MOACAttach" policy="gun"/>
+	<Class name="MOARAttach" policy="gun"/>
+	<Class name="AlienCore" policy="gun"/>
+	<Class name="avexplosive" policy="proj"/>
+
+	<Class name="DSG1" policy="gun"/>
+	<Class name="Fists" policy="gun"/>
+	<Class name="FY71" policy="gun"/>
+	<Class name="GaussRifle" policy="gun"/>
+	<Class name="Hurricane" policy="gun"/>
+	<Class name="LAW" policy="gun"/>
+	<Class name="SCAR" policy="gun"/>
+	<Class name="ShiTen" policy="gun"/>
+	<Class name="Shotgun" policy="gun"/>
+	<Class name="SMG" policy="gun"/>
+	<Class name="SOCOM" policy="gun"/>
+	<Class name="TACGun" policy="gun"/>
+	<Class name="GrenadeLauncher" policy="gun"/>
+	<Class name="VehicleUSMachinegun" policy="gun"/>
+	<Class name="VehicleGaussMounted" policy="gun"/>
+   <Class name="FlashbangGrenade" policy="proj"/>
+   <Class name="SmokeGrenade" policy="proj"/>
+   <Class name="EMPGrenade" policy="proj"/>
+   <Class name="FragGrenade" policy="proj"/>
+
+	<Class name="AlienCloak" policy="gun"/>
+	<Class name="LockpickKit" policy="gun"/>
+	<Class name="NanoSuit" policy="gun"/>
+	<Class name="OffHand" policy="gun"/>
+	<Class name="Parachute" policy="gun"/>
+	<Class name="RepairKit" policy="gun"/>
+	<Class name="TechCharger" policy="gun"/>
+	<Class name="Detonator" policy="gun"/>
+	<Class name="NightVision" policy="gun"/>
+	
+	<Class name="LAM" policy="gun"/>
+	<Class name="LAMRifle" policy="gun"/>
+	<Class name="FY71NormalAmmo" policy="gun"/>
+	<Class name="FY71IncendiaryAmmo" policy="gun"/>
+	<Class name="SniperScope" policy="gun"/>
+	<Class name="SCARNormalAmmo" policy="gun"/>
+	<Class name="Silencer" policy="gun"/>
+	<Class name="SOCOMSilencer" policy="gun"/>
+	<Class name="AssaultScope" policy="gun"/>
+	<Class name="GrenadeLauncher" policy="gun"/>
+	<Class name="LAM" policy="gun"/>
+	<Class name="LAMRifle" policy="gun"/>
+	<Class name="LAMRifleFlashLight" policy="gun"/>
+	<Class name="LAMFlashLight" policy="gun"/>
+	<Class name="Reflex" policy="gun"/>
+	<Class name="LAWScope" policy="gun"/>
+	<Class name="RadarKit" policy="gun"/>
+	<Class name="TacticalAttachment" policy="gun"/>
+  <Class name="AY69" policy="gun"/>
+  <Class name="FGL40" policy="gun"/>
+  <Class name="FGL40Frag" policy="gun"/>
+  <Class name="FGL40EMP" policy="gun"/>
+  <Class name="FGL40Detonator" policy="gun"/>
+	
+
+	<!-- vehicle weapons -->
+	<Class name="AACannon" policy="gun"/>
+	<Class name="AARocketLauncher" policy="gun"/>
+	<Class name="APCCannon" policy="gun"/>
+	<Class name="APCRocketLauncher" policy="gun"/>
+	<Class name="Asian50Cal" policy="gun"/>
+	<Class name="AsianCoaxialGun" policy="gun"/>
+	<Class name="AutoAA" policy="gun"/>
+	<Class name="AvengerCannon" policy="gun"/>
+	<Class name="BunkerBuster" policy="gun"/>
+	<Class name="Exocet" policy="gun"/>
+	<Class name="GaussCannon" policy="gun"/>
+	<Class name="Hellfire" policy="gun"/>
+	<Class name="SideWinder" policy="gun"/>	
+	<Class name="TACCannon" policy="gun"/>
+	<Class name="TankCannon" policy="gun"/>
+	<Class name="USCoaxialGun" policy="gun"/>
+  <Class name="USCoaxialGun_VTOL" policy="gun"/>
+	<Class name="USTankCannon" policy="gun"/>
+	<Class name="VehicleHurricane" policy="gun"/>
+	<Class name="VehicleRocketLauncher" policy="gun"/>
+	<Class name="VehicleShiTenV2" policy="gun"/>
+	<Class name="VehicleMachinegun" policy="gun"/>
+	<Class name="VehicleSingularity" policy="gun"/>
+	<Class name="VehicleGaussMounted" policy="gun"/>
+  <Class name="HovercraftGun" policy="gun"/>
+  <Class name="AHMachinegun" policy="gun"/>
+  <Class name="AVMachinegun" policy="gun"/>
+	
+	<!-- vehicles -->
+	<Class name="VehicleSeatSerializer" policy="cart" own="own"/>
+	<Class name="Asian_aaa" policy="car" own="own"/>
+	<Class name="Asian_apc" policy="car" own="own"/>
+	<Class name="Asian_helicopter" policy="car" own="own"/>
+	<Class name="Asian_ltv" policy="car" own="own"/>
+	<Class name="Asian_patrolboat" policy="car" own="own"/>
+	<Class name="Asian_tank" policy="car" own="own"/>	
+	<Class name="Asian_truck" policy="car" own="own"/>
+	<Class name="Civ_car1" policy="car" own="own"/>
+	<Class name="Civ_speedboat" policy="car" own="own"/>
+	<Class name="US_apc" policy="car" own="own"/>
+	<Class name="US_hovercraft" policy="car" own="own"/>
+	<Class name="US_ltv" policy="car" own="own"/>
+	<Class name="US_smallboat" policy="car" own="own"/>
+	<Class name="US_tank" policy="car" own="own"/>
+	<Class name="US_trolley" policy="car" own="own"/>
+	<Class name="US_vtol" policy="car" own="own"/>
+  <Class name="US_asv" policy="car" own="own"/>
+	
+	<!-- basic physicalized objects -->
+	<Class name="Default" policy="phys"/>
+	<Class name="BasicEntity" policy="phys"/>
+	<Class name="DestroyableObject" policy="phys"/>
+	<Class name="PressurizedObject" policy="phys"/>
+	<Class name="RigidBodyEx" policy="phys"/>
+	<Class name="RopeEntity" policy="phys"/>
+	<Class name="InteractiveEntity" policy="phys"/>
+	<Class name="Tornado" policy="phys"/>
+	<Class name="Constraint" policy="phys"/>
+
+	<!-- projectiles -->
+	<Class name="a2ahomingmissile" policy="proj"/>
+	<Class name="a2ghomingmissile" policy="proj"/>
+	<Class name="bunkerbuster" policy="proj"/>
+	<Class name="c4explosive" policy="proj"/>
+	<Class name="explosivegrenade" policy="proj"/>
+	<Class name="empgrenade" policy="proj"/>
+	<Class name="flashbanggrenade" policy="proj"/>
+	<Class name="homingmissile" policy="proj"/>
+	<Class name="rocket" policy="proj"/>
+	<Class name="claymoreexplosive" policy="proj"/>
+	<Class name="turret_rocket" policy="proj"/>	
+	<Class name="flashbang" policy="proj"/>
+	<Class name="gausstankbullet" policy="proj"/>	
+	<Class name="avexplosive" policy="proj"/>			
+	<Class name="scargrenade" policy="proj"/>
+	<Class name="singularityprojectile" policy="proj"/>
+   <Class name="Tank_singularityprojectile" policy="proj"/>
+	<Class name="smokegrenade" policy="proj"/>
+	<Class name="tacgunprojectile" policy="proj"/>
+	<Class name="GrenadeShell" policy="proj"/>		
+	<Class name="dumbaamissile" policy="proj"/>
+	<Class name="exocetmissile" policy="proj"/>
+	<Class name="helicoptermissile" policy="proj"/>
+	<Class name="tacprojectile" policy="proj"/>
+	<Class name="tank125" policy="proj"/>
+	<Class name="tank30" policy="proj"/>
+	<Class name="tankaa" policy="proj"/>
+	<Class name="towmissile" policy="proj"/>
+	<Class name="turret_rocket" policy="proj"/>
+	<Class name="gausstankbullet" policy="proj"/>
+	<Class name="flashbang" policy="proj"/>
+  <Class name="aybullet" policy="proj"/>
+  <Class name="asv20" policy="proj"/>
+  <Class name="fgl40remotegrenade" policy="proj"/>
+  <Class name="fgl40remoteemp" policy="proj"/>
+  <Class name="fgl40fraggrenade" policy="proj"/>
+  <Class name="fgl40empgrenade" policy="proj"/>
+  <Class name="fgl40bouncegrenade" policy="proj"/>
+  <Class name="fgl40bounceemp" policy="proj"/>
+  
+	<!-- misc -->
+	<Class name="CustomAmmoPickup" policy="obj"/>
+	<Class name="CustomAmmoPickupLarge" policy="obj"/>
+	<Class name="CustomAmmoPickupMedium" policy="obj"/>
+	<Class name="CustomAmmoPickupSmall" policy="obj"/>
+	<Class name="SpawnPoint" policy="obj"/>
+	<Class name="Ladder" policy="obj"/>
+	<Class name="BattleEvent" policy="obj"/>
+	<Class name="Factory" policy="capt"/>
+	<Class name="AlienEnergyPoint" policy="capt"/>
+	<Class name="SpawnGroup" policy="capt"/>
+	<Class name="Door" policy="door"/>
+	<Class name="Elevator" policy="door"/>
+	<Class name="ElevatorSwitch" policy="door"/>
+	<Class name="Flag" policy="door"/>
+	<Class name="Hazard" policy="obj"/>
+	<Class name="AreaShape" policy="obj"/>
+	<Class name="AnimObject" policy="obj"/>
+	<Class name="TeamRandomSoundVolume" policy="obj"/>
+	<Class name="MusicMoodSelector" policy="obj"/>
+	<Class name="AreaBox" policy="obj"/>
+	<Class name="AreaSphere" policy="obj"/>
+	<Class name="ProximityTrigger" policy="obj"/>
+	<Class name="MusicThemeSelector" policy="obj"/>
+	<Class name="MusicEndTheme" policy="obj"/>
+	<Class name="WindArea" policy="obj"/>
+	<Class name="TagPoint" policy="obj"/>	
+	<Class name="Lightning" policy="obj"/>	
+	<Class name="GravityBox" policy="obj"/>	
+	<Class name="SpectatorPoint" policy="obj"/>
+	<Class name="BuyZone" policy="capt"/>
+	<Class name="HQ" policy="capt"/>
+	<Class name="FogVolume" policy="obj"/>
+	<Class name="AreaTrigger" policy="obj"/>
+	<Class name="MusicPlayPattern" policy="obj"/>	
+	<Class name="ForbiddenArea" policy="capt"/>
+
+	<!-- Crysis Co-op -->
+	<Class name="CoopGrunt" policy="obj"/>
+	<Class name="CoopAlien" policy="obj"/>
+	<Class name="CoopScout" policy="obj"/>
+	<Class name="CoopHunter" policy="obj"/>
+	<Class name="CoopTrooper" policy="obj"/>
+	<Class name="AIAnchor" policy="obj"/>
+	<Class name="AIPoint" policy="obj"/>
+	<Class name="AIGrenades" policy="proj"/>
+	<Class name="AISmokeGrenades" policy="proj"/>
+	<!-- fallback -->
+	<Default policy="obj"/>
+</EntityScheduler>
+
