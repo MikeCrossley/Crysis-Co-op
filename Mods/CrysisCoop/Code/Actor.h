@@ -32,6 +32,10 @@
 #include "GrabHandler.h"
 #include "WeaponAttachmentManager.h"
 
+// Crysis Co-op
+#include <Coop\Actors\Animation\AnimationGraphState.h>
+// ~Crysis Co-op
+
 struct SActorFrameMovementParams
 {
 	SActorFrameMovementParams() : 
@@ -1091,6 +1095,12 @@ public:
 	void ChangeAnimGraph( const char *graph, int layer );
 	virtual bool SetAnimationInput( const char * inputID, const char * value )
 	{
+		CryLogAlways("[%s] Animation input %s received with animation %s.", GetEntity()->GetName(), inputID, value);
+
+		bool	bSignal = strcmp(inputID, "Signal") == 0;
+		bool	bAction = strcmp(inputID, "Action") == 0;
+		this->PlayNetworkedAnimation(bSignal ? EAnimationMode::AIANIM_SIGNAL : EAnimationMode::AIANIM_ACTION, value);
+
 		// Handle action and signal inputs via AIproxy, since the AI system and
 		// the AI agent behavior depend on those inputs.
 		if (IEntity* pEntity = GetEntity())
@@ -1099,8 +1109,6 @@ public:
 				{
 					if(pProxy->IsEnabled())
 					{
-						bool	bSignal = strcmp(inputID, "Signal") == 0;
-						bool	bAction = strcmp(inputID, "Action") == 0;
 						if(bSignal)
 						{
 							return pProxy->SetAGInput( AIAG_SIGNAL, value );
@@ -1246,6 +1254,8 @@ protected:
 
 	virtual Vec3 GetModelOffset() const { return GetStanceInfo(GetStance())->modelOffset; }
 
+	
+
 private:
 	mutable IInventory * m_pInventory;
 	void ClearExtensionCache();
@@ -1374,6 +1384,8 @@ public:
 private:
 	// Crysis Co-op
 
+	CAnimationGraphState* m_pAnimationGraphStateWrapper;
+
 	struct SPlayNetworkedAnimationParams
 	{
 		SPlayNetworkedAnimationParams() {};
@@ -1402,6 +1414,10 @@ public:
 	// Summary:
 	//	Broadcasts a networked animation to clients.
 	void PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation);
+
+	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, float value, TAnimationGraphQueryID * pQueryID);
+	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, int value, TAnimationGraphQueryID * pQueryID);
+	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, const char* value, TAnimationGraphQueryID * pQueryID);
 
 	// ~Crysis Co-op
 };

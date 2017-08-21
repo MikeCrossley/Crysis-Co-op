@@ -124,6 +124,15 @@
     <Filter Include="Coop\Nodes">
       <UniqueIdentifier>{688f1e35-169a-4f39-a0e4-102208eb1b49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coop\NewFilter1">
+      <UniqueIdentifier>{09f87ba6-7ba5-42a6-aaa1-8b04ef124338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\Actors\Movement">
+      <UniqueIdentifier>{79632a81-5c87-4085-8977-d2ebef87b7ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coop\Actors\Animation">
+      <UniqueIdentifier>{54f958a6-01c1-4e44-81da-1f66eff0192c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -791,6 +800,12 @@
     <ClCompile Include="Coop\Actors\CoopAlien.cpp">
       <Filter>Coop\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="Coop\Actors\Movement\CoopGruntMovementController.cpp">
+      <Filter>Coop\Actors\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Actors\Animation\AnimationGraphState.cpp">
+      <Filter>Coop\Actors\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1381,6 +1396,12 @@
     </ClInclude>
     <ClInclude Include="Coop\Actors\CoopAlien.h">
       <Filter>Coop\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\Movement\CoopGruntMovementController.h">
+      <Filter>Coop\Actors\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Actors\Animation\AnimationGraphState.h">
+      <Filter>Coop\Actors\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

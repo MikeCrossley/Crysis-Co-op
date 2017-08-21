@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -86,7 +86,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
-    <OutDir>$(SolutionDir)..\Bin64\</OutDir>
+    <OutDir>..\..\..\..\Crysis Wars\Mods\CrysisCoop\Bin64\</OutDir>
     <IntDir>$(SolutionDir)..\..\..\BinTemp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -207,9 +207,10 @@
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)CrysisWarsMod.dll</OutputFile>
+      <OutputFile>$(OutDir)CrysisCoop.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)CryGame.pdb</ProgramDatabaseFile>
@@ -238,12 +239,14 @@
     <ClCompile Include="Claymore.cpp" />
     <ClCompile Include="ClientSynchedStorage.cpp" />
     <ClCompile Include="CompatibilityAlienMovementController.cpp" />
+    <ClCompile Include="Coop\Actors\Animation\AnimationGraphState.cpp" />
     <ClCompile Include="Coop\Actors\CoopAlien.cpp" />
     <ClCompile Include="Coop\Actors\CoopGrunt.cpp" />
     <ClCompile Include="Coop\Actors\CoopHunter.cpp" />
     <ClCompile Include="Coop\Actors\CoopPlayer.cpp" />
     <ClCompile Include="Coop\Actors\CoopScout.cpp" />
     <ClCompile Include="Coop\Actors\CoopTrooper.cpp" />
+    <ClCompile Include="Coop\Actors\Movement\CoopGruntMovementController.cpp" />
     <ClCompile Include="Coop\CoopCutsceneSystem.cpp" />
     <ClCompile Include="Coop\CoopReadability.cpp" />
     <ClCompile Include="Coop\CoopSystem.cpp" />
@@ -469,12 +472,14 @@
     <ClInclude Include="Claymore.h" />
     <ClInclude Include="ClientSynchedStorage.h" />
     <ClInclude Include="CompatibilityAlienMovementController.h" />
+    <ClInclude Include="Coop\Actors\Animation\AnimationGraphState.h" />
     <ClInclude Include="Coop\Actors\CoopAlien.h" />
     <ClInclude Include="Coop\Actors\CoopGrunt.h" />
     <ClInclude Include="Coop\Actors\CoopHunter.h" />
     <ClInclude Include="Coop\Actors\CoopPlayer.h" />
     <ClInclude Include="Coop\Actors\CoopScout.h" />
     <ClInclude Include="Coop\Actors\CoopTrooper.h" />
+    <ClInclude Include="Coop\Actors\Movement\CoopGruntMovementController.h" />
     <ClInclude Include="Coop\CoopCutsceneSystem.h" />
     <ClInclude Include="Coop\CoopReadability.h" />
     <ClInclude Include="Coop\CoopSystem.h" />

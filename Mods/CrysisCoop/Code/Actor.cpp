@@ -259,6 +259,7 @@ CActor::CActor()
 , m_dropWpnPendingId(0)
 , m_dropWpnWaitTime(0.f)
 , m_reviveNoReactionTime(0.f)
+, m_pAnimationGraphStateWrapper(nullptr)
 {
 	m_currentPhysProfile=GetDefaultProfile(eEA_Physics);
 	//memset(&m_stances,0,sizeof(m_stances));
@@ -2708,10 +2709,19 @@ void CActor::ProcessIKLimbs(ICharacterInstance *pCharacter,float frameTime)
 
 IAnimationGraphState * CActor::GetAnimationGraphState()
 {
+	if (!m_pAnimationGraphStateWrapper)
+		m_pAnimationGraphStateWrapper = new CAnimationGraphState(this, 0);
+
 	if (m_pAnimatedCharacter)
-		return m_pAnimatedCharacter->GetAnimationGraphState();
+	{
+		m_pAnimationGraphStateWrapper->m_pAnimationGraphState = m_pAnimatedCharacter->GetAnimationGraphState();
+		return gEnv->bServer ? m_pAnimationGraphStateWrapper : m_pAnimatedCharacter->GetAnimationGraphState();
+	}
 	else
+	{
+		m_pAnimationGraphStateWrapper->m_pAnimationGraphState = 0;
 		return NULL;
+	}
 }
 
 void CActor::SetFacialAlertnessLevel(int alertness)
@@ -4348,10 +4358,7 @@ void CActor::ForceAutoDrop()
 
 IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
 {
-	if (!gEnv->bServer)
-		return true;
-
-	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	if (IAnimationGraphState* pGraphState = (this->GetAnimatedCharacter() ? this->GetAnimatedCharacter()->GetAnimationGraphState() : 0))
 	{
 		CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
 		if (params.nMode == EAnimationMode::AIANIM_SIGNAL)
@@ -4372,7 +4379,38 @@ IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
 //	Broadcasts a networked animation to clients.
 void CActor::PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation)
 {
-	GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams((int)Mode, Animation), eRMI_ToAllClients);
+	GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams((int)Mode, Animation), eRMI_ToRemoteClients);
+}
+
+// Called when AG inputs are received.
+
+void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, float value, TAnimationGraphQueryID * pQueryID)
+{
+	if (bSucceeded && gEnv->bServer)
+	{
+
+	}
+}
+
+void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, int value, TAnimationGraphQueryID * pQueryID)
+{
+	if (bSucceeded && gEnv->bServer)
+	{
+
+	}
+}
+
+void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, const char* value, TAnimationGraphQueryID * pQueryID)
+{
+	IAnimationGraphState* pState = m_pAnimatedCharacter ? m_pAnimatedCharacter->GetAnimationGraphState() : 0;
+	if (bSucceeded && gEnv->bServer && !this->IsPlayer())
+	{
+		if (pState->GetInputId("Action") == id)
+			this->PlayNetworkedAnimation(EAnimationMode::AIANIM_ACTION, value);
+		if (pState->GetInputId("Signal") == id)
+			this->PlayNetworkedAnimation(EAnimationMode::AIANIM_SIGNAL, value);
+		//GetAnimationGraphState()->GetInputName(id);
+	}
 }
 
 // ~Crysis Co-op
