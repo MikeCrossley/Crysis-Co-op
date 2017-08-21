@@ -3,6 +3,7 @@
 #include "PlayerMovementController.h"
 #include "IVehicleSystem.h"
 #include "Weapon.h"
+#include "Movement\CoopGruntMovementController.h"
 
 CCoopGrunt::CCoopGrunt() :
 	m_nStance(STANCE_RELAXED),
@@ -103,9 +104,9 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 	CPlayer::Update(ctx, updateSlot);
 
 	// Register AI System in MP
-	if (gEnv->bServer && !gEnv->bEditor)
+	if (/*gEnv->bServer && */!gEnv->bEditor)
 		RegisterMultiplayerAI();
-
+	
 	// Movement reqeust stuff so proper anims play on client
 	if (gEnv->bServer)
 	{
@@ -251,6 +252,11 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 	}
 }
 
+IActorMovementController* CCoopGrunt::CreateMovementController()
+{
+	return new CCoopGruntMovementController(this);
+}
+
 bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile, int flags )
 {
 	if (!CPlayer::NetSerialize(ser, aspect, profile, flags))
@@ -304,3 +310,33 @@ IMPLEMENT_RMI(CCoopGrunt, ClChangeSuitMode)
 	return true;
 }
 
+
+IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
+{
+	//CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
+
+	if (!gEnv->bServer)
+	{
+		CMovementRequest movRequest = CMovementRequest();
+		if ((params.flags & CMovementRequest::eMRF_ActorTarget) != 0)
+		{
+			movRequest.SetActorTarget(params.targetParams);
+		}
+		else if ((params.flags & CMovementRequest::eMRF_RemoveActorTarget) != 0)
+		{
+			movRequest.ClearActorTarget();
+		}
+
+
+		this->GetMovementController()->RequestMovement(movRequest);
+	}
+	
+
+	return true;
+}
+
+void CCoopGrunt::SendSpecialMovementRequest(uint32 reqFlags, const SActorTargetParams& targetParams)
+{
+	//CryLogAlways("[%s] Sending actor target to clients with %s animation %s.", GetEntity()->GetName(), targetParams.signalAnimation ? "signal" : "action", targetParams.animation.c_str());
+	GetGameObject()->InvokeRMI(ClSpecialMovementRequest(), SSpecialMovementRequestParams(reqFlags, targetParams, targetParams.animation), eRMI_ToAllClients | eRMI_NoLocalCalls);
+}

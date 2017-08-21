@@ -144,14 +144,12 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 	gEnv->pAISystem->FlushSystem();
 	gEnv->pAISystem->Enable();
 
-	gEnv->pAISystem->ReloadSmartObjectRules();
-	gEnv->pAISystem->ReloadActions();
+	//gEnv->pAISystem->ReloadSmartObjectRules();
+	//gEnv->pAISystem->ReloadActions();
 	gEnv->pAISystem->LoadNavigationData(pLevel->GetPath(), "mission0");
-	//gEnv->pAISystem->loadcover
-	//gEnv->pAISystem->load
-	//gEnv->bMultiplayer = true;
 
 	ICVar* pSystemUpdate = gEnv->pConsole->GetCVar("ai_systemupdate");
+	pSystemUpdate->SetFlags(pSystemUpdate->GetFlags() | EVarFlags::VF_NOT_NET_SYNCED); // This was actually broken before...
 	if (gEnv->bServer)
 		pSystemUpdate->Set(1);
 	else

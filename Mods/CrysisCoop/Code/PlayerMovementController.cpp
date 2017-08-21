@@ -290,7 +290,7 @@ bool CPlayerMovementController::RequestMovement( CMovementRequest& request )
 	}
 */
 
-	if (request.HasActorTarget())
+	if (request.HasActorTarget() && (m_pPlayer->IsPlayer() || gEnv->bServer))
 	{
 		const SActorTargetParams& p = request.GetActorTarget();
 
@@ -332,7 +332,7 @@ bool CPlayerMovementController::RequestMovement( CMovementRequest& request )
 			}
 		}
 	}
-	else if (request.RemoveActorTarget())
+	else if (request.RemoveActorTarget() && (m_pPlayer->IsPlayer() || gEnv->bServer))
 	{
 		if(m_pPlayer->GetAnimationGraphState())
 			m_pPlayer->GetAnimationGraphState()->ClearTrigger(eAGTU_AI);

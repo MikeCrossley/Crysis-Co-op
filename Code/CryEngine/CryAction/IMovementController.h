@@ -63,6 +63,15 @@ struct SActorTargetParams
 
 class CMovementRequest
 {
+	// Crysis Co-op
+
+	// Needs to be friended for proper access to variables!
+	friend class CCoopGrunt;
+	friend class CCoopGruntMovementController;
+	// These are TODO placeholders.
+	friend class CCoopAlienMovementController;
+
+	// ~Crysis Co-op
 public:
 	CMovementRequest()
 		: m_flags(0),
