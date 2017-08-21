@@ -124,6 +124,11 @@ public:
 	//Crysis Co-op
 	virtual int PlayNetworkedSoundEvent(IFunctionHandler *pH, const char *sSoundOrEventName, Vec3 vOffset, Vec3 vDirection, uint32 nSoundFlags, uint32 nSemantic);
 	virtual int SetNetworkedAttachmentEffect(IFunctionHandler *pH, int characterSlot, const char *attachmentName, const char *effectName, Vec3 offset, Vec3 dir, float scale, int flags);
+	
+	// Summary:
+	//	Used with AI.Animation to pass animations from Lua behaviors to C++ so that clients can play them without extra hassle.
+	virtual int PlayNetworkedAnimation(IFunctionHandler *pH);
+
 	//~Crysis Co-op
 
 	//------------------------------------------------------------------------

@@ -1370,6 +1370,40 @@ public:
 	int m_saturationID;
 
 	int m_hitReactionID;
+
+private:
+	// Crysis Co-op
+
+	struct SPlayNetworkedAnimationParams
+	{
+		SPlayNetworkedAnimationParams() {};
+		SPlayNetworkedAnimationParams(int Mode, const string& Animation) :
+			nMode(Mode),
+			sAnimation(Animation)
+		{};
+
+		// Type of the animation (EAnimationMode as integer)
+		int nMode;
+		// Animation name.
+		string sAnimation;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("nMode", nMode);
+			ser.Value("sAnimation", sAnimation);
+		}
+	};
+
+	DECLARE_CLIENT_RMI_PREATTACH(ClPlayNetworkedAnimation, SPlayNetworkedAnimationParams, eNRT_ReliableOrdered);
+
+
+public:
+
+	// Summary:
+	//	Broadcasts a networked animation to clients.
+	void PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation);
+
+	// ~Crysis Co-op
 };
 
 #endif //__Actor_H__

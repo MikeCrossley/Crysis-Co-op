@@ -4343,3 +4343,36 @@ void CActor::ForceAutoDrop()
 		}
 	}
 }
+
+// Crysis Co-op
+
+IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
+{
+	if (!gEnv->bServer)
+		return true;
+
+	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	{
+		CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
+		if (params.nMode == EAnimationMode::AIANIM_SIGNAL)
+		{
+			pGraphState->SetInput("Signal", params.sAnimation);
+		}
+		else if (params.nMode == EAnimationMode::AIANIM_ACTION)
+		{
+			pGraphState->SetInput("Action", params.sAnimation);
+		}
+	}
+	//this->GetAnimationGraphState()->SetInput()
+
+	return true;
+}
+
+// Summary:
+//	Broadcasts a networked animation to clients.
+void CActor::PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation)
+{
+	GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams((int)Mode, Animation), eRMI_ToAllClients);
+}
+
+// ~Crysis Co-op

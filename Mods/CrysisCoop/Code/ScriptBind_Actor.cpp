@@ -126,6 +126,7 @@ CScriptBind_Actor::CScriptBind_Actor(ISystem *pSystem)
 	//Crysis Co-op
 	SCRIPT_REG_TEMPLFUNC(PlayNetworkedSoundEvent, "sSoundOrEventName, vOffset, vDirection, nFlags, nSemantic");
 	SCRIPT_REG_TEMPLFUNC(SetNetworkedAttachmentEffect, "characterSlot, attachmentName, effectName, offset, dir, scale, flags");
+	SCRIPT_REG_FUNC(PlayNetworkedAnimation);
 	//~Crysis Co-op
 
 	SCRIPT_REG_TEMPLFUNC(ActivateNanoSuit,"on");
@@ -1806,6 +1807,28 @@ int CScriptBind_Actor::SetNetworkedAttachmentEffect(IFunctionHandler *pH, int ch
 
 	pActor->GetGameObject()->InvokeRMI(CActor::ClSetNetworkedAttachmentEffect(), CActor::SNetworkedAttachmentEffect(characterSlot, attachmentName, effectName, offset, dir, scale, flags), eRMI_ToAllClients);
 
+	return pH->EndFunction();
+}
+
+// Summary:
+//	Used with AI.Animation to pass animations from Lua behaviors to C++ so that clients can play them without extra hassle.
+int CScriptBind_Actor::PlayNetworkedAnimation(IFunctionHandler *pH)
+{
+	CryLogAlways("[PlayNetworkedAnimation] INVOKE");
+
+	SCRIPT_CHECK_PARAMETERS(3);
+	CActor *pActor = GetActor(pH);
+
+	if (!pActor)
+		return pH->EndFunction();
+
+	EAnimationMode eType;
+	const char* sAnimationName;
+
+	pH->GetParam(2, (int&)eType);
+	pH->GetParam(3, sAnimationName);
+
+	pActor->PlayNetworkedAnimation(eType, sAnimationName);
 	return pH->EndFunction();
 }
 

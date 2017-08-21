@@ -393,7 +393,12 @@ AIBehaviour.ScoutMOACAttack = {
 			AI.SetForcedNavigation( entity.id, vTmp );
 			local res = AIBehaviour.SCOUTDEFAULT:ScoutCheckClearanceMain( entity, vTmp, 1.0, 5.0 );
 			if ( res == 0 )then
+				-- Crysis Co-op
+				entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, animationName);
+				-- ~Crysis Co-op
+				
 				AI.Animation(entity.id,AIANIM_SIGNAL,animationName);
+				
 				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
 			end
 		end
@@ -523,6 +528,11 @@ AIBehaviour.ScoutMOACAttack = {
 				FastScaleVector( vJammer, vJammer, 30.0 );
 				AI.SetForcedNavigation( entity.id, vJammer );
 				AI.Animation(entity.id,AIANIM_SIGNAL,"largeHit");
+				
+				-- Crysis Co-op
+				entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "largeHit");
+				-- ~Crysis Co-op
+				
 				if ( entity.AI.CurrentHook == fSCOUTMOACATTACK_JAMMER ) then
 				elseif ( entity.AI.CurrentHook == fSCOUTMOACATTACK_JAMMERDUSH ) then
 				else
@@ -767,6 +777,9 @@ AIBehaviour.ScoutMOACAttack = {
 
 			if ( AI.GetAttentionTargetDistance(entity.id) > 50.0 ) then
 				AI.Animation(entity.id,AIANIM_SIGNAL,"foundPlayer");
+				-- Crysis Co-op
+				entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "foundPlayer");
+				-- ~Crysis Co-op
 			end
 
 		end
@@ -1146,6 +1159,9 @@ AIBehaviour.ScoutMOACAttack = {
 				if ( dotproduct3d( vTmp, vTmp2 ) > 0.0 and res == 0 ) then
 					--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 					AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "readyToFly");
+					-- ~Crysis Co-op
 				end
 				entity.AI.bLock = true;
 				entity.gameParams.forceView = 150.0;
@@ -2023,8 +2039,14 @@ AIBehaviour.ScoutMOACAttack = {
 						entity.AI.bAnimation =ture;
 						if ( entity.AI.bRvs == true ) then
 							AI.Animation(entity.id,AIANIM_SIGNAL,"rotateLeft");
+							-- Crysis Co-op
+							entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "rotateLeft");
+							-- ~Crysis Co-op
 						else
 							AI.Animation(entity.id,AIANIM_SIGNAL,"rotateRight");
+							-- Crysis Co-op
+							entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "rotateRight");
+							-- ~Crysis Co-op
 						end
 					end
 
@@ -2179,6 +2201,9 @@ AIBehaviour.ScoutMOACAttack = {
 						if ( dotproduct3d( vTmp, vTmp2 ) > 0.0 ) then
 							AI.SetForcedNavigation( entity.id, entity.AI.vZero );
 							AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
+							-- Crysis Co-op
+							entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "readyToFly");
+							-- ~Crysis Co-op
 							--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 						end
 					end
@@ -2681,6 +2706,9 @@ AIBehaviour.ScoutMOACAttack = {
 			if ( res == 0 ) then
 				--entity.actor:PlayNetworkedSoundEvent("Sounds/alien:scout:retreat", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				AI.Animation(entity.id,AIANIM_SIGNAL,"readyToFly");
+				-- Crysis Co-op
+				entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "readyToFly");
+				-- ~Crysis Co-op
 			end			
 
 			SubVectors( entity.AI.vDirectionRsv, target:GetPos(), entity:GetPos() );
@@ -3085,8 +3113,14 @@ AIBehaviour.ScoutMOACAttack = {
 				NormalizeVector( dfwd );
 				if ( dotproduct3d( dfwd, dwng ) > 0 ) then
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeRight");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeRight");
+					-- ~Crysis Co-op
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeLeft");
+					-- ~Crysis Co-op
 				end
 				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
@@ -3336,8 +3370,14 @@ AIBehaviour.ScoutMOACAttack = {
 				NormalizeVector( dfwd );
 				if ( dotproduct3d( dfwd, dwng ) > 0 ) then
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeRight");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeRight");
+					-- ~Crysis Co-op
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeLeft");
+					-- ~Crysis Co-op
 				end
 				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
@@ -3611,8 +3651,14 @@ AIBehaviour.ScoutMOACAttack = {
 				NormalizeVector( dfwd );
 				if ( dotproduct3d( dfwd, dwng ) > 0 ) then
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeRight");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeRight");
+					-- ~Crysis Co-op
 				else
 					AI.Animation(entity.id,AIANIM_SIGNAL,"dodgeLeft");
+					-- Crysis Co-op
+					entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "dodgeLeft");
+					-- ~Crysis Co-op
 				end
 				entity.actor:PlayNetworkedSoundEvent("sounds/alien:scout_big_rolloff:dodging", entity.AI.vZero, entity:GetDirectionVector(1), SOUND_DEFAULT_3D, SOUND_SEMANTIC_AI_READABILITY);
 				entity.actor:SetNetworkedAttachmentEffect(0, "dodge", "alien_special.scout.dodge", g_Vectors.v000, g_Vectors.v010, 1, 0); 
