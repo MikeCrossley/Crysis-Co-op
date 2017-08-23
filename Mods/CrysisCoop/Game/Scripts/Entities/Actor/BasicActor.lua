@@ -2403,6 +2403,8 @@ function BasicActor:GrabObject(object, query)
 		return 0;
 	end
 	
+	System.LogAlways("BasicActor:GrabObject");
+	
 	self.grabParams.entityId = object.id;
 	local grabParams = new(self.grabParams);
 	grabParams.event = "grabObject";

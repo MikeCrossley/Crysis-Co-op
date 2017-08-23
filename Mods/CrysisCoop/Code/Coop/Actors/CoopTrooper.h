@@ -25,6 +25,7 @@ public:
 	virtual void Update(SEntityUpdateContext& ctx, int updateSlot);
 	virtual bool NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile, int flags );
 	virtual void ProcessEvent(SEntityEvent& event);
+	virtual bool IsAnimEvent(const char* sAnimSignal, string* sAnimEventName, float* fEventTime);
 	//~CCoopTrooper
 
 protected:

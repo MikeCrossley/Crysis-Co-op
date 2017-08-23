@@ -266,9 +266,6 @@ AIBehaviour.TrooperAttack = {
 --					entity:AddImpulse(-1,nil,dir,distance*500,1);
 					--entity:SetPhysicParams(PHYSICPARAM_VELOCITY, dir);
 						AI.Animation(entity.id,AIANIM_SIGNAL,"meleeJumpAttack");
-						-- Crysis Co-op
-						entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "meleeJumpAttack");
-						-- ~Crysis Co-op
 					--end
 				end
 			end

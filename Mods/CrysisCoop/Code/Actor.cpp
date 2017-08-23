@@ -260,6 +260,7 @@ CActor::CActor()
 , m_dropWpnWaitTime(0.f)
 , m_reviveNoReactionTime(0.f)
 , m_pAnimationGraphStateWrapper(nullptr)
+, m_sLastNetworkedAnim("")
 {
 	m_currentPhysProfile=GetDefaultProfile(eEA_Physics);
 	//memset(&m_stances,0,sizeof(m_stances));
@@ -1268,6 +1269,11 @@ void CActor::Update(SEntityUpdateContext& ctx, int slot)
 
 	if (GetEntity()->IsHidden() && !(GetEntity()->GetFlags() & ENTITY_FLAG_UPDATE_HIDDEN))
 		return;
+
+	//Crysis Co-op
+	if (gEnv->bServer && GetHealth() > 0.f)
+		UpdateAnimEvents(ctx.fFrameTime);
+	//~Crysis Co-op
   
 	if (m_sleepTimer>0.0f && gEnv->bServer)
 	{
@@ -3483,6 +3489,25 @@ IMPLEMENT_RMI(CActor, ClPlayReadabilitySound)
 	}
 	return true;
 }
+
+IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
+{
+	if (IAnimationGraphState* pGraphState = (this->GetAnimatedCharacter() ? this->GetAnimatedCharacter()->GetAnimationGraphState() : 0))
+	{
+		CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
+		if (params.nMode == EAnimationMode::AIANIM_SIGNAL)
+		{
+			pGraphState->SetInput("Signal", params.sAnimation);
+		}
+		else if (params.nMode == EAnimationMode::AIANIM_ACTION)
+		{
+			pGraphState->SetInput("Action", params.sAnimation);
+		}
+	}
+	//this->GetAnimationGraphState()->SetInput()
+
+	return true;
+}
 // ~Crysis Co-op
 
 //------------------------------------------------------------------------
@@ -4356,33 +4381,93 @@ void CActor::ForceAutoDrop()
 
 // Crysis Co-op
 
-IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
+void CActor::UpdateAnimEvents(float fFrameTime)
 {
-	if (IAnimationGraphState* pGraphState = (this->GetAnimatedCharacter() ? this->GetAnimatedCharacter()->GetAnimationGraphState() : 0))
+	if (!gEnv->bServer)
+		return;
+
+	std::list<SQueuedAnimEvent>::iterator iterator;
+	for (iterator = m_AnimEventQueue.begin(); iterator != m_AnimEventQueue.end(); ++iterator)
 	{
-		CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
-		if (params.nMode == EAnimationMode::AIANIM_SIGNAL)
+		SQueuedAnimEvent &animEvent = (*iterator);
+
+		animEvent.fElapsed += fFrameTime;
+
+		if (animEvent.fElapsed > animEvent.fEventTime)
 		{
-			pGraphState->SetInput("Signal", params.sAnimation);
-		}
-		else if (params.nMode == EAnimationMode::AIANIM_ACTION)
-		{
-			pGraphState->SetInput("Action", params.sAnimation);
+			//this->CreateScriptEvent("animationevent", 0.f, animEvent.sAnimEventName);
+
+			AnimEventInstance sEvent;
+			sEvent.m_EventName = animEvent.sAnimEventName;
+
+			this->AnimationEvent(GetEntity()->GetCharacter(0), sEvent);
+
+			m_AnimEventQueue.erase(iterator);
+			CryLogAlways("[CActor::UpdateAnimEvents] Animation Event Played %s", animEvent.sAnimEventName);
+			break;
 		}
 	}
-	//this->GetAnimationGraphState()->SetInput()
-
-	return true;
 }
 
-// Summary:
-//	Broadcasts a networked animation to clients.
-void CActor::PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation)
+void CActor::QueueAnimationEvent(SQueuedAnimEvent sEvent)
 {
-	GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams((int)Mode, Animation), eRMI_ToRemoteClients);
+	if (!gEnv->bServer || gEnv->bEditor)
+		return;
+
+	CryLogAlways("[CActor::QueueAnimationEvent] Animation Event Queued %s", sEvent.sAnimEventName);
+
+	m_AnimEventQueue.push_back(sEvent);
 }
 
-// Called when AG inputs are received.
+bool CActor::SetAnimationInput(const char * inputID, const char * value)
+{
+	CryLogAlways("[%s] Animation input %s received with animation %s.", GetEntity()->GetName(), inputID, value);
+
+	bool	bSignal = strcmp(inputID, "Signal") == 0;
+	bool	bAction = strcmp(inputID, "Action") == 0;
+	
+	if (strcmp(value, m_sLastNetworkedAnim) != 0)
+	{
+		this->GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams(bSignal ? EAnimationMode::AIANIM_SIGNAL : EAnimationMode::AIANIM_ACTION, value), eRMI_ToRemoteClients);
+		m_sLastNetworkedAnim = value;
+	}
+
+
+	// Handle action and signal inputs via AIproxy, since the AI system and
+	// the AI agent behavior depend on those inputs.
+	if (IEntity* pEntity = GetEntity())
+		if (IAIObject* pAI = pEntity->GetAI())
+			if (IUnknownProxy* pProxy = pAI->GetProxy())
+			{
+				if (pProxy->IsEnabled())
+				{
+					if (bSignal)
+					{
+						return pProxy->SetAGInput(AIAG_SIGNAL, value);
+					}
+					else if (bAction)
+					{
+						// Dejan: actions should not go through the ai proxy anymore!
+						/*
+						if(_stricmp(value, "idle") == 0)
+						return pProxy->ResetAGInput( AIAG_ACTION );
+						else
+						{
+						return pProxy->SetAGInput( AIAG_ACTION, value );
+						}
+						*/
+					}
+				}
+			}
+
+	if (IAnimationGraphState * pState = GetAnimationGraphState())
+	{
+		pState->SetInput(pState->GetInputId(inputID), value);
+		return true;
+	}
+
+	return false;
+}
 
 void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, float value, TAnimationGraphQueryID * pQueryID)
 {
@@ -4405,12 +4490,23 @@ void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, con
 	IAnimationGraphState* pState = m_pAnimatedCharacter ? m_pAnimatedCharacter->GetAnimationGraphState() : 0;
 	if (bSucceeded && gEnv->bServer && !this->IsPlayer())
 	{
-		if (pState->GetInputId("Action") == id)
-			this->PlayNetworkedAnimation(EAnimationMode::AIANIM_ACTION, value);
-		if (pState->GetInputId("Signal") == id)
-			this->PlayNetworkedAnimation(EAnimationMode::AIANIM_SIGNAL, value);
+		if (strcmp(value, m_sLastNetworkedAnim) != 0)
+		{
+			if (pState->GetInputId("Action") == id)
+				this->GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams(EAnimationMode::AIANIM_ACTION, value), eRMI_ToRemoteClients);
+			if (pState->GetInputId("Signal") == id)
+				this->GetGameObject()->InvokeRMI(ClPlayNetworkedAnimation(), SPlayNetworkedAnimationParams(EAnimationMode::AIANIM_SIGNAL, value), eRMI_ToRemoteClients);
+
+			m_sLastNetworkedAnim = value;
+		}
+		SQueuedAnimEvent sAnimEvent = SQueuedAnimEvent();
+
+		if (this->IsAnimEvent(value, &sAnimEvent.sAnimEventName, &sAnimEvent.fEventTime))
+		{
+			QueueAnimationEvent(sAnimEvent);
+		}
+
 		//GetAnimationGraphState()->GetInputName(id);
 	}
 }
-
 // ~Crysis Co-op

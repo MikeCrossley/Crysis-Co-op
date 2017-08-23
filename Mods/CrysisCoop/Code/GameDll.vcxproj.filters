@@ -124,9 +124,6 @@
     <Filter Include="Coop\Nodes">
       <UniqueIdentifier>{688f1e35-169a-4f39-a0e4-102208eb1b49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coop\NewFilter1">
-      <UniqueIdentifier>{09f87ba6-7ba5-42a6-aaa1-8b04ef124338}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Coop\Actors\Movement">
       <UniqueIdentifier>{79632a81-5c87-4085-8977-d2ebef87b7ee}</UniqueIdentifier>
     </Filter>

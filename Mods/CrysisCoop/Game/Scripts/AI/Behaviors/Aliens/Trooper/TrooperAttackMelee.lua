@@ -91,9 +91,6 @@ AIBehaviour.TrooperAttackMelee = {
 --			entity:SelectPipe(0,"tr_melee_timeout");
 			--entity:InsertSubpipe(AIGOALPIPE_NOTDUPLICATE,"tr_do_melee");
 			AI.Animation(entity.id,AIANIM_SIGNAL,"meleeAttack");
-			-- Crysis Co-op
-			entity.actor:PlayNetworkedAnimation(entity.id, AIANIM_SIGNAL, "meleeAttack");
-			-- ~Crysis Co-op
 		end
 	end,
 	

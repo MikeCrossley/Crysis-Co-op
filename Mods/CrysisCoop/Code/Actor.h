@@ -800,6 +800,30 @@ public:
 		}
 	};
 
+	CAnimationGraphState* m_pAnimationGraphStateWrapper;
+
+	struct SPlayNetworkedAnimationParams
+	{
+		SPlayNetworkedAnimationParams() {};
+		SPlayNetworkedAnimationParams(int Mode, const string& Animation) :
+			nMode(Mode),
+			sAnimation(Animation)
+		{};
+
+		// Type of the animation (EAnimationMode as integer)
+		int nMode;
+		// Animation name.
+		string sAnimation;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("nMode", nMode);
+			ser.Value("sAnimation", sAnimation);
+		}
+	};
+
+	DECLARE_CLIENT_RMI_PREATTACH(ClPlayNetworkedAnimation, SPlayNetworkedAnimationParams, eNRT_ReliableOrdered);
+
 	DECLARE_CLIENT_RMI_PREATTACH(ClLooseHelmet, SLooseHelmetParams, eNRT_ReliableUnordered);
 
 	DECLARE_CLIENT_RMI_NOATTACH(ClPlayNetworkedSoundEvent, SPlayNetworkedSoundEvent, eNRT_ReliableUnordered);
@@ -1093,49 +1117,7 @@ public:
 	// forces the animation graph to select a state
 	void QueueAnimationState( const char * state );
 	void ChangeAnimGraph( const char *graph, int layer );
-	virtual bool SetAnimationInput( const char * inputID, const char * value )
-	{
-		CryLogAlways("[%s] Animation input %s received with animation %s.", GetEntity()->GetName(), inputID, value);
-
-		bool	bSignal = strcmp(inputID, "Signal") == 0;
-		bool	bAction = strcmp(inputID, "Action") == 0;
-		this->PlayNetworkedAnimation(bSignal ? EAnimationMode::AIANIM_SIGNAL : EAnimationMode::AIANIM_ACTION, value);
-
-		// Handle action and signal inputs via AIproxy, since the AI system and
-		// the AI agent behavior depend on those inputs.
-		if (IEntity* pEntity = GetEntity())
-			if (IAIObject* pAI = pEntity->GetAI())
-				if (IUnknownProxy* pProxy = pAI->GetProxy())
-				{
-					if(pProxy->IsEnabled())
-					{
-						if(bSignal)
-						{
-							return pProxy->SetAGInput( AIAG_SIGNAL, value );
-						}
-						else if(bAction)
-						{
-							// Dejan: actions should not go through the ai proxy anymore!
-							/*
-							if(_stricmp(value, "idle") == 0)
-								return pProxy->ResetAGInput( AIAG_ACTION );
-							else
-							{
-								return pProxy->SetAGInput( AIAG_ACTION, value );
-							}
-							*/
-						}
-					}
-				}
-
-		if (IAnimationGraphState * pState = GetAnimationGraphState())
-		{
-			pState->SetInput( pState->GetInputId(inputID), value );
-			return true;
-		}
-
-		return false;
-	}
+	virtual bool SetAnimationInput(const char * inputID, const char * value);
 
 	//
 	virtual int GetBoneID(int ID,int slot = 0) const;
@@ -1381,43 +1363,30 @@ public:
 
 	int m_hitReactionID;
 
-private:
+public:
 	// Crysis Co-op
 
-	CAnimationGraphState* m_pAnimationGraphStateWrapper;
-
-	struct SPlayNetworkedAnimationParams
+	struct SQueuedAnimEvent
 	{
-		SPlayNetworkedAnimationParams() {};
-		SPlayNetworkedAnimationParams(int Mode, const string& Animation) :
-			nMode(Mode),
-			sAnimation(Animation)
-		{};
-
-		// Type of the animation (EAnimationMode as integer)
-		int nMode;
-		// Animation name.
-		string sAnimation;
-
-		void SerializeWith(TSerialize ser)
-		{
-			ser.Value("nMode", nMode);
-			ser.Value("sAnimation", sAnimation);
-		}
+		SQueuedAnimEvent() : sAnimEventName(""), fEventTime(0.f), fElapsed(0.f) {};
+		SQueuedAnimEvent(string name, float eventTime) : sAnimEventName(name), fEventTime(eventTime), fElapsed(0.f) {};
+		string sAnimEventName;
+		float fEventTime;
+		float fElapsed;
 	};
 
-	DECLARE_CLIENT_RMI_PREATTACH(ClPlayNetworkedAnimation, SPlayNetworkedAnimationParams, eNRT_ReliableOrdered);
-
-
-public:
-
-	// Summary:
-	//	Broadcasts a networked animation to clients.
-	void PlayNetworkedAnimation(EAnimationMode Mode, const string& Animation);
+	virtual bool IsAnimEvent(const char* sAnimSignal, string* sAnimEventName, float* fEventTime) { *sAnimEventName = ""; *fEventTime = 0.f; return false; };
+	void QueueAnimationEvent(SQueuedAnimEvent sEvent);
+	void UpdateAnimEvents(float fFrameTime);
 
 	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, float value, TAnimationGraphQueryID * pQueryID);
 	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, int value, TAnimationGraphQueryID * pQueryID);
 	void OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, const char* value, TAnimationGraphQueryID * pQueryID);
+
+private:
+
+	std::list<SQueuedAnimEvent> m_AnimEventQueue;
+	string m_sLastNetworkedAnim;
 
 	// ~Crysis Co-op
 };

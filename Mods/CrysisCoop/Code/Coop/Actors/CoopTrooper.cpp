@@ -187,3 +187,21 @@ bool CCoopTrooper::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 pr
 	return true;
 }
 
+bool CCoopTrooper::IsAnimEvent(const char* sAnimSignal, string* sAnimEventName, float* fEventTime)
+{
+	if (strcmp(sAnimSignal, "meleeAttack") == 0)
+	{
+		*sAnimEventName = "MeleeDamage";
+		*fEventTime = 0.5f;
+		return true;
+	}
+	else if (strcmp(sAnimSignal, "fly") == 0)
+	{
+		*sAnimEventName = "Jump";
+		*fEventTime = 0.0f;
+		return true;
+	}
+
+
+	return false;
+}

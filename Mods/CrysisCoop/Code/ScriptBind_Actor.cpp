@@ -1803,8 +1803,6 @@ int CScriptBind_Actor::SetNetworkedAttachmentEffect(IFunctionHandler *pH, int ch
 	if (!pActor)
 		return pH->EndFunction();
 
-	CryLogAlways("SetNetworkedAttachmentEffect");
-
 	pActor->GetGameObject()->InvokeRMI(CActor::ClSetNetworkedAttachmentEffect(), CActor::SNetworkedAttachmentEffect(characterSlot, attachmentName, effectName, offset, dir, scale, flags), eRMI_ToAllClients);
 
 	return pH->EndFunction();
@@ -1814,13 +1812,12 @@ int CScriptBind_Actor::SetNetworkedAttachmentEffect(IFunctionHandler *pH, int ch
 //	Used with AI.Animation to pass animations from Lua behaviors to C++ so that clients can play them without extra hassle.
 int CScriptBind_Actor::PlayNetworkedAnimation(IFunctionHandler *pH)
 {
-	CryLogAlways("[PlayNetworkedAnimation] INVOKE");
-
 	SCRIPT_CHECK_PARAMETERS(3);
 	CActor *pActor = GetActor(pH);
 
-	if (!pActor)
+	if (!pActor || !gEnv->bServer)
 		return pH->EndFunction();
+
 
 	EAnimationMode eType;
 	const char* sAnimationName;
@@ -1828,7 +1825,7 @@ int CScriptBind_Actor::PlayNetworkedAnimation(IFunctionHandler *pH)
 	pH->GetParam(2, (int&)eType);
 	pH->GetParam(3, sAnimationName);
 
-	pActor->PlayNetworkedAnimation(eType, sAnimationName);
+	pActor->GetGameObject()->InvokeRMI(CActor::ClPlayNetworkedAnimation(), CActor::SPlayNetworkedAnimationParams(eType, sAnimationName), eRMI_ToRemoteClients);
 	return pH->EndFunction();
 }
 

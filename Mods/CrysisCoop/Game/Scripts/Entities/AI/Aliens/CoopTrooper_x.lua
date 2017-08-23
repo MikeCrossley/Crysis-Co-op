@@ -2,15 +2,6 @@ Script.ReloadScript( "SCRIPTS/Entities/AI/Shared/BasicAI.lua");
 Script.ReloadScript("scripts/entities/actor/basicalien.lua");
 
 
---if(BulletTypeClass==nil) then 
---	BulletTypeClass  = {};
---	BulletTypeClass[0] = "Incendiary";
---	BulletTypeClass[1] = "Shotgun";
---	BulletTypeClass[2] = "Normal";
---	BulletTypeClass[3] = "Sniper";
---	BulletTypeClass[4] = "Gauss";
---end
-
 TrTimerVector1 = {x=0,y=0,z=0};
 TrTimerVector2 = {x=0,y=0,z=0};
 
@@ -23,7 +14,7 @@ CoopTrooper_x = {
 	selfCollisionDamageMult = 0.01,	
 	collisionKillVelocity = 20.0,	
 
-  isAlien = 1,	
+	isAlien = 1,	
 	cloakMaterial = "objects/characters/alien/trooper/trooper_transparent",
 ------------------------------------------------------------------------------------
 
@@ -410,9 +401,6 @@ function CoopTrooper_x:CreateAttachments()
 	-- create attachment points
 	self:CreateBoneAttachment(0, "weapon_bone", "right_item_attachment");
 	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_1");
---	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_2");
---	self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_3");
-	--self:CreateBoneAttachment(0, "Bip01 Head", "damage_effect_4");
 	self:CreateBoneAttachment(0, "pelvis", "trail_attachment");
 	self:CreateBoneAttachment(0, "Bip01 Head", "Grapped");
 
@@ -465,27 +453,6 @@ function CoopTrooper_x:OnResetClient()
 	--play the idle sound in loop
 	self:PlayIdleSound(self.voiceTable.idle);
 end
-
---Server:OnUpdate just for testing, to be removed
---function CoopTrooper_x.Server:OnUpdate(frameTime)
---	BasicAlien.Server.OnUpdate(self,frameTime);
---		
---	if (self.nextJump) then
---		self.nextJump = self.nextJump - frameTime;
---		
---		if (self.nextJump<0.0) then
---			self.nextJump = 3.0;
---			local targetName = self.targetJumpName;
---			if (not targetName) then
---				targetName = "TagPoint1";
---			end
---			local jumpTable = {jumpTo={}};
---			System.GetEntityByName(targetName):GetWorldPos(jumpTable.jumpTo);
---			jumpTable.jumpTo.z = jumpTable.jumpTo.z + 1;
---			self.actor:SetParams(jumpTable);
---		end
---	end
---end
 
 function CoopTrooper_x.Client:OnUpdate(frameTime)
 
@@ -614,6 +581,7 @@ function CoopTrooper_x:Expose()
 		Class = self,
 		ClientMethods = {
 			ClKill = { RELIABLE_UNORDERED, POST_ATTACH, BOOL },
+			ClMeleeHit = { RELIABLE_UNORDERED, POST_ATTACH, ENTITYID},
 		},
 		ServerMethods = {
 		},
@@ -630,6 +598,18 @@ function CoopTrooper_x.Client:ClKill(bKill)
 	BasicAlien.StopSounds(self);
 end
 
+function CoopTrooper_x.Client:ClMeleeHit(entityId, distance, radius)
+	if (entityId == g_localActor.id) then
+		self:PlaySoundEvent("sounds/physics:bullet_impact:mat_armor_fp", g_Vectors.v000, g_Vectors.v010, SOUND_2D, SOUND_SEMANTIC_PLAYER_FOLEY);
+
+		local entity = g_localActor;
+
+		if (entity) then
+			entity.actor:CameraShake(45, 0.3, 0.13, g_Vectors.v000);
+		end
+	end
+end
+
 function CoopTrooper_x:Kill(ragdoll, shooterId, weaponId)
 	if(ragdoll and 	self.exploded) then
 		ragdoll = false;
@@ -638,9 +618,7 @@ function CoopTrooper_x:Kill(ragdoll, shooterId, weaponId)
 	
 	Trooper_Death(self);--,autoDestructing); -- let AI do something with this corpse
 	
-	-- Crysis Co-op
 	self.allClients:ClKill(true);
-	-- ~Crysis Co-op
 	
 	self:ResetTimers();
 	
@@ -794,30 +772,6 @@ function CoopTrooper_x:GetDamageMultiplier(hit)
   return 1;
 end
 
-------------------------------------------------------------------------------
---function CoopTrooper_x:GetDamageDistanceMultiplier(hit)
---
---	if(hit.weapon and hit.weapon.class and hit.weapon.class ~="") then 
---		local multTable = self.Properties.Damage.DamageDistanceMultipliers[hit.weapon.class];
---		if(multTable) then 
---			local shooter = hit.shooter;
---			if(shooter) then 
---				local dist = self:GetDistance(shooter.id);
---				local maxDist = multTable.maxDist;
---				if(maxDist>0) then 
---					if(dist > maxDist) then 
---						dist = maxDist;
---					end
---					local mult = multTable.multiplier*(dist/maxDist) + (maxDist - dist)/maxDist;-- *1
---					return mult;
---				end
---			end
---		end
---	end
---  return 1;
---end
-
-
 function CoopTrooper_x:GetDamage()
 	-- used for melee attack
 	return random(40,60);
@@ -842,28 +796,6 @@ function CoopTrooper_x:MakeParalyzed( dir, strength )
 	AI.Signal(SIGNALFILTER_SENDER,0,"GO_TO_DUMB",self.id);
 end
 
-
---function CoopTrooper_x:Event_StartAmbush(sender)
---	if(sender) then 
---		if(sender.Who) then 
---			local target = sender.Who;
---			if(target.id) then 
---				g_SignalData.id = target.id;
---			else
---				g_SignalData.id = sender.id;
---			end
---		else
---			g_SignalData.id = sender.id;
---		end
---	else
---		g_SignalData.id = NULL_ENTITY;
---	end
---	AI.Signal(SIGNALFILTER_SUPERGROUP,0,"START_AMBUSH",self.id,g_SignalData);
---end
-
-
-
-
 function CoopTrooper_x.WarmupAutoDestruct(entity)--,timerid)
 		local params =
 		{
@@ -884,10 +816,7 @@ function CoopTrooper_x.WarmupAutoDestruct(entity)--,timerid)
 	end
 	
 	entity:LoadParticleEffect( -1, "alien_special.Trooper.death_chargeup", params );
---	local pos = g_Vectors.temp;
---	CopyVector(pos,entity:GetPos());
-	--entity.iAutoDestructTimer = Script.SetTimer(entity.AutoDestructionTime*1000,CoopTrooper_x.AutoDestruct,entity);
-	--entity.iWarningTimer = Script.SetTimer(500,CoopTrooper_x.SendWarning,entity);
+
 	entity:SetTimer(TROOPER_AUTODESTRUCT_TIMER,entity.AutoDestructionTime*1000);
 	entity:SetTimer(TROOPER_WARNING_TIMER,500);
 end
@@ -971,10 +900,6 @@ function CoopTrooper_x.AutoDestruct(entity)--,timerid)
 	
 	entity:RemoveActor();
 end
-
---function CoopTrooper_x:Cloak(cloak)
---	BasicAlien.Cloak(self,cloak);
---end
 
 function CoopTrooper_x:SetGroupFireModes()
 	local groupCount = AI.GetGroupCount(self.id);
@@ -1087,20 +1012,11 @@ function CoopTrooper_x:MeleeDamage(impulse,meleeType)
 			-- Debug
 			--AI.SetRefPointPosition(self.id,pos);
 			-- Hit!
-			if (g_gameRules and g_gameRules.Client) then -- and g_gameRules.server.RequestMeleeHit) then
+			
+			if (g_gameRules and g_gameRules.Server) then
 	
-				local hit = self.temp_hit;
-				--AI.LogComment( "CoopTrooper_x:MeleeDamage: Hit "..self:GetName().."." );
---				if(entity.vehicle) then
---					-- vehicle needs the hit position to actually touch it
---					local dir = g_Vectors.temp;
---					FastDifferenceVectors(dir,entity:GetWorldPos(),pos);
---					local	hits = Physics.RayWorldIntersection(pos,dir,1,ent_static+ent_rigid+ent_sleeping_rigid+ent_living,self.id,nil,g_HitTable);
---					if( hits >0 ) then
---						local firstHit = g_HitTable[1];
---						CopyVector(pos,firstHit.pos);
---					end
---				end
+				--local hit = self.temp_hit;
+				local hit = {};
 				
 				hit.pos = pos;		
 				hit.partId = -1;
@@ -1111,35 +1027,25 @@ function CoopTrooper_x:MeleeDamage(impulse,meleeType)
 				hit.radius = 0;
 				hit.weaponId = self.id;
 				hit.type 		= "melee";
-
+				
 				local melee = self.melee;
-				if(entity.vehicle) then 
+				if (entity.vehicle) then 
 					hit.damage	= melee.damage * melee.damageMultiplier ;
 					hit.damage = hit.damage * self.Properties.Damage.DamageMultipliers.MeleeVehicle;
-				elseif( entity.Properties and entity.Properties.bNanoSuit==0) then 
+				elseif ( entity.Properties and entity.Properties.bNanoSuit==0) then 
 					hit.damage	= melee.damage * 4 ;--make melee deadly when there's no nanosuit
-				elseif(entity == g_localActor) then
+				elseif (entity.actor:IsPlayer()) then
 					-- normal melee against player
 					local dir = g_Vectors.temp;
 					FastDifferenceVectors(dir,self:GetWorldPos(),entity:GetWorldPos());
 					local playerDir = g_Vectors.temp_v1;
-					g_localActor.actor:GetHeadDir(playerDir);
+					entity.actor:GetHeadDir(playerDir);
 					local dot = dotproduct2d(dir,playerDir);
 					-- check where's the trooper in player fov, more on the back = less damage
 					if(dot<0) then 
 						hit.damage = melee.damageSmall;
 					elseif(dot>0.7) then 
 						hit.damage = melee.damage * melee.damageMultiplier ;								
-						-- frontal hit, display scratches on visor
--- LUC TO DO: Disabled, waiting for Tiago's procedural FX
---						if(not meleeType) then
---							meleeType = 1;
---						end
---						local effectId = MaterialEffects.GetEffectIdByName("player_fx", self.melee.effect[meleeType]);
---		  			if (effectId ~= MFX_INVALID_EFFECTID) then
---		    			spawned = MaterialEffects.ExecuteEffect(effectId, {pos=entity:GetWorldPos()});		    
---		  			end
-
 					else
 						hit.damage = melee.damage*(melee.damageSmall + (melee.damage - melee.damageSmall) * dot / 0.7) * self.melee.damageMultiplier ;								
 					end
@@ -1150,50 +1056,15 @@ function CoopTrooper_x:MeleeDamage(impulse,meleeType)
 				hit.targetId = entity.id;
 				
 				hit.normal = hit.normal or {};
-	      CopyVector(hit.normal, hitDir);
-	      NegVector(hit.normal);		
+				CopyVector(hit.normal, hitDir);
+				NegVector(hit.normal);		
 	
-				--g_gameRules.server:RequestMeleeHit(hit.shooter.id, hit.shooter.id, hit.target.id, 0, hit.pos);
-				g_gameRules.Server.OnHit(g_gameRules, hit,false);			
-				g_gameRules.Client.OnHit(g_gameRules, hit,false);			
-	--				self:MeleeCustom(entity,pos,hitDir);
+				g_gameRules:CreateHit(entity.id, self.id, self.id, hit.damage, nil, nil, nil, "normal");
 				
-				-- TO DO: replace with Script bind actor.MeleeEffect() (using material)
-				-- for all targets
-				if(entity == g_localActor) then
-					self:PlaySoundEvent("sounds/physics:bullet_impact:mat_armor_fp", g_Vectors.v000, g_Vectors.v010, SOUND_2D, SOUND_SEMANTIC_PLAYER_FOLEY);
-				end
-				
-        if(entity.actor and entity.actor:IsPlayer()) then
-					local targetPos = g_Vectors.temp_v2;
-					entity:GetPos(targetPos);
---					local distance = math.sqrt(distance2);
-					entity:AddImpulse(-1,targetPos,impulse,300+(radius - distance)*100,1);					
-					
-					local dotSide = dotproduct2d(impulse, entity:GetDirectionVector(0));										
-					local angImp = g_Vectors.temp_v3;
-					angImp.x = randomF(-0.3,-0.2);
-					angImp.y = 0; 					
-					angImp.z = -dotSide * math.pi * (0.35 + 0.1*distance/radius);
-					entity.actor:AddAngularImpulse(angImp, 0.0, 0.4);
-					
-					entity.actor:CameraShake(45, 0.3, 0.13, g_Vectors.v000);
-					
-					local energy = entity.actor:GetNanoSuitEnergy();
-	        if (energy ~= 0) then	          
-	          entity.actor:SetNanoSuitEnergy(energy-0.2*NANOSUIT_ENERGY);
-	        end
-				elseif(entity.vehicle and entity:IsEntityOnVehicle(g_localActor.id)) then
-					-- player is on the meleed vehicle
-					-- TO DO: improve with linear shake rather than angular
-					g_localActor.actor:CameraShake(random(20,30), 0.2, 0.13, g_Vectors.v000);
-			  end		  
-				
-				--AI.Signal(SIGNALFILTER_SENDER,0,"END_MELEE",self.id);		
-				--if(AI.IsEnabled(self.id)) then 		
-					self:SelectPipe(0,"tr_end_melee");
-				--end
-				--Log("-------- melee end --------");
+				self.allClients:ClMeleeHit(entity.id);
+
+				self:SelectPipe(0,"tr_end_melee");
+
 			end
 
 		end
@@ -1201,6 +1072,84 @@ function CoopTrooper_x:MeleeDamage(impulse,meleeType)
 --		AI.LogEvent( "BasicAlien:MeleeDamage: no entities on radius ");
 	end
 end
+
+function CoopTrooper_x.Server:OnTimer(timerId, mSec)
+	BasicActor.Server.OnTimer(timerId, mSec);
+	
+	System.LogAlways("onTimer");
+
+	if (timerId == PAIN_TIMER) then
+		if (self.actor:GetHealth() > 0) then
+			self:DoPainSounds();
+		end
+		self.painSoundTriggered = nil;
+	elseif (timerId == TROOPER_JUMP_TIMER) then 
+		Trooper_PerformSecondMeleeJump(self);		
+	elseif(timerId == TROOPER_END_JUMP_DODGE_TIMER) then 
+		local r = g_Vectors.temp;
+		CopyVector(r,AI.GetRefPointPosition(self.id));
+		Trooper_Jump(self,r,false,false,-15,true);
+	elseif(timerId == TROOPER_DEPHYSICALIZE_TIMER) then 
+		if(self:GetSpeed()<0.3) then 
+			if(self.Properties.bIndoor==1 or AI.GetNavigationType(self.id) == NAV_WAYPOINT_HUMAN ) then			
+				self.actor:SetPhysicalizationProfile("unragdoll");
+			end
+		else
+			self:SetTimer(TROOPER_DEPHYSICALIZE_TIMER,2000);
+		end
+	elseif(timerId == TROOPER_MELEE_SPECIAL_TIMER) then
+		AI.Signal(SIGNALFILTER_SENDER,0,"MELEE_SPECIAL_START_TIMEOUT",self.id);
+	elseif(timerId == TROOPER_END_MELEE_TIMER) then
+		self:SetGrabbable(1);
+		--self:SelectPipe(0,"tr_melee_special_timeout");
+	elseif(timerId == TROOPER_CONVERSATION_REQUEST_TIMER) then
+		AI.Signal(SIGNALFILTER_GROUPONLY_EXCEPT,0,"REQUEST_CONVERSATION",self.id);
+		self:SetTimer(TROOPER_CONVERSATION_CHECK_TIMER,1000);
+	elseif(timerId == TROOPER_CONVERSATION_CHECK_TIMER) then
+		if(AIBlackBoard.trooper_ConversationState == TROOPER_CONV_REQUESTING) then 
+			-- still requesting, no answer - reset
+			AIBlackBoard.trooper_ConversationState = TROOPER_CONV_IDLE;
+			AI.Signal(SIGNALFILTER_SENDER,0,"REQUEST_CONVERSATION",self.id);
+		end
+	elseif(timerId == TROOPER_CONVERSATION_ANSWER_TIMER) then
+		AI.Signal(SIGNALFILTER_SENDER,0,"CONVERSATION_ANSWER",self.id);
+	elseif(timerId == TROOPER_PLAYERGRABBED_TIMER) then
+		local sndFlags = SOUND_DEFAULT_3D;
+    self.grabbedSound = self:PlaySoundEvent("sounds/alien:trooper:choke",g_Vectors.v000, g_Vectors.v010, sndFlags, SOUND_SEMANTIC_LIVING_ENTITY);
+		self:SetTimer(TROOPER_PLAYERGRABBED_TIMER,5000+random(1,1000));
+	elseif(timerId == TROOPER_CHECK_DEAD_SHELL_TIMER) then 
+		if(not AIBlackBoard.lastTrooperDisappearTime) then 
+			AIBlackBoard.lastTrooperDisappearTime = 0;
+		end
+		local curTime = _time;
+		if(curTime - AIBlackBoard.lastTrooperDisappearTime > 2) then
+			local playerViewDir = TrTimerVector1;
+			local dir = TrTimerVector2;
+			g_localActor.actor:GetHeadDir(playerViewDir);
+			FastDifferenceVectors(dir,self:GetPos(),g_localActor:GetPos());
+			local dist = LengthVector(dir);
+			if(dist>2) then 
+				ScaleVectorInPlace(dir,1/dist);
+				if(dotproduct3d(playerViewDir,dir) < 0.2) then
+					-- make the trooper magically disappear out of player's sight
+					AIBlackBoard.lastTrooperDisappearTime = curTime;
+					AI.SetSmartObjectState(self.id,"Idle");			
+					self:RemoveActor(); 
+					return;
+				end
+			end
+		end
+		self:SetTimer(TROOPER_CHECK_DEAD_SHELL_TIMER,2000);
+	elseif(timerId == TROOPER_WARMUP_AUTODESTRUCT_TIMER) then 
+		self:WarmupAutoDestruct();
+	elseif(timerId == TROOPER_AUTODESTRUCT_TIMER) then 
+		self:AutoDestruct();
+	elseif(timerId == TROOPER_GRABBEDFX_TIMER) then 
+		self:ResetAttachment(0, "Grapped"); 
+	end	
+end
+
+
 
 function CoopTrooper_x.Client:OnTimer(timerId,mSec)
 	if (timerId == PAIN_TIMER) then
@@ -1210,54 +1159,6 @@ function CoopTrooper_x.Client:OnTimer(timerId,mSec)
 		self.painSoundTriggered = nil;
 	elseif (timerId == TROOPER_JUMP_TIMER) then 
 		Trooper_PerformSecondMeleeJump(self);		
---	elseif (timerId == TROOPER_JUMP_CHASE_TIMER) then 
---		local targetPos;
---		local vel;
---		local t;
---		local target = AI.GetAttentionTargetEntity(self.id);
---		local point = g_Vectors.temp_v1;
---		if(target) then 
---			vel = g_Vectors.temp;
---			targetPos = target:GetPos();
---			t = AI.CanJumpToPoint(self.id,target.id,1,30,AI_JUMP_ON_GROUND,vel);
---			if(t) then 
---				local pathFollower = target;
---				local parent = target:GetParent();
---				if(parent) then 
---					pathFollower = parent;
---				end
---				if(not AI.GetPredictedPosAlongPath(pathFollower.id,t*1.0,point)) then 
---					return;
---				end
---				if(parent) then
---					local disp = g_Vectors.temp_v2;
---					FastDifferenceVectors(disp,target:GetPos(),parent:GetPos());
---					FastSumVectors(point,point,disp);
---				end
---				point.z = point.z+1.5;
---				AI.SetRefPointPosition(self.id,point);
---				t = AI.CanJumpToPoint(self.id,point,1,30,AI_JUMP_ON_GROUND+AI_JUMP_CHECK_COLLISION,vel);
---			end
---		else
---			return;
---		end
---		
---		local pos = g_Vectors.temp_v1;
---		local dir = g_Vectors.temp_v3;
---		CopyVector(pos,self:GetPos());
---		CopyVector(dir,self:GetDirectionVector(1));
---		FastDifferenceVectors(pos,pos,dir);
---		pos.z = pos.z + 2;
---		Particle.SpawnEffect("alien_special.Trooper.doubleJumpAttack", pos, dir, 0.5);
---    --self:PlaySoundEvent("Sounds/alien:trooper:jump_melee",g_Vectors.v000, g_Vectors.v010, sndFlags, SOUND_SEMANTIC_LIVING_ENTITY);
---
---		if(t) then 
---			self.actor:SetParams({jumpTo = point, jumpVelocity = vel, jumpTime = t});
---		else
---			local entityAI = self.AI;
---			self.actor:SetParams({jumpTo = entityAI.jumpPos, jumpVelocity = entityAI.jumpVel, jumpTime = entityAI.jumpTime});
---		end			
---		self:InsertSubpipe(AIGOALPIPE_NOTDUPLICATE+AIGOALPIPE_DONT_RESET_AG,"tr_jump_melee");
 	elseif(timerId == TROOPER_END_JUMP_DODGE_TIMER) then 
 		local r = g_Vectors.temp;
 		CopyVector(r,AI.GetRefPointPosition(self.id));
@@ -1423,7 +1324,7 @@ function CoopTrooper_x:GetDamageImpulseMultiplier(hit)
 	if(self.actor:IsFlying()) then 
 		mult = mult*0.75;
 	end
-  return mult;
+	return mult;
 end
 
 	
@@ -1441,15 +1342,6 @@ function CoopTrooper_x:Event_EnableCloaked(params)
 	self:Event_Enable(params);
 	self:Event_Cloak();
 end
-
---function CoopTrooper_x:Event_EnablePhysics(params)
---	self.actor:SetPhysicalizationProfile("ragdoll");
---end
---
---function CoopTrooper_x:Event_DisablePhysics(params)
---	self.actor:SetPhysicalizationProfile("unragdoll");
---end
-
 
 function CoopTrooper_x:AnimationEvent(event,value)
 	
@@ -1530,15 +1422,11 @@ CoopTrooper_x.FlowEvents =
 		EnableCloaked = { CoopTrooper_x.Event_EnableCloaked, "bool" },
 		Cloak = { BasicAlien.Event_Cloak, "bool" },
 		JumpAt = { CoopTrooper_x.Event_Jump, "vec3" },
---		EnablePhysics = { CoopTrooper_x.Event_EnablePhysics, "bool" },
---		DisablePhysics = { CoopTrooper_x.Event_DisablePhysics, "bool" },
 	},
 	Outputs =
 	{
 		EnableCloaked = "bool",
 		Cloak = "bool",
 		Land = "bool",
---		EnablePhysics = "bool",
---		DisablePhysics = "bool",
 	},
 }
