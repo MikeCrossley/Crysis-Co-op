@@ -3,6 +3,7 @@
 #include "Coop\CoopSystem.h"
 
 #include "CompatibilityAlienMovementController.h"
+#include <Coop\Utilities\DedicatedServerHackScope.h>
 
 CCoopScout::CCoopScout() :
 	m_vLookTarget(Vec3(0,0,0)),
@@ -82,6 +83,16 @@ void CCoopScout::Update(SEntityUpdateContext& ctx, int updateSlot)
 	else
 	{
 		UpdateMovementState();
+	}
+
+	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	{
+		// Only update on dedicated server.
+		if (gEnv->bServer && !gEnv->bClient)
+		{
+			CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+			pGraphState->Update();
+		}
 	}
 
 }

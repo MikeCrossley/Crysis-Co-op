@@ -51,10 +51,10 @@ private:
 	struct ICVar* m_pSystemUpdateRate;
 	float m_fDetectionTimer;
 	float m_fDetectionValue;
+	float m_fLastDetectionValue;
 
 	float m_fMusicDelay;
 
-	float m_fLastDetectionValue;
 
 	float m_fNetDetectionDelay;
 

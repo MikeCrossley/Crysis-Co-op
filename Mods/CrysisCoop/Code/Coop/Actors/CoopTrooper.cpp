@@ -92,8 +92,12 @@ void CCoopTrooper::Update(SEntityUpdateContext& ctx, int updateSlot)
 	
 	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
 	{
-		CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
-		pGraphState->Update();
+		// Only update on dedicated server.
+		if (gEnv->bServer && !gEnv->bClient)
+		{
+			CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+			pGraphState->Update();
+		}
 	}
 
 }

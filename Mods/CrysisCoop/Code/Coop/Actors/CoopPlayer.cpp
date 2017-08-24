@@ -35,6 +35,8 @@ void CCoopPlayer::PostInit(IGameObject * pGameObject)
 	CPlayer::PostInit(pGameObject);
 }
 
+#define CCoopPlayerAIGroup 0
+
 void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
 	CPlayer::Update(ctx, updateSlot);
@@ -160,9 +162,28 @@ bool CCoopPlayer::NetSerialize(TSerialize ser, EEntityAspects aspect, uint8 prof
 
 void CCoopPlayer::UpdateDetectionValue(float frameTime)
 {
-	// Local player can use AI system's default method.
-	if (GetEntityId() == g_pGame->GetIGameFramework()->GetClientActorId())
+	if (!GetEntity()->GetAI())
 	{
+		m_fDetectionValue = 0.0f;
+		m_fLastDetectionValue = 0.0f;
+		return;
+	}
+
+	// Force players to group 0.
+	if (this->GetEntity()->GetAI()->GetGroupId() != 0)
+		this->GetEntity()->GetAI()->SetGroupId(0);
+
+	SAIDetectionLevels sDetectionLevelSnapshot;
+	gEnv->pAISystem->GetDetectionLevels(GetEntity()->GetAI(), sDetectionLevelSnapshot);
+
+	m_fDetectionValue = max(max(sDetectionLevelSnapshot.puppetExposure, sDetectionLevelSnapshot.puppetThreat),
+						max(sDetectionLevelSnapshot.vehicleExposure, sDetectionLevelSnapshot.vehicleThreat));
+	m_fLastDetectionValue = m_fDetectionValue;
+	// Local player can use AI system's default method.
+	/*if (GetEntityId() == g_pGame->GetIGameFramework()->GetClientActorId())
+	{
+		
+
 		SAIDetectionLevels aiDetectionLevels;
 		gEnv->pAISystem->GetDetectionLevels(0, aiDetectionLevels);
 		m_fDetectionValue = max(max(aiDetectionLevels.puppetExposure, aiDetectionLevels.puppetThreat),
@@ -207,7 +228,7 @@ void CCoopPlayer::UpdateDetectionValue(float frameTime)
 		m_fDetectionValue = max(max(aiDetectionLevels.puppetExposure, aiDetectionLevels.puppetThreat),
 								max(aiDetectionLevels.vehicleExposure, aiDetectionLevels.vehicleThreat));
 
-	}
+	}*/
 }
 
 IMPLEMENT_RMI(CCoopPlayer, ClUpdateAwareness)
