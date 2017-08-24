@@ -3,6 +3,7 @@
 #include "Coop\CoopSystem.h"
 
 #include "CompatibilityAlienMovementController.h"
+#include <Coop\Utilities\DedicatedServerHackScope.h>
 
 CCoopTrooper::CCoopTrooper() :
 	m_vLookTarget(Vec3(0,0,0)),
@@ -86,6 +87,13 @@ void CCoopTrooper::Update(SEntityUpdateContext& ctx, int updateSlot)
 	else
 	{
 		UpdateMovementState();
+	}
+
+	
+	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	{
+		CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+		pGraphState->Update();
 	}
 
 }
@@ -189,7 +197,7 @@ bool CCoopTrooper::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 pr
 
 bool CCoopTrooper::IsAnimEvent(const char* sAnimSignal, string* sAnimEventName, float* fEventTime)
 {
-	if (strcmp(sAnimSignal, "meleeAttack") == 0)
+	/*if (strcmp(sAnimSignal, "meleeAttack") == 0)
 	{
 		*sAnimEventName = "MeleeDamage";
 		*fEventTime = 0.5f;
@@ -202,6 +210,6 @@ bool CCoopTrooper::IsAnimEvent(const char* sAnimSignal, string* sAnimEventName, 
 		return true;
 	}
 
-
+	*/
 	return false;
 }

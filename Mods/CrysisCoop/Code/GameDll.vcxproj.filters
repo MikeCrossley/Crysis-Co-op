@@ -130,6 +130,9 @@
     <Filter Include="Coop\Actors\Animation">
       <UniqueIdentifier>{54f958a6-01c1-4e44-81da-1f66eff0192c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coop\Utilities">
+      <UniqueIdentifier>{56a520b9-e20d-43aa-a5fd-4dc09db4a00e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -803,6 +806,9 @@
     <ClCompile Include="Coop\Actors\Animation\AnimationGraphState.cpp">
       <Filter>Coop\Actors\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Coop\Utilities\DedicatedServerHackScope.cpp">
+      <Filter>Coop\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1399,6 +1405,9 @@
     </ClInclude>
     <ClInclude Include="Coop\Actors\Animation\AnimationGraphState.h">
       <Filter>Coop\Actors\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Utilities\DedicatedServerHackScope.h">
+      <Filter>Coop\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

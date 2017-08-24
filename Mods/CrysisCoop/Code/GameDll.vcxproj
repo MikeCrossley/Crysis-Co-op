@@ -265,6 +265,7 @@
     <ClCompile Include="Coop\Nodes\CoopHudNodes.cpp" />
     <ClCompile Include="Coop\Nodes\CoopSequenceNodes.cpp" />
     <ClCompile Include="Coop\Nodes\CoopSpawnArchetype.cpp" />
+    <ClCompile Include="Coop\Utilities\DedicatedServerHackScope.cpp" />
     <ClCompile Include="DebugGun.cpp" />
     <ClCompile Include="Detonate.cpp" />
     <ClCompile Include="DllMain.cpp" />
@@ -495,6 +496,7 @@
     <ClInclude Include="Coop\Entities\EventSynchronizer.h" />
     <ClInclude Include="Coop\Entities\HUDSynchronizer.h" />
     <ClInclude Include="Coop\Entities\SequenceSynchronizer.h" />
+    <ClInclude Include="Coop\Utilities\DedicatedServerHackScope.h" />
     <ClInclude Include="DebugGun.h" />
     <ClInclude Include="Detonate.h" />
     <ClInclude Include="DownloadTask.h" />

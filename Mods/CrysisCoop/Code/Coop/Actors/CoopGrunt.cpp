@@ -4,6 +4,7 @@
 #include "IVehicleSystem.h"
 #include "Weapon.h"
 #include "Movement\CoopGruntMovementController.h"
+#include <Coop\Utilities\DedicatedServerHackScope.h>
 
 CCoopGrunt::CCoopGrunt() :
 	m_nStance(STANCE_RELAXED),
@@ -150,7 +151,11 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 	}
 
 	//DrawDebugInfo();
-
+	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	{
+		CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+		pGraphState->Update();
+	}
 }
 
 void CCoopGrunt::UpdateMovementState()

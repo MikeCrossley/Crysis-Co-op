@@ -4499,12 +4499,12 @@ void CActor::OnAGSetInput(bool bSucceeded, IAnimationGraphState::InputID id, con
 
 			m_sLastNetworkedAnim = value;
 		}
-		SQueuedAnimEvent sAnimEvent = SQueuedAnimEvent();
+		//SQueuedAnimEvent sAnimEvent = SQueuedAnimEvent();
 
-		if (this->IsAnimEvent(value, &sAnimEvent.sAnimEventName, &sAnimEvent.fEventTime))
-		{
-			QueueAnimationEvent(sAnimEvent);
-		}
+		//if (this->IsAnimEvent(value, &sAnimEvent.sAnimEventName, &sAnimEvent.fEventTime))
+		//{
+		//	QueueAnimationEvent(sAnimEvent);
+		//}
 
 		//GetAnimationGraphState()->GetInputName(id);
 	}

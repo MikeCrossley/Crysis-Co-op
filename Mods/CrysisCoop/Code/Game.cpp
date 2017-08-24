@@ -148,6 +148,19 @@ CGame::~CGame()
 	SAFE_DELETE(m_pDownloadTask);
 }
 
+// Crysis Co-op
+class CCharacterManager : public ICharacterManager
+{
+public:
+	std::vector<uint32> v0;//?
+	std::vector<uint32> v1;//?
+	std::vector<uint32> v2;//?
+	std::vector<uint32> v3;//?
+	uint32 framenumber;//?
+	uint32 DedicatedServer;
+};
+// ~Crysis Co-op
+
 bool CGame::Init(IGameFramework *pFramework)
 {
   LOADING_TIME_PROFILE_SECTION(GetISystem());
@@ -155,6 +168,11 @@ bool CGame::Init(IGameFramework *pFramework)
 #ifdef GAME_DEBUG_MEM
 	DumpMemInfo("CGame::Init start");
 #endif
+
+	// Crysis Co-op
+	// CCharacterManager uses a weird flag for determining dedicated server behavior seemingly.
+	((CCharacterManager*)gEnv->pSystem->GetIAnimationSystem())->DedicatedServer = 0;
+	// ~Crysis Co-op
 
 	m_pFramework = pFramework;
 	assert(m_pFramework);
