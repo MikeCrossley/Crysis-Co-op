@@ -53,8 +53,13 @@ public:
 	{
 		if (eFE_Activate == event && IsPortActive(pActInfo, EIP_Spawn))
 		{
+			IEntityArchetype* pEntityArch = gEnv->pEntitySystem->LoadEntityArchetype(GetPortString(pActInfo, EIP_Archetype));
+			
+			if (!pEntityArch)
+				return;
+
 			SEntitySpawnParams spawnParams;
-			spawnParams.pArchetype = gEnv->pEntitySystem->LoadEntityArchetype(GetPortString(pActInfo, EIP_Archetype));
+			spawnParams.pArchetype = pEntityArch;
 			spawnParams.vPosition = GetPortVec3(pActInfo, EIP_Position);
 			spawnParams.qRotation = Quat::CreateRotationXYZ(Ang3(GetPortVec3(pActInfo, EIP_Rotation)));
 			spawnParams.nFlags = ENTITY_FLAG_SPAWNED | ENTITY_FLAG_NET_PRESENT | ENTITY_FLAG_CASTSHADOW;

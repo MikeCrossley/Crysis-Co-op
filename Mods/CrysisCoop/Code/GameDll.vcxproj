@@ -239,6 +239,7 @@
     <ClCompile Include="Claymore.cpp" />
     <ClCompile Include="ClientSynchedStorage.cpp" />
     <ClCompile Include="CompatibilityAlienMovementController.cpp" />
+    <ClCompile Include="CoopRandomSpawn.cpp" />
     <ClCompile Include="Coop\Actors\Animation\AnimationGraphState.cpp" />
     <ClCompile Include="Coop\Actors\CoopAlien.cpp" />
     <ClCompile Include="Coop\Actors\CoopGrunt.cpp" />

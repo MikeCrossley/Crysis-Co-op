@@ -809,6 +809,9 @@
     <ClCompile Include="Coop\Utilities\DedicatedServerHackScope.cpp">
       <Filter>Coop\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="CoopRandomSpawn.cpp">
+      <Filter>Coop\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
