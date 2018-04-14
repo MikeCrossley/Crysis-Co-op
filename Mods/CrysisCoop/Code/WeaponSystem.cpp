@@ -44,6 +44,9 @@ History:
 #include "Shotgun.h"
 #include "Melee.h"
 #include "WorkOnTarget.h"
+// Crysis Co-op
+#include "Defib.h"
+// ~Crysis Co-op
 #include "Scan.h"
 #include "SingleTG.h"
 #include "ItemSharedParams.h"
@@ -98,6 +101,9 @@ CWeaponSystem::CWeaponSystem(CGame *pGame, ISystem *pSystem)
 	RegisterFireMode("Shotgun", &CreateIt<CShotgun, IFireMode>);	
 	RegisterFireMode("Melee", &CreateIt<CMelee, IFireMode>);
 	RegisterFireMode("WorkOnTarget", &CreateIt<CWorkOnTarget, IFireMode>);
+	// Crysis Co-op
+	RegisterFireMode("Defib", &CreateIt<CDefib, IFireMode>);
+	// ~Crysis Co-op
 	RegisterFireMode("Scan", &CreateIt<CScan, IFireMode>);
 	RegisterFireMode("SingleTG", &CreateIt<CSingleTG, IFireMode>);
   

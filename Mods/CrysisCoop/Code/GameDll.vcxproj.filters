@@ -812,6 +812,9 @@
     <ClCompile Include="CoopRandomSpawn.cpp">
       <Filter>Coop\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="Defib.cpp">
+      <Filter>Item Files\Weapon Files\Fire Modes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1411,6 +1414,9 @@
     </ClInclude>
     <ClInclude Include="Coop\Utilities\DedicatedServerHackScope.h">
       <Filter>Coop\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Defib.h">
+      <Filter>Item Files\Weapon Files\Fire Modes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

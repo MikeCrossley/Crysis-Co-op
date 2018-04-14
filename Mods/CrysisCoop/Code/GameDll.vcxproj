@@ -268,6 +268,7 @@
     <ClCompile Include="Coop\Nodes\CoopSpawnArchetype.cpp" />
     <ClCompile Include="Coop\Utilities\DedicatedServerHackScope.cpp" />
     <ClCompile Include="DebugGun.cpp" />
+    <ClCompile Include="Defib.cpp" />
     <ClCompile Include="Detonate.cpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="DownloadTask.cpp" />
@@ -499,6 +500,7 @@
     <ClInclude Include="Coop\Entities\SequenceSynchronizer.h" />
     <ClInclude Include="Coop\Utilities\DedicatedServerHackScope.h" />
     <ClInclude Include="DebugGun.h" />
+    <ClInclude Include="Defib.h" />
     <ClInclude Include="Detonate.h" />
     <ClInclude Include="DownloadTask.h" />
     <ClInclude Include="EMPField.h" />

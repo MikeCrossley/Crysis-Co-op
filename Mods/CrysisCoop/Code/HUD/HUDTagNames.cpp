@@ -145,6 +145,20 @@ bool CHUDTagNames::IsFriendlyToClient(EntityId uiEntityId)
 	if(!client || !pGameRules)
 		return false;
 
+	// Crysis Co-op :: Player is always friendly in co-op
+	if (CHUD* pHud = g_pGame->GetHUD())
+	{
+		if (pHud->GetCurrentGameRules() == EHUDGAMERULES::EHUD_COOP)
+		{
+			if (IActor* pActor = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(uiEntityId))
+			{
+				if (pActor->IsPlayer())
+					return true;
+			}
+		}
+	}
+	// ~Crysis Co-op
+
 	// local player is always friendly to himself :)
 	if(client->GetEntityId() == uiEntityId)
 		return true;
@@ -160,6 +174,7 @@ bool CHUDTagNames::IsFriendlyToClient(EntityId uiEntityId)
 	// Less than 2 teams means we are in a FFA based game.
 	if(pGameRules->GetTeam(uiEntityId) == playerTeam && pGameRules->GetTeamCount() > 1)
 		return true;
+
 	return false;
 }
 
@@ -465,6 +480,13 @@ void CHUDTagNames::Update()
 {
 	CActor *pClientActor = static_cast<CActor *>(g_pGame->GetIGameFramework()->GetClientActor());
 	CGameRules *pGameRules = g_pGame->GetGameRules();
+	bool bIsCoop = false;
+
+	// Crysis Co-op :: Player is always friendly in co-op
+	if (CHUD* pHud = g_pGame->GetHUD())
+		bIsCoop = pHud->GetCurrentGameRules() == EHUDGAMERULES::EHUD_COOP;
+
+	// ~Crysis Co-op
 
 	if(!pClientActor || !pGameRules || !gEnv->bMultiplayer)
 		return;
@@ -496,6 +518,13 @@ void CHUDTagNames::Update()
 		// Skip enemies, they need to be added only when shot
 		// (except in spectator mode when we display everyone)
 		int iTeam = pGameRules->GetTeam(pActor->GetEntityId());
+
+		if (bIsCoop && pActor->IsPlayer())
+		{
+			iClientTeam = eOS_USPlayer;
+			iTeam = eOS_USPlayer;
+		}
+
 		if((iTeam == iClientTeam && iTeam != 0) || (pClientActor->GetSpectatorMode() != CActor::eASM_None))
 		{
 			// never display other spectators
@@ -513,8 +542,11 @@ void CHUDTagNames::Update()
 				if(std::find(start, end, pActor->GetEntityId())!=end)
 					friendly = 3;
 			}
-			if(!pActor->GetLinkedVehicle())
-				SAFE_HUD_FUNC(UpdateMissionObjectiveIcon(pActor->GetEntityId(), (pActor->GetHealth() <= 0)?0:friendly, iTeam==1?eOS_NKPlayer:eOS_USPlayer, false, Vec3(0,0,0), true));
+
+			if (!pActor->GetLinkedVehicle())
+			{
+				SAFE_HUD_FUNC(UpdateMissionObjectiveIcon(pActor->GetEntityId(), (pActor->GetHealth() <= 0) ? 0 : friendly, iTeam == 1 ? eOS_NKPlayer : eOS_USPlayer, false, Vec3(0, 0, 0), true));
+			}
 		}
 	}
 
@@ -557,44 +589,47 @@ void CHUDTagNames::Update()
 		DrawTagName(pVehicle);
 	}
 
-	// don't need to do any of this if we're in spectator mode - all player names will have been drawn above.
-	if(pClientActor->GetSpectatorMode() == CActor::eASM_None)
+	if (!bIsCoop)
 	{
-		for(TEnemyTagNamesList::iterator iter=m_enemyTagNamesList.begin(); iter!=m_enemyTagNamesList.end(); ++iter)
+		// don't need to do any of this if we're in spectator mode - all player names will have been drawn above.
+		if (pClientActor->GetSpectatorMode() == CActor::eASM_None)
 		{
-			SEnemyTagName *pEnemyTagName = &(*iter);
-
-			//check for deathcam target, don't remove from list
-			bool deathCam = false;
-
-			CActor *pLocalActor = static_cast<CActor *>(gEnv->pGame->GetIGameFramework()->GetClientActor());
-			if(pLocalActor)
+			for (TEnemyTagNamesList::iterator iter = m_enemyTagNamesList.begin(); iter != m_enemyTagNamesList.end(); ++iter)
 			{
-				deathCam = (pLocalActor->GetSpectatorTarget()==pEnemyTagName->uiEntityId) && (pLocalActor->GetSpectatorMode()==0) && (pLocalActor->GetHealth()<=0);
-			}
+				SEnemyTagName *pEnemyTagName = &(*iter);
 
-			if(!deathCam && gEnv->pTimer->GetAsyncTime().GetSeconds() >= pEnemyTagName->fSpawnTime+((float) g_pGameCVars->hud_mpNamesDuration))
-			{
-				// Note: iter=my_list.erase(iter) may not be standard/safe
-				TEnemyTagNamesList::iterator iterNext = iter;
-				++iterNext;
-				m_enemyTagNamesList.erase(iter);
-				iter = iterNext;
-			}
-			else
-			{
-				IActor *pActor = g_pGame->GetIGameFramework()->GetIActorSystem()->GetActor(pEnemyTagName->uiEntityId);
-				if(pActor)
+				//check for deathcam target, don't remove from list
+				bool deathCam = false;
+
+				CActor *pLocalActor = static_cast<CActor *>(gEnv->pGame->GetIGameFramework()->GetClientActor());
+				if (pLocalActor)
 				{
-					//DrawTagName(pActor);
-					int team = pGameRules->GetTeam(pActor->GetEntityId());
-					if(team!=iClientTeam || pGameRules->GetTeamCount()<=1)
-						SAFE_HUD_FUNC(UpdateMissionObjectiveIcon(pActor->GetEntityId(), (pActor->GetHealth() <= 0)?0:2, team==1?eOS_NKPlayer:eOS_USPlayer, false, Vec3(0,0,0), true));
+					deathCam = (pLocalActor->GetSpectatorTarget() == pEnemyTagName->uiEntityId) && (pLocalActor->GetSpectatorMode() == 0) && (pLocalActor->GetHealth() <= 0);
 				}
 
-				IVehicle *pVehicle = gEnv->pGame->GetIGameFramework()->GetIVehicleSystem()->GetVehicle(pEnemyTagName->uiEntityId);
-				if(pVehicle)
-					DrawTagName(pVehicle);
+				if (!deathCam && gEnv->pTimer->GetAsyncTime().GetSeconds() >= pEnemyTagName->fSpawnTime + ((float)g_pGameCVars->hud_mpNamesDuration))
+				{
+					// Note: iter=my_list.erase(iter) may not be standard/safe
+					TEnemyTagNamesList::iterator iterNext = iter;
+					++iterNext;
+					m_enemyTagNamesList.erase(iter);
+					iter = iterNext;
+				}
+				else
+				{
+					IActor *pActor = g_pGame->GetIGameFramework()->GetIActorSystem()->GetActor(pEnemyTagName->uiEntityId);
+					if (pActor)
+					{
+						//DrawTagName(pActor);
+						int team = pGameRules->GetTeam(pActor->GetEntityId());
+						if (team != iClientTeam || pGameRules->GetTeamCount() <= 1)
+							SAFE_HUD_FUNC(UpdateMissionObjectiveIcon(pActor->GetEntityId(), (pActor->GetHealth() <= 0) ? 0 : 2, team == 1 ? eOS_NKPlayer : eOS_USPlayer, false, Vec3(0, 0, 0), true));
+					}
+
+					IVehicle *pVehicle = gEnv->pGame->GetIGameFramework()->GetIVehicleSystem()->GetVehicle(pEnemyTagName->uiEntityId);
+					if (pVehicle)
+						DrawTagName(pVehicle);
+				}
 			}
 		}
 	}

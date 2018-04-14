@@ -4065,6 +4065,13 @@ bool CHUD::UpdateTimers(float frameTime)
 	CTimeValue now = gEnv->pTimer->GetFrameStartTime();
 	CPlayer *pPlayer = static_cast<CPlayer *>(gEnv->pGame->GetIGameFramework()->GetClientActor());
 
+	// Crysis Co-op
+	if (gEnv->bMultiplayer && m_currentGameRules == EHUD_COOP && pPlayer->GetHealth() <= 0.f)
+	{
+		DisplayOverlayFlashMessage("Waiting for Revive.", ColorF(0, 1.0, 0), false);
+	}
+	// ~Crysis Co-op
+
 	if(m_fPlayerDeathTime && m_animWarningMessages.IsLoaded())
 	{
 		if(g_pGame->GetMenu()->IsActive())

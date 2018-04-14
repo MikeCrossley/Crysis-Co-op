@@ -732,6 +732,27 @@ function CoopHunter_x:CreateAttachments()
 	self:CreateBoneAttachment(0, "hunter_attachment",   "vtol_attachment");
 end
 
+function CoopHunter_x:OnResetClient()
+	--sounds
+	self:StopSounds();
+	BasicActor.InitSoundTables(self);
+	
+	self:CreateBoneAttachment(0, "weapon_bone", "right_item_attachment");
+	
+	self:CreateAttachments();
+	
+	self.Glow.baseGlow = g_HunterBaseGlow;
+	self:SetGlow(HUNTER_GLOW_OFF, 0, 0, 0);		
+	self.SetHunterGlowLevel(self, 0);
+	
+	self:SetMaterialFloat(0,6,"glow",50);	
+	
+	
+	--play the idle sound in loop
+	self:PlayIdleSound(self.voiceTable.idle);
+
+end
+
 -----------------------------------------------------------------------------------------------------
 function CoopHunter_x:OnResetCustom()
 

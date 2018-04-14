@@ -1076,8 +1076,6 @@ end
 function CoopTrooper_x.Server:OnTimer(timerId, mSec)
 	BasicActor.Server.OnTimer(timerId, mSec);
 	
-	System.LogAlways("onTimer");
-
 	if (timerId == PAIN_TIMER) then
 		if (self.actor:GetHealth() > 0) then
 			self:DoPainSounds();
