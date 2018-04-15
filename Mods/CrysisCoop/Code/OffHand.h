@@ -89,6 +89,48 @@ class COffHand : public CWeapon
 	typedef std::vector<SGrabType>				TGrabTypes;
 
 public:
+	struct OffHandGrabParams
+	{
+		OffHandGrabParams() : id(0), nGrabType(0) {};
+		OffHandGrabParams(EntityId _id, int grabType) : id(_id), nGrabType(grabType) {};
+
+		EntityId	id;
+		int			nGrabType;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("pickupObject", id, 'eid');
+			ser.Value("grabType", nGrabType);
+		}
+	};
+
+	struct OffHandThrowParams
+	{
+		OffHandThrowParams() : nGrabType(0), nCurrentState(0), bForceThrow(false), nActivationMode(0) {};
+		OffHandThrowParams(int nGrabType, int nState, bool forceThrow, int nMode) : nGrabType(nGrabType), nCurrentState(nState), bForceThrow(forceThrow), nActivationMode(nMode) {};
+
+		int nActivationMode;
+		int	nGrabType;
+		bool bForceThrow;
+		int nCurrentState;
+
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("activateMode", nActivationMode);
+			ser.Value("grabType", nGrabType);
+			ser.Value("forceThrow", bForceThrow);
+			ser.Value("currState", nCurrentState);
+		}
+	};
+
+
+	DECLARE_CLIENT_RMI_NOATTACH(ClPickup, OffHandGrabParams, eNRT_ReliableOrdered);
+	DECLARE_SERVER_RMI_NOATTACH(SvRequestPickup, OffHandGrabParams, eNRT_ReliableOrdered);
+
+	DECLARE_CLIENT_RMI_NOATTACH(ClThrow, OffHandThrowParams, eNRT_ReliableOrdered);
+	DECLARE_SERVER_RMI_NOATTACH(SvRequestThrow, OffHandThrowParams, eNRT_ReliableOrdered);
+public:
 
 	COffHand();
 	virtual ~COffHand();
@@ -158,6 +200,8 @@ public:
 	void UpdateGrabbedNPCState();
 	void UpdateGrabbedNPCWorldPos(IEntity *pEntity, struct SViewParams *viewParams);
 
+	bool IsLocalClient() { return GetOwnerActor()->IsClient(); }
+
 	void StartSwitchGrenade(bool xi_switch = false, bool fakeSwitch = false);
 	void EndSwitchGrenade();
 
@@ -189,8 +233,6 @@ public:
 	virtual void ForcePendingActions() {}
 
 private:
-
-	EntityId SpawnRockProjectile(IRenderNode *pRenderNode);
 
 	int		CanExchangeWeapons(IItem *pItem, IItem **pExchangeItem);
 	IItem *GetExchangeItem(IItem *pPickupItem, CPlayer *pPlayer);
@@ -241,8 +283,6 @@ private:
 	CItem					*m_mainHand;
 	CWeapon				*m_mainHandWeapon;
 	EntityId			m_prevMainHandId;
-
-	IRenderNode*  m_pRockRN;
 
 	Matrix34      m_lastNPCMatrix;
 	Matrix34			m_intialBoidLocalMatrix;

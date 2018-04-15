@@ -154,6 +154,9 @@ function Coop.Server:OnInit()
 	self.channelSpectatorMode={}; -- keep track of spectators
 	
 	self:Reset(true);
+	
+	-- Delay entity reset
+	self:SetTimer(self.MISSIONFAILED_TIMERID, 1000);
 end
 
 
@@ -1090,6 +1093,10 @@ end
 ----------------------------------------------------------------------------------------------------
 function Coop.Client:ClDefeat()
 	HUD.DisplayBigOverlayFlashMessage("Raptor Team Has Been Eliminated!", 5.0, 400, 375, self.hudWhite);
+	
+	-- Play music for defeat
+	Sound.PlayPattern("mp_lose", false, false);
+	
 	--self.game:GameOver(0);
 end
 

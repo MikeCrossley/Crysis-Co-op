@@ -22,11 +22,16 @@ History:
 
 //------------------------------------------------------------------------
 CThrow::CThrow()
-: m_throwableId(0),
-	m_throwableAction(0),
-	m_usingGrenade(true),
-	m_forceNextThrow(false),
-	m_throw_time(0.0f)
+	: m_throwableId(0)
+	, m_throwableAction(0)
+	, m_usingGrenade(true)
+	, m_forceNextThrow(false)
+	, m_throw_time(0.0f)
+	, m_thrown(false)
+	, m_pulling(false)
+	, m_throwing(false)
+	, m_netfiring(false)
+	, m_hold_timer(0.f)
 {
 }
 
@@ -43,6 +48,7 @@ void CThrow::Update(float frameTime, uint frameId)
 
 	if (m_firing)
 	{
+		CryLogAlways("[CThrow::Update] IsFiring");
 		if (!m_pulling && !m_throwing && !m_thrown)
 		{
 
@@ -55,6 +61,7 @@ void CThrow::Update(float frameTime, uint frameId)
 		}
 		else if (m_throwing && m_throw_time<=0.0f)
 		{
+			CryLogAlways("[CThrow::Update] IsThrowing");
 			float strengthScale=1.0f;
 			CActor *pOwner = m_pWeapon->GetOwnerActor();
 
@@ -62,6 +69,7 @@ void CThrow::Update(float frameTime, uint frameId)
 
 			if (m_throwableId)
 			{
+				CryLogAlways("[CThrow::Update] HasThrowable");
 				// Finish throwing even if the item does not exist anymore
 				if (m_throwableAction)
 					m_throwableAction->execute(m_pWeapon);
@@ -189,6 +197,7 @@ void CThrow::StartFire()
 
 	if (CanFire(true) && !m_firing && !m_throwing && !m_pulling)
 	{
+		CryLogAlways("[CThrow::StartFire()]");
 		m_firing = true;
 		m_pulling = true;
 		m_throwing = false;
@@ -213,6 +222,8 @@ void CThrow::StopFire()
 {
 	if (m_firing && !m_throwing && !m_thrown)
 	{
+		CryLogAlways("[CThrow::StopFire()]");
+
 		DoThrow();
 
 		m_pWeapon->RequestStopFire();
@@ -224,6 +235,8 @@ void CThrow::StopFire()
 //------------------------------------------------------------------------
 void CThrow::NetStartFire()
 {
+	CryLogAlways("[CThrow::NetStartFire()]");
+
 	m_firing = true;
 	m_throwing = false;
 	m_thrown = false;
@@ -245,6 +258,8 @@ void CThrow::NetStopFire()
 {
 	if (m_firing && !m_throwing && !m_thrown)
 	{
+		CryLogAlways("[CThrow::NetStopFire()]");
+
 		DoThrow();
 		m_pWeapon->RequireUpdate(eIUS_FireMode);
 	}
@@ -284,6 +299,8 @@ struct CThrow::ThrowAction
 
 void CThrow::DoThrow()
 {
+	CryLogAlways("[CThrow::DoThrow]");
+
 	m_throw_time = m_throwparams.delay;
 	m_throwing = true;
 	m_thrown = false;
@@ -348,6 +365,7 @@ void CThrow::DoThrow()
 //--------------------------------------
 void CThrow::DoDrop()
 {
+	CryLogAlways("[CThrow::DoDrop]");
 
 	m_pWeapon->HideItem(true);
 	if (m_throwableId)
@@ -447,6 +465,8 @@ void CThrow::ThrowGrenade()
 //-----------------------------------------------------
 void CThrow::ThrowObject(IEntity* pEntity, IPhysicalEntity* pPE)
 {
+	CryLogAlways("[CThrow::ThrowObject]");
+
 	bool strengthMode = false;
 
 	CPlayer *pPlayer = static_cast<CPlayer*>(m_pWeapon->GetOwnerActor());
@@ -487,6 +507,10 @@ void CThrow::ThrowObject(IEntity* pEntity, IPhysicalEntity* pPE)
 	{
 		pe_action_set_velocity asv;
 		asv.v = (dir*speed)+vel;
+
+
+		CryLogAlways("x %f y %f z %f", asv.v.x, asv.v.y, asv.v.z);
+
 		AABB box;
 		pEntity->GetWorldBounds(box);
 		Vec3 finalW = -gEnv->pSystem->GetViewCamera().GetMatrix().GetColumn0()*(8.0f/max(0.1f,box.GetRadius()));
@@ -553,7 +577,6 @@ void CThrow::ThrowLivingEntity(IEntity* pEntity, IPhysicalEntity* pPE)
 //----------------------------------------------------
 bool CThrow::CheckForIntersections(IPhysicalEntity* heldEntity, Vec3& dir)
 {
-
 	Vec3 pos = m_pWeapon->GetSlotHelperPos(CItem::eIGS_FirstPerson, "item_attachment", true);
 	ray_hit hit;
 
