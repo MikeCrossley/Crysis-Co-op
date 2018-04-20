@@ -6,6 +6,7 @@
 #include "PlayerInput.h"
 #include "GameActions.h"
 #include "NetInputChainDebug.h"
+#include "GameRules.h"
 
 #undef CALL_PLAYER_EVENT_LISTENERS
 #define CALL_PLAYER_EVENT_LISTENERS(func) \
@@ -1399,7 +1400,12 @@ void CPlayerMovement::AdjustMovementForEnvironment( Vec3& move, bool sprinting )
 	//nanoSuit
 	if(CNanoSuit *pSuit = m_player.GetNanoSuit())
 	{
-		if (gEnv->bMultiplayer)
+		//Crysis Co-op
+		const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
+		bool bIsCoop = !strcmp(gameRulesName, "Coop");
+		//~Crysis Co-op
+
+		if (gEnv->bMultiplayer && !bIsCoop)
 		{
 			if(pSuit->GetMode() == NANOMODE_SPEED)
 			{

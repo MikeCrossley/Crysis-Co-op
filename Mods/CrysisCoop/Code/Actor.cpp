@@ -837,6 +837,11 @@ void CActor::Fall(Vec3 hitPos, bool forceFall, float sleepTime /*=0.0f*/)
 		if(!forceFall)
 			return;
 
+	// Crysis Co-op :: Player doesn't fall over at any point so we can disable this for players
+	if (IsPlayer())
+		return;
+	//~Crysis Co-op
+
 	//Aliens don't support fall&play, please ragdollize instead
 	if(IsAlien())
 		return;

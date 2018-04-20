@@ -571,19 +571,473 @@ end
 
 ----------------------------------------------------------------------------------------------------
 function Coop:ProcessActorDamage(hit)
+
 	local target=hit.target;
-	local health=target.actor:GetHealth();
+	local shooter=hit.shooter;
+	local weapon=hit.weapon;
+	local health = target.actor:GetHealth();
 	
-	health = math.floor(health - hit.damage*(1-self:GetDamageAbsorption(target, hit)));
+	if(target.Properties.bInvulnerable)then
+		if(target.Properties.bInvulnerable==1)then
+			return (health <= 0);
+		end;
+	end;
 	
-	target.actor:SetHealth(health);
+	local dmgMult = 1.0;
+	if (target and target.actor and target.actor:IsPlayer()) then
+		dmgMult = g_dmgMult;
+	end
+
+	local totalDamage = 0;
 	
-	--if (shooter ~= nil) then
-		--Log("** %s hit %s for %d (%d absorbed) **", shooter:GetName(), target:GetName(), damage, math.floor(damage*target:GetDamageAbsorption(damageType)));
-	--end
+	local splayer=source and shooter.actor and shooter.actor:IsPlayer();
+	local sai=(not splayer) and shooter and shooter.actor;
+	local tplayer=target and target.actor and target.actor:IsPlayer();
+	local tai=(not tplayer) and target and target.actor;
 	
+	if (sai and not tai) then
+		-- AI vs. player
+		totalDamage = AI.ProcessBalancedDamage(shooter.id, target.id, dmgMult*hit.damage, hit.type);
+		totalDamage = totalDamage*(1-self:GetDamageAbsorption(target, hit));
+			--totalDamage = dmgMult*hit.damage*(1-target:GetDamageAbsorption(hit.type, hit.damage));
+	elseif (sai and tai) then
+		-- AI vs. AI
+		totalDamage = AI.ProcessBalancedDamage(shooter.id, target.id, dmgMult*hit.damage, hit.type);
+		totalDamage = totalDamage*(1-self:GetDamageAbsorption(target, hit));
+	else
+		totalDamage = dmgMult*hit.damage*(1-self:GetDamageAbsorption(target, hit));
+	end
+
+	--update the health
+	health = math.floor(health - totalDamage);
+
+	if (self.game:DebugCollisionDamage()>0) then	
+	  Log("<%s> hit damage: %d // absorbed: %d // health: %d", target:GetName(), hit.damage, hit.damage*self:GetDamageAbsorption(target, hit), health);
+	end
+	
+	if (health<=0) then --prevent death out of some reason
+		if(target.Properties.Damage.bNoDeath and target.Properties.Damage.bNoDeath==1) then
+			target.actor:Fall(hit.pos);
+			return false;
+		else
+			if(not target.actor:IsPlayer()) then	--prevent friendly AIs from dying by player action //from grenade explosions (Bernds call)
+				--if(hit.type == "frag") then
+				if(hit.shooter.actor:IsPlayer()) then
+					if(not AI.Hostile(hit.target.id, hit.shooterId, false)) then
+						target.actor:Fall(hit.pos);
+						return false;
+					end
+				end
+				--end
+			end;
+		end;
+	end
+	
+	--if the actor is god do some counts and reset the hp if necessary
+	local isGod = target.actorStats.godMode;
+	if (isGod and isGod > 0) then
+	 	if (health <=0) then
+	 		target.actor:SetHealth(0);  --is only called to count deaths in GOD mode within C++
+			health = target.Properties.Damage.health;	
+		end
+	end
+	
+	target.actor:SetHealth(health);	
+	
+	if(health>0 and target.Properties.Damage.FallPercentage and not target.isFallen) then --target.actor:IsFallen()) then
+		local healthPercentage = target:GetHealthPercentage( );
+		if(target.Properties.Damage.FallPercentage>healthPercentage and totalDamage > tonumber(System.GetCVar("g_fallAndPlayThreshold"))) then
+			target.actor:Fall(hit.pos);
+			return false;
+		end
+	end	
+	
+	-- when in vehicle or have suit armor mode on - don't apply hit impulse
+	-- when actor is dead, BasicActor:ApplyDeathImpulse is taking over
+	if (health>0 and not target:IsOnVehicle() and target.AI and target.AI.curSuitMode~=BasicAI.SuitMode.SUIT_ARMOR ) then
+	
+		local dmgScale = System.GetCVar("sv_voting_ratio");
+		local dmgScale1 = System.GetCVar("sv_voting_team_ratio");
+		target:AddImpulse(hit.partId or -1,hit.pos,hit.dir, hit.damage*dmgScale,dmgScale1);
+
+--		if(hit.type == "gaussbullet") then
+--			target:AddImpulse(hit.partId or -1,hit.pos,hit.dir, math.min(1000, hit.damage*2.5),1);
+--		else
+--			target:AddImpulse(hit.partId or -1,hit.pos,hit.dir,math.min(200, hit.damage*0.75),1);
+--		end
+	end
+	
+	local shooterId = (shooter and shooter.id) or NULL_ENTITY;
+	local weaponId = (weapon and weapon.id) or NULL_ENTITY;	
+	target.actor:DamageInfo(shooterId, target.id, weaponId, totalDamage, hit.type);
+	
+	-- feedback the information about the hit to the AI system.
+	if(hit.material_type) then
+		AI.DebugReportHitDamage(target.id, shooterId, totalDamage, hit.material_type);
+	else
+		AI.DebugReportHitDamage(target.id, shooterId, totalDamage, "");
+	end
+
 	return (health <= 0);
 end
+
+
+----------------------------------------------------------------------------------------------------
+function Coop:GetCollisionMinVelocity(entity, collider, hit)
+	
+	local minVel=10;
+	
+	if ((entity.actor and not entity.actor:IsPlayer()) or entity.advancedDoor) then
+		minVel=1; --Door or character hit	
+	end	
+	
+	if(entity.actor and collider and collider.vehicle) then
+		minVel=6; -- otherwise we don't get damage at slower speeds
+		
+	end
+	
+	if(not entity.vehicle and hit.target_velocity and vecLenSq(hit.target_velocity) == 0) then -- if collision target it not moving
+		minVel = minVel * 2;
+	end
+	
+	return minVel;
+end
+	
+----------------------------------------------------------------------------------------------------
+function Coop:OnCollision(entity, hit)
+	local collider = hit.target;
+	local colliderMass = hit.target_mass; -- beware, collider can be null (e.g. entity-less rigid entities)
+	local contactVelocitySq;
+	local contactMass;
+
+	-- check if frozen
+	if (self.game:IsFrozen(entity.id)) then
+		if ((not entity.CanShatter) or (tonumber(entity:CanShatter())~=0)) then
+			local energy = self:GetCollisionEnergy(entity, hit);
+	
+			local minEnergy = 1000;
+			
+			if (energy >= minEnergy) then
+				if (not collider) then
+					collider=entity;
+				end
+	
+				local colHit = self.collisionHit;
+				colHit.pos = hit.pos;
+				colHit.dir = hit.dir or hit.normal;
+				colHit.radius = 0;	
+				colHit.partId = -1;
+				colHit.target = entity;
+				colHit.targetId = entity.id;
+				colHit.weapon = collider;
+				colHit.weaponId = collider.id
+				colHit.shooter = collider;
+				colHit.shooterId = collider.id
+				colHit.materialId = 0;
+				colHit.damage = 0;
+				colHit.typeId = g_collisionHitTypeId;
+				colHit.type = "collision";
+				
+				if (collider.vehicle and collider.GetDriverId) then
+				  local driverId = collider:GetDriverId();
+				  if (driverId) then
+					  colHit.shooterId = driverId;
+					  colHit.shooter=System.GetEntity(colHit.shooterId);
+					end
+				end
+	
+				self:ShatterEntity(entity.id, colHit);
+			end
+	
+			return;
+		end
+	end
+	
+	if (not (entity.Server and entity.Server.OnHit)) then
+		return;
+	end
+	
+	if (entity.IsDead and entity:IsDead()) then
+		return;
+	end
+		
+	local minVelocity;
+	
+	-- collision with another entity
+	if (collider or colliderMass>0) then
+		FastDifferenceVectors(self.tempVec, hit.velocity, hit.target_velocity);
+		contactVelocitySq = vecLenSq(self.tempVec);
+		contactMass = colliderMass;		
+		minVelocity = self:GetCollisionMinVelocity(entity, collider, hit);
+	else	-- collision with world		
+		contactVelocitySq = vecLenSq(hit.velocity);
+		contactMass = entity:GetMass();
+		minVelocity = 7.5;
+	end
+	
+	-- marcok: avoid fp exceptions, not nice but I don't want to mess up any damage calculations below at this stage
+	if (contactVelocitySq < 0.01) then
+		contactVelocitySq = 0.01;
+	end
+	
+	local damage = 0;
+	
+	-- make sure we're colliding with something worthy
+	if (contactMass > 0.01) then 		
+		local minVelocitySq = minVelocity*minVelocity;
+		local bigObject = false;
+		--this should handle falling trees/rocks (vehicles are more heavy usually)
+		if(contactMass > 200.0 and contactMass < 10000 and contactVelocitySq > 2.25) then
+			if(hit.target_velocity and vecLenSq(hit.target_velocity) > (contactVelocitySq * 0.3)) then
+				bigObject = true;
+				--vehicles and doors shouldn't be 'bigObject'-ified
+				if(collider and (collider.vehicle or collider.advancedDoor)) then
+					bigObject = false;
+				end
+			end
+		end
+		
+		local collideBarbWire = false;
+		if(hit.materialId == g_barbWireMaterial and entity and entity.actor) then
+			collideBarbWire = true;
+		end
+			
+		--Log("velo : %f, mass : %f", contactVelocitySq, contactMass);
+		if (contactVelocitySq >= minVelocitySq or bigObject or collideBarbWire) then		
+			-- tell AIs about collision
+			if(AI and entity and entity.AI and not entity.AI.Colliding) then 
+				g_SignalData.id = hit.target_id;
+				g_SignalData.fValue = contactVelocitySq;
+				AI.Signal(SIGNALFILTER_SENDER,1,"OnCollision",entity.id,g_SignalData);
+				entity.AI.Colliding = true;
+				entity:SetTimer(COLLISION_TIMER,4000);
+			end			
+			
+			-- marcok: Uncomment this stuff when you need it
+		  --local debugColl = self.game:DebugCollisionDamage();
+			
+			local contactVelocity = math.sqrt(contactVelocitySq)-minVelocity;
+			if (contactVelocity < 0.0) then
+				contactVelocitySq = minVelocitySq;
+				contactVelocity = 0.0;
+			end
+					 			  			
+			-- damage computation
+			if(entity.vehicle) then
+				damage = 0.0005*self:GetCollisionEnergy(entity, hit); -- vehicles get less damage SINGLEPLAYER ONLY.
+			else
+				damage = 0.0025*self:GetCollisionEnergy(entity, hit);
+			end
+	
+			-- apply damage multipliers 
+			damage = damage * self:GetCollisionDamageMult(entity, collider, hit);  
+				
+			if(collideBarbWire and entity.actor:IsPlayer()) then
+				damage = damage * (contactMass * 0.15) * (30.0 / contactVelocitySq);
+			end
+			
+			if(bigObject) then
+				if (damage > 0.5) then 
+					if (entity.actor and not entity.actor:IsPlayer() and entity.Properties.bNanoSuit==1) then
+						if(damage > 500.0) then
+							entity.actor:Fall(hit.pos);
+						end
+						damage = damage * 1; --to be tweaked
+					else
+						damage = damage * (contactMass / 10.0) * (10.0 / contactVelocitySq);
+						if (not entity.actor:IsPlayer()) then
+							damage = damage * 3;
+						end
+					end
+				else
+					return;
+				end
+			end	
+			
+			-- subtract collision damage threshold, if available
+			if (entity.GetCollisionDamageThreshold) then
+				local old = damage;
+				damage = __max(0, damage - entity:GetCollisionDamageThreshold());		
+			end
+
+			if(damage < 1.0) then
+				return;
+			end
+			
+			if (entity.actor) then
+				if(entity.actor:IsPlayer()) then 
+					if(hit.target_velocity and vecLen(hit.target_velocity) == 0) then --limit damage from running agains static objects
+						damage = damage * 0.2;
+					end
+					--DESIGN : ragdolls should not instant kill the player on collision
+					if (collider and collider.actor and collider.actor:GetHealth() <= 0) then
+						damage = 0;--__max(entity.actor:GetHealth() / 2, damage);
+					end
+				else
+					local fallenTime = entity.actor:GetFallenTime();
+					if(fallenTime > 0 and fallenTime < 300) then --300ms window
+						--damage = damage * 0.1; --this prevents actors already falling/fallen to die from multiple collisions with the same object
+						return;
+					end
+				end
+			
+				if(collider and collider.class=="AdvancedDoor")then
+					if(collider:GetState()=="Opened")then
+						entity:KnockedOutByDoor(hit,contactMass,contactVelocity);
+					end
+				end;
+				
+				if (collider and not collider.actor) then
+				  local contactVelocityCollider = __max(0, vecLen(hit.target_velocity)-minVelocity);  				  
+				  local fallVelocity = (entity.collisionKillVelocity or 20.0);
+				  
+						--KYONG BATTLE FIX for patch2, workaround for random extreme velocities (100+ times more than normal)
+						if(damage > 700.0) then
+							if(entity.actor) then
+								if((contactVelocityCollider > 4000) or string.find(entity:GetName(),"Kyong")) then
+									damage = 700.0;
+								end
+							end
+						end
+				    				  
+					if(contactVelocity > fallVelocity and contactVelocityCollider > fallVelocity and colliderMass > 50 and not entity.actor:IsPlayer()) then  				  	
+						local bNoDeath = entity.Properties.Damage.bNoDeath;
+						local bFall = bNoDeath and bNoDeath~=0;
+				  
+						-- don't allow killing friendly AIs by collisions
+						if(not AI.Hostile(entity.id, g_localActorId, false)) then
+							return;
+						end
+				  	
+						--if (debugColl~=0) then
+						--  Log("%s for <%s>, collider <%s>, contactVel %.1f, contactVelCollider %.1f, colliderMass %.1f", bFall and "FALL" or "KILL", entity:GetName(), collider:GetName(), contactVelocity, contactVelocityCollider, colliderMass);
+						--end  				  	
+				  	
+						if(bFall) then
+							entity.actor:Fall(hit.pos);
+						end
+					else
+						if(g_localActorId and AI.Hostile(entity.id, g_localActorId, false)) then
+							if(not entity.isAlien and contactVelocity > 5.0 and contactMass > 10.0 and not entity.actor:IsPlayer()) then
+								if(damage < 50) then
+									damage = 50;
+									entity.actor:Fall(hit.pos);
+								end
+							else
+								if(not entity.isAlien and contactMass > 2.0 and contactVelocity > 15.0 and not entity.actor:IsPlayer()) then
+									if(damage < 50) then
+										damage = 50;
+										entity.actor:Fall(hit.pos);
+									end
+								end 
+							end
+						end
+					end
+				end
+			end
+  		
+			
+			if (damage >= 0.5) then				  				
+				if (not collider) then collider = entity; end;		
+				
+				--prevent deadly collision damage (old system somehow failed)
+				if(entity.actor and not AI.Hostile(entity.id, g_localActorId, false)) then
+					if(entity.id ~= g_localActorId) then
+						if(entity.actor:GetHealth() <= damage) then
+							entity.actor:Fall(hit.pos);
+							return;
+						end
+					end
+				else
+					if(entity.actor and collider and collider.actor) then 
+						entity.actor:Fall(hit.pos);
+						return;
+					end
+				end
+
+			  local curtime = System.GetCurrTime();
+			  if (entity.lastCollDamagerId and entity.lastCollDamagerId==collider.id and 
+					  entity.lastCollDamageTime+0.3>curtime and damage<entity.lastCollDamage*2) then
+					return
+				end
+				entity.lastCollDamagerId = collider.id;
+				entity.lastCollDamageTime = curtime;
+				entity.lastCollDamage = damage;
+				
+				--if (debugColl>0) then
+				--  Log("[SinglePlayer] <%s>: sending coll damage %.1f", entity:GetName(), damage);
+				--end
+			
+				local colHit = self.collisionHit;
+				colHit.pos = hit.pos;
+				colHit.dir = hit.dir or hit.normal;
+				colHit.radius = 0;	
+				colHit.partId = -1;
+				colHit.target = entity;
+				colHit.targetId = entity.id;
+				colHit.weapon = collider;
+				colHit.weaponId = collider.id
+				colHit.shooter = collider;
+				colHit.shooterId = collider.id
+				colHit.materialId = 0;
+				colHit.damage = damage;
+				colHit.typeId = g_collisionHitTypeId;
+				colHit.type = "collision";
+				colHit.impulse=hit.impulse;
+				
+				if (collider.vehicle) then
+					if(collider.GetDriverId) then
+						local driverId = collider:GetDriverId();
+					  
+						if (driverId) then
+							colHit.shooterId = driverId;
+							colHit.shooter=System.GetEntity(colHit.shooterId);
+						end
+					end
+					
+					if(entity.actor and entity.lastExitedVehicleId) then
+						if(entity.lastExitedVehicleId == collider.id) then
+							if(_time-entity.lastExitedVehicleTime < 2.5) then
+								-- just got out of this vehicle. No damage.
+								colHit.damage = 0;
+							end
+						end
+					end
+					
+					--extra multiplier for friendly vehicles
+					local colliderTeam = self.game:GetTeam(collider.id);
+					if(colliderTeam ~= 0 and colliderTeam == self.game:GetTeam(entity.id)) then
+						colHit.damage = colHit.damage * tonumber(System.GetCVar("g_friendlyVehicleCollisionRatio"));
+					end
+					
+					-- and yet another one for vehicle-specific damage
+					if(entity.actor) then
+						colHit.damage = colHit.damage * collider.vehicle:GetPlayerCollisionMult();
+					end
+				end
+				
+				local deadly=false;
+			
+				if (entity.Server.OnHit(entity, colHit)) then
+					-- special case for actors
+					-- if more special cases come up, lets move this into the entity
+						if (entity.actor and self.ProcessDeath) then
+							self:ProcessDeath(colHit);
+						end
+					
+					deadly=true;
+				end
+				
+				local debugHits = self.game:DebugHits();
+				
+				if (debugHits>0) then
+					self:LogHit(colHit, debugHits>1, deadly);
+				end				
+			end
+		end
+	end
+end
+
 
 ----------------------------------------------------------------------------------------------------
 function Coop:CalcExplosionDamage(entity, explosion, obstruction)

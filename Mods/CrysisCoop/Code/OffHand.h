@@ -254,7 +254,7 @@ private:
 	//All what we need for grabbing
 	TGrabTypes		m_grabTypes;
 	uint32				m_grabType;
-	EntityId			m_heldEntityId, m_preHeldEntityId, m_crosshairId;
+	EntityId			m_heldEntityId, m_preHeldEntityId, m_crosshairId, m_previousHeldEntityId;
 	Matrix34			m_holdOffset;
 	Vec3          m_holdScale;
 	int						m_constraintId;
@@ -275,6 +275,7 @@ private:
 	float					m_range;
 	float					m_pickingTimer;
 	float					m_resetTimer;
+	float					m_physTimer;
 
 	int						m_usable;
 

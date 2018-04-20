@@ -401,16 +401,26 @@ void CGameRules::ProcessEvent( SEntityEvent& event)
 		break;
 
 	case ENTITY_EVENT_START_GAME:
+	{
 		m_timeOfDayInitialized = false;
 		g_pGame->GetWeaponSystem()->GetTracerManager().Reset();
 
-		if (gEnv->bServer && gEnv->bMultiplayer && pTOD && pTOD->GetIVal() && g_pGame->GetIGameFramework()->IsImmersiveMPEnabled())
+		// Crysis Co-op
+		const char* gameRulesName = GetEntity()->GetClass()->GetName();
+		bool bIsCoop = !strcmp(gameRulesName, "Coop");
+		// ~Crysis Co-op
+
+		if (!bIsCoop)
 		{
-			static ICVar* pStart = gEnv->pConsole->GetCVar("sv_timeofdaystart");
-			if (pStart)
-				gEnv->p3DEngine->GetTimeOfDay()->SetTime(pStart->GetFVal(), true);
+			if (gEnv->bServer && gEnv->bMultiplayer && pTOD && pTOD->GetIVal() && g_pGame->GetIGameFramework()->IsImmersiveMPEnabled())
+			{
+				static ICVar* pStart = gEnv->pConsole->GetCVar("sv_timeofdaystart");
+				if (pStart)
+					gEnv->p3DEngine->GetTimeOfDay()->SetTime(pStart->GetFVal(), true);
+			}
 		}
 
+	}
 		break;
 
 	case ENTITY_EVENT_ENTER_SCRIPT_STATE:

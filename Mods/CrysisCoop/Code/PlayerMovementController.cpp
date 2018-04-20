@@ -1174,7 +1174,10 @@ bool CPlayerMovementController::UpdateNormal( float frameTime, SActorFrameMoveme
 
 		float maxDeltaAngleRate = maxDeltaAngleRateNormal;
 
-		if (gEnv->bMultiplayer)
+		// Crysis Co-op :: We still want the SP approach for AI
+		//if (gEnv->bMultiplayer)
+		if (gEnv->bMultiplayer && this->m_pPlayer->IsPlayer())
+		// ~Crysis Co-op
 		{
 			maxDeltaAngleRate = maxDeltaAngleMultiplayer;
 		}

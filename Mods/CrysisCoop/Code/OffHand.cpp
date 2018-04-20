@@ -153,8 +153,10 @@ m_lastFireModeId(0),
 m_range(OFFHAND_RANGE),
 m_usable(false),
 m_heldEntityId(0),
+m_previousHeldEntityId(0),
 m_pickingTimer(-1.0f),
 m_resetTimer(-1.0f),
+m_physTimer(0.f),
 m_preHeldEntityId(0),
 m_grabbedNPCSpecies(eGCT_UNKNOWN),
 m_killTimeOut(-1.0f),
@@ -528,6 +530,19 @@ void COffHand::Update(SEntityUpdateContext &ctx, int slot)
 
 	if (slot==eIUS_General)
 	{
+		if (m_physTimer > 0.f)
+		{
+			m_physTimer -= ctx.fFrameTime;
+		}
+		else
+		{
+			if (m_previousHeldEntityId) 
+			{
+				IgnoreCollisions(false, m_previousHeldEntityId);
+				m_previousHeldEntityId = 0;
+			}
+		}
+
 		if(m_resetTimer>=0.0f)
 		{
 			m_resetTimer -= ctx.fFrameTime;
@@ -1588,8 +1603,10 @@ void COffHand::FinishAction(EOffHandActions eOHA)
 																m_prevMainHandId = 0;
 
 																//turn off collision with thrown objects
-																if(m_heldEntityId)
+																if (m_heldEntityId)
+																{
 																	IgnoreCollisions(false, m_heldEntityId);
+																}
 
 															}
 
@@ -1630,7 +1647,6 @@ void COffHand::Freeze(bool freeze)
 //==============================================================================
 void COffHand::SetOffHandState(EOffHandStates eOHS)
 {
-	CryLogAlways("[COffHand::SetOffHandState] OffHand %d", (int)eOHS);
 	m_currentState = eOHS;
 
 	if(eOHS == eOHS_INIT_STATE)
@@ -1791,6 +1807,9 @@ void COffHand::PerformThrow(int activationMode, EntityId throwableId, int oldFMI
 		// Crysis Co-op :: Force server to stop handling this object
 		if (!IsLocalClient())
 		{
+			//this->IgnoreCollisions(false, m_heldEntityId);
+			m_physTimer = 0.3f;
+			m_previousHeldEntityId = m_heldEntityId;
 			m_heldEntityId = 0;
 		}
 		// ~Crysis Co-op
@@ -2310,6 +2329,7 @@ bool COffHand::PerformPickUp()
 //===========================================================================================
 void COffHand::IgnoreCollisions(bool ignore, EntityId entityId /*=0*/)
 {
+	CryLogAlways("IgnoreColissions bIgnore %d  EntityId %d", ignore ? 1 : 0, entityId);
 	if (!m_heldEntityId && !entityId)
 		return;
 
