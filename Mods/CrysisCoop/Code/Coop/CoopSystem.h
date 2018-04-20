@@ -28,6 +28,10 @@ public:
 	bool Initialize();
 
 	// Summary:
+	//	Initializes the Coop related CVars
+	void InitCvars();
+
+	// Summary:
 	//	Initialize Complete
 	void CompleteInit();
 

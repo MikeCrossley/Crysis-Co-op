@@ -106,13 +106,17 @@ public:
 
 	struct OffHandThrowParams
 	{
-		OffHandThrowParams() : nGrabType(0), nCurrentState(0), bForceThrow(false), nActivationMode(0) {};
-		OffHandThrowParams(int nGrabType, int nState, bool forceThrow, int nMode) : nGrabType(nGrabType), nCurrentState(nState), bForceThrow(forceThrow), nActivationMode(nMode) {};
+		OffHandThrowParams() : nGrabType(0), nCurrentState(0), bForceThrow(false), nActivationMode(0), vPos(Vec3(ZERO)) {};
+		OffHandThrowParams(int nGrabType, int nState, bool forceThrow, int nMode, Vec3 pos, Quat qRot) : nGrabType(nGrabType), nCurrentState(nState), bForceThrow(forceThrow), nActivationMode(nMode)
+		, vPos(pos), qRotation(qRot) {};
 
 		int nActivationMode;
 		int	nGrabType;
 		bool bForceThrow;
 		int nCurrentState;
+
+		Vec3 vPos;
+		Quat qRotation;
 
 
 		void SerializeWith(TSerialize ser)
@@ -121,6 +125,8 @@ public:
 			ser.Value("grabType", nGrabType);
 			ser.Value("forceThrow", bForceThrow);
 			ser.Value("currState", nCurrentState);
+			ser.Value("pos", vPos);
+			ser.Value("rot", qRotation);
 		}
 	};
 

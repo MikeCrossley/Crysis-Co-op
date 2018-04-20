@@ -48,7 +48,6 @@ void CThrow::Update(float frameTime, uint frameId)
 
 	if (m_firing)
 	{
-		CryLogAlways("[CThrow::Update] IsFiring");
 		if (!m_pulling && !m_throwing && !m_thrown)
 		{
 
@@ -307,6 +306,9 @@ void CThrow::DoThrow()
 
 	bool drop = false;
 
+	CryLogAlways("Grenade %d Lowered %d, Force %d", m_usingGrenade?1:0,m_pWeapon->IsWeaponLowered() ? 1 : 0, m_forceNextThrow ? 1 : 0);
+
+
 	if(!m_pWeapon->IsWeaponLowered() && m_forceNextThrow)
 		m_pWeapon->PlayAction(m_throwactions.throwit);
 	else if(m_usingGrenade)
@@ -497,19 +499,17 @@ void CThrow::ThrowObject(IEntity* pEntity, IPhysicalEntity* pPE)
 	ppos.pos = pEntity->GetWorldPos();
 	pPE->SetParams(&ppos);
 
-	if(CheckForIntersections(pPE,dir))
+	if(CheckForIntersections(pPE,dir) && !gEnv->bMultiplayer)
 	{
 		Matrix34 newTM = pEntity->GetWorldTM();
 		newTM.SetTranslation(newTM.GetTranslation()-(dir*0.4f));
 		pEntity->SetWorldTM(newTM,ENTITY_XFORM_POS);
+
 	}
 	else
 	{
 		pe_action_set_velocity asv;
 		asv.v = (dir*speed)+vel;
-
-
-		CryLogAlways("x %f y %f z %f", asv.v.x, asv.v.y, asv.v.z);
 
 		AABB box;
 		pEntity->GetWorldBounds(box);

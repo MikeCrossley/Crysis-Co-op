@@ -11,6 +11,7 @@
 #include "Coop/DialogSystem/DialogSystem.h"
 
 #include <IVehicleSystem.h>
+#include <IConsole.h>
 
 // Static CCoopSystem class instance forward declaration.
 CCoopSystem CCoopSystem::s_instance = CCoopSystem();
@@ -41,6 +42,16 @@ bool CCoopSystem::Initialize()
 		pSS->EndCall();
 	}
 
+	InitCvars();
+
+	m_pDialogSystem = new CDialogSystem();
+	m_pDialogSystem->Init();
+
+	return true;
+}
+
+void CCoopSystem::InitCvars()
+{
 	ICVar* pAIUpdateAlways = gEnv->pConsole->GetCVar("ai_UpdateAllAlways");
 	ICVar* pCheatCvar = gEnv->pConsole->GetCVar("sv_cheatprotection");
 	ICVar* pGameRules = gEnv->pConsole->GetCVar("sv_gamerules");
@@ -54,10 +65,8 @@ bool CCoopSystem::Initialize()
 	if (pGameRules)
 		pGameRules->ForceSet("coop");
 
-	m_pDialogSystem = new CDialogSystem();
-	m_pDialogSystem->Init();
+	// TODO :: Hijack the map command to force DX10 and immersiveness to be enabled
 
-	return true;
 }
 
 void CCoopSystem::CompleteInit()
@@ -127,6 +136,14 @@ void CCoopSystem::Update(float fFrameTime)
 		}
 	}
 	CCoopCutsceneSystem::GetInstance()->Update(fFrameTime);
+
+	// Disable server time elapsing on the client ( server synced only )
+	if (!gEnv->bServer)
+	{
+		ITimeOfDay::SAdvancedInfo advancedinfo;
+		advancedinfo.fAnimSpeed = 0.f;
+		gEnv->p3DEngine->GetTimeOfDay()->SetAdvancedInfo(advancedinfo);
+	}
 }
 
 void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)

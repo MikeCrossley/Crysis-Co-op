@@ -1788,11 +1788,27 @@ void COffHand::PerformThrow(int activationMode, EntityId throwableId, int oldFMI
 			CryLogAlways("[COffHand::PerformThrow] Throwing Object %s", pEntity->GetName());
 		}
 
+		// Crysis Co-op :: Force server to stop handling this object
+		if (!IsLocalClient())
+		{
+			m_heldEntityId = 0;
+		}
+		// ~Crysis Co-op
+
 		if(!isLivingEnt)
 		{
 			m_currentState = eOHS_THROWING_OBJECT;
 			CThrow *pThrow = static_cast<CThrow *>(m_fm);
 			pThrow->SetThrowable(throwableId, m_forceThrow, CSchedulerAction<FinishOffHandAction>::Create(FinishOffHandAction(eOHA_THROW_OBJECT,this)));
+
+			// Crysis Co-op :: Force the throw animation and sounds
+			if (IsLocalClient() && gEnv->bMultiplayer)
+			{
+				pThrow->ThrowingGrenade(false);
+				pThrow->DoThrow();
+				pThrow->ThrowingGrenade(true);
+			}
+			// ~Crysis Co-op
 		}
 		else
 		{
@@ -2811,16 +2827,43 @@ void COffHand::PickUpObject(bool isLivingEnt /* = false */)
 //=========================================================================================
 void COffHand::ThrowObject(int activationMode, bool isLivingEnt /*= false*/)
 {
-	if (IsClient() && gEnv->bMultiplayer)
-	{
-		this->GetGameObject()->InvokeRMI(COffHand::SvRequestThrow(), COffHand::OffHandThrowParams(m_grabType, m_currentState, m_forceThrow, activationMode), eRMI_ToServer);
-	}
-
 	if (activationMode == eAAM_OnPress)
 	{
 		m_lastFireModeId = GetCurrentFireMode();
 		if (m_heldEntityId)
 			SetCurrentFireMode(GetFireModeIdx(m_grabTypes[m_grabType].throwFM));
+
+		// Crysis Co-op :: Force firemode can't wait for it to be networked
+		if (gEnv->bMultiplayer && IsLocalClient())
+		{
+			int nFireMode = GetFireModeIdx(m_grabTypes[m_grabType].throwFM);
+
+			if (m_fm)
+				m_fm->Activate(false);
+
+			if (nFireMode >= m_firemodes.size())
+				m_fm = 0;
+			else
+				m_fm = m_firemodes[nFireMode];
+
+			if (m_fm)
+			{
+				m_fm->Activate(true);
+			}
+		}
+		// ~Crysis Co-op
+	}
+
+	if (IsClient() && gEnv->bMultiplayer)
+	{
+		Vec3 vPos = Vec3(ZERO);
+		Quat qRot = Quat::CreateIdentity();
+		if (IEntity* pEntity = gEnv->pEntitySystem->GetEntity(m_heldEntityId))
+		{
+			vPos = pEntity->GetPos();
+			qRot = pEntity->GetRotation();
+		}
+		this->GetGameObject()->InvokeRMI(COffHand::SvRequestThrow(), COffHand::OffHandThrowParams(m_grabType, m_currentState, m_forceThrow, activationMode, vPos, qRot), eRMI_ToServer);
 	}
 
 	PerformThrow(activationMode, m_heldEntityId, m_lastFireModeId, isLivingEnt);
@@ -3480,6 +3523,12 @@ IMPLEMENT_RMI(COffHand, SvRequestThrow)
 	m_currentState = params.nCurrentState;
 	m_grabType = params.nGrabType;
 	m_forceThrow = params.bForceThrow;
+
+	if (IEntity *pEntity = gEnv->pEntitySystem->GetEntity(m_heldEntityId))
+	{
+		pEntity->SetPos(params.vPos);
+		pEntity->SetRotation(params.qRotation);
+	}
 
 	this->ThrowObject(params.nActivationMode, false);
 

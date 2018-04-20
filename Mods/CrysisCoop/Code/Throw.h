@@ -120,10 +120,12 @@ public:
 	void SetSpeedScale(float speedScale) { m_speed_scale = speedScale; }
 	void ThrowingGrenade(bool throwing) { m_usingGrenade = throwing; }
 
+	virtual void DoThrow();
+
 protected:
 
 	virtual void CheckAmmo();
-	virtual void DoThrow();
+	//virtual void DoThrow();
 	virtual void DoDrop();
 
 private:

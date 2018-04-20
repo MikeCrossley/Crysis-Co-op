@@ -441,7 +441,25 @@ int CGame::Update(bool haveFocus, unsigned int updateFlags)
 		m_pSoundMoods->Update();
 	}
 
-	m_pFramework->PostUpdate( true, updateFlags );
+	// Crysis Co-op :: Stop this stupid immersive TOD setting from forcibly overriding any changes we make
+	// to the time of speed speed in levels via flownode/cvar (see CActionGame::UpdateImmersiveness())
+	if (g_pGame->GetIGameFramework()->IsImmersiveMPEnabled())
+	{
+		ITimeOfDay::SAdvancedInfo info;
+		gEnv->p3DEngine->GetTimeOfDay()->GetAdvancedInfo(info);
+
+
+		m_pFramework->PostUpdate(true, updateFlags);
+
+
+		gEnv->p3DEngine->GetTimeOfDay()->SetAdvancedInfo(info);
+	}
+	else //~Crysis Co-op
+	{
+		m_pFramework->PostUpdate(true, updateFlags);
+	}
+
+
 
 	if(m_inDevMode != gEnv->pSystem->IsDevMode())
 	{
