@@ -145,7 +145,22 @@ void CWeapon::RequestShoot(IEntityClass* pAmmoType, const Vec3 &pos, const Vec3 
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
 
-	if ((!pActor || pActor->IsClient()) && IsClient())
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+	{
+		if (IsServerSpawn(pAmmoType) || forceExtended)
+		{
+			GetGameObject()->InvokeRMI(CWeapon::ClShoot(), ClShootParams(pos + dir*5.0f, predictionHandle), eRMI_ToAllClients);
+			NetShootEx(pos, dir, vel, hit, extra, predictionHandle);
+		}
+		else
+		{
+			GetGameObject()->InvokeRMI(CWeapon::ClShoot(), ClShootParams(hit, predictionHandle), eRMI_ToAllClients);
+			NetShoot(hit, predictionHandle);
+		}
+	}
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 	{
 		if (pActor)
 			pActor->GetGameObject()->Pulse('bang');
@@ -175,7 +190,15 @@ void CWeapon::RequestShoot(IEntityClass* pAmmoType, const Vec3 &pos, const Vec3 
 void CWeapon::RequestMeleeAttack(bool weaponMelee, const Vec3 &pos, const Vec3 &dir, uint16 seq)
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+	{
+		GetGameObject()->InvokeRMI(CWeapon::ClMeleeAttack(), ClMeleeAttackParams(weaponMelee, pos, dir), eRMI_ToAllClients);
+		NetMeleeAttack(weaponMelee, pos, dir);
+	}
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestMeleeAttack(), RequestMeleeAttackParams(weaponMelee, pos, dir, seq), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 	{
@@ -188,7 +211,12 @@ void CWeapon::RequestMeleeAttack(bool weaponMelee, const Vec3 &pos, const Vec3 &
 void CWeapon::RequestStartFire()
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if ( GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+		GetGameObject()->InvokeRMI(CWeapon::ClStartFire(), EmptyParams(), eRMI_ToAllClients);
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestStartFire(), EmptyParams(), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 		GetGameObject()->InvokeRMI(CWeapon::ClStartFire(), EmptyParams(), eRMI_ToAllClients);
@@ -198,8 +226,18 @@ void CWeapon::RequestStartFire()
 void CWeapon::RequestStartMeleeAttack(bool weaponMelee)
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+	{
+		GetGameObject()->InvokeRMI(CWeapon::ClStartMeleeAttack(), RequestStartMeleeAttackParams(weaponMelee), eRMI_ToAllClients);
+		NetStartMeleeAttack(weaponMelee);
+	}
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
+	{
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestStartMeleeAttack(), RequestStartMeleeAttackParams(weaponMelee), eRMI_ToServer);
+	}
 	else if (!IsClient() && IsServer())
 	{
 		GetGameObject()->InvokeRMI(CWeapon::ClStartMeleeAttack(), RequestStartMeleeAttackParams(weaponMelee), eRMI_ToAllClients);
@@ -211,7 +249,15 @@ void CWeapon::RequestStartMeleeAttack(bool weaponMelee)
 void CWeapon::RequestZoom(float fov)
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+	{
+		GetGameObject()->InvokeRMI(CWeapon::ClZoom(), ZoomParams(fov), eRMI_ToAllClients);
+		NetZoom(fov);
+	}
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestZoom(), ZoomParams(fov), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 	{
@@ -225,7 +271,12 @@ void CWeapon::RequestZoom(float fov)
 void CWeapon::RequestStopFire()
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+		GetGameObject()->InvokeRMI(CWeapon::ClStopFire(), EmptyParams(), eRMI_ToAllClients);
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestStopFire(), EmptyParams(), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 		GetGameObject()->InvokeRMI(CWeapon::ClStopFire(), EmptyParams(), eRMI_ToAllClients);
@@ -235,7 +286,12 @@ void CWeapon::RequestStopFire()
 void CWeapon::RequestReload()
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+		GetGameObject()->InvokeRMI(CWeapon::ClReload(), EmptyParams(), eRMI_ToAllClients);
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(SvRequestReload(), EmptyParams(), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 		GetGameObject()->InvokeRMI(CWeapon::ClReload(), EmptyParams(), eRMI_ToAllClients);
@@ -245,7 +301,12 @@ void CWeapon::RequestReload()
 void CWeapon::RequestCancelReload()
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+		GetGameObject()->InvokeRMI(CWeapon::ClCancelReload(), EmptyParams(), eRMI_ToAllClients);
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(SvRequestCancelReload(), EmptyParams(), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 		GetGameObject()->InvokeRMI(CWeapon::ClCancelReload(), EmptyParams(), eRMI_ToAllClients);
@@ -255,7 +316,12 @@ void CWeapon::RequestCancelReload()
 void CWeapon::RequestFireMode(int fmId)
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if (!pActor || pActor->IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer && gEnv->bServer)
+		SetCurrentFireMode(fmId);	// serialization will fix the rest.
+	// ~Crysis Co-op
+	else if (!pActor || pActor->IsClient())
 	{
 		if (gEnv->bServer)
 			SetCurrentFireMode(fmId);	// serialization will fix the rest.
@@ -268,7 +334,17 @@ void CWeapon::RequestFireMode(int fmId)
 void CWeapon::RequestLock(EntityId id, int partId)
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if (!pActor || pActor->IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer && gEnv->bServer)
+	{
+		if (m_fm)
+			m_fm->Lock(id, partId);
+
+		GetGameObject()->InvokeRMI(CWeapon::ClLock(), LockParams(id, partId), eRMI_ToRemoteClients);
+	}
+	// ~Crysis Co-op
+	else if (!pActor || pActor->IsClient())
 	{
 		if (gEnv->bServer)
 		{
@@ -310,7 +386,12 @@ void CWeapon::RequestWeaponRaised(bool raise)
 void CWeapon::RequestStartSecondaryFire()
 {
 	IActor *pActor=m_pGameFramework->GetClientActor();
-	if ((!pActor || pActor->IsClient()) && IsClient())
+
+	// Crysis Co-op
+	if (GetOwnerActor() && !GetOwnerActor()->IsPlayer() && gEnv->bMultiplayer)
+		GetGameObject()->InvokeRMI(CWeapon::ClStartSecondaryFire(), EmptyParams(), eRMI_ToAllClients);
+	// ~Crysis Co-op
+	else if ((!pActor || pActor->IsClient()) && IsClient())
 		GetGameObject()->InvokeRMI(CWeapon::SvRequestStartSecondaryFire(), EmptyParams(), eRMI_ToServer);
 	else if (!IsClient() && IsServer())
 		GetGameObject()->InvokeRMI(CWeapon::ClStartSecondaryFire(), EmptyParams(), eRMI_ToAllClients);

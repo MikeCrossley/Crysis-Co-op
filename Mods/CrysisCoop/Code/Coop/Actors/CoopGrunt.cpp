@@ -18,6 +18,10 @@ CCoopGrunt::CCoopGrunt() :
 	m_nAlertness(0.f),
 	m_bAllowStrafing(false),
 	m_bHasAimTarget(false),
+	m_bHasLookTarget(false),
+	m_bHasBodyTarget(false),
+	m_bHasFireTarget(false),
+	m_bHasMoveTarget(false),
 	m_nSuitMode(3),
 	m_bHidden(false)
 {
@@ -83,11 +87,11 @@ void CCoopGrunt::DrawDebugInfo()
 	else
 		gEnv->pRenderer->Draw2dLabel(5, 5, 2, color, false, "IsClient");
 
-	gEnv->pRenderer->Draw2dLabel(5, 25, 2, color, false, "MoveTarget x%f y%f z%f", m_vMoveTarget.x, m_vMoveTarget.y, m_vMoveTarget.z);
-	gEnv->pRenderer->Draw2dLabel(5, 45, 2, color, false, "AimTarget x%f y%f z%f", m_vAimTarget.x, m_vAimTarget.y, m_vAimTarget.z);
-	gEnv->pRenderer->Draw2dLabel(5, 65, 2, color, false, "LookTarget x%f y%f z%f", m_vLookTarget.x, m_vLookTarget.y, m_vLookTarget.z);
-	gEnv->pRenderer->Draw2dLabel(5, 85, 2, color, false, "BodyTarget x%f y%f z%f", m_vBodyTarget.x, m_vBodyTarget.y, m_vBodyTarget.z);
-	gEnv->pRenderer->Draw2dLabel(5, 105, 2, color, false, "FireTarget x%f y%f z%f", m_vFireTarget.x, m_vFireTarget.y, m_vFireTarget.z);
+	gEnv->pRenderer->Draw2dLabel(5, 25, 2, color, false, "MoveTarget x%f y%f z%f Has: %d", m_vMoveTarget.x, m_vMoveTarget.y, m_vMoveTarget.z, m_bHasMoveTarget ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 45, 2, color, false, "AimTarget x%f y%f z%f Has: %d", m_vAimTarget.x, m_vAimTarget.y, m_vAimTarget.z, m_bHasAimTarget ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 65, 2, color, false, "LookTarget x%f y%f z%f Has: %d", m_vLookTarget.x, m_vLookTarget.y, m_vLookTarget.z, m_bHasLookTarget ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 85, 2, color, false, "BodyTarget x%f y%f z%f Has: %d", m_vBodyTarget.x, m_vBodyTarget.y, m_vBodyTarget.z, m_bHasBodyTarget ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 105, 2, color, false, "FireTarget x%f y%f z%f Has: %d", m_vFireTarget.x, m_vFireTarget.y, m_vFireTarget.z, m_bHasFireTarget ? 1 : 0);
 
 	gEnv->pRenderer->Draw2dLabel(5, 145, 2, color, false, "PsuedoSpeed %f", m_fPseudoSpeed);
 	gEnv->pRenderer->Draw2dLabel(5, 165, 2, color, false, "DesiredSpeed %f", m_fDesiredSpeed);
@@ -131,7 +135,10 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		// Bool
 		m_bAllowStrafing = currMovement.AllowStrafing();
 		m_bHasAimTarget = currMovement.HasAimTarget();
-
+		m_bHasBodyTarget = currMovement.HasBodyTarget();
+		m_bHasLookTarget = currMovement.HasLookTarget();
+		m_bHasFireTarget = currMovement.HasFireTarget();
+		m_bHasMoveTarget = currMovement.HasMoveTarget();
 
 		if (GetNanoSuit())
 		{
@@ -167,32 +174,9 @@ void CCoopGrunt::UpdateMovementState()
 {
 	CMovementRequest request;
 
-	if (m_vAimTarget != Vec3(0, 0, 0) || m_vLookTarget != Vec3(0, 0, 0) || m_vMoveTarget != Vec3(0, 0, 0))
+	if (m_bHasAimTarget)
 	{
-		
-		if (m_bHasAimTarget)
-			request.SetAimTarget(m_vAimTarget);
-		else
-			request.ClearAimTarget();
-
-		// Vec3
-		request.SetMoveTarget(m_vMoveTarget);
-		request.SetLookTarget(m_vLookTarget);
-		request.SetFireTarget(m_vLookTarget);
-		request.SetBodyTarget(m_vBodyTarget);
-
-		// Float
-		request.SetPseudoSpeed(m_fPseudoSpeed);
-		request.SetDesiredSpeed(m_fDesiredSpeed);
-
-		// Int
-		request.SetAlertness(m_nAlertness);
-		request.SetStance((EStance)m_nStance);
-
-		// Bool
-		request.SetAllowStrafing(m_bAllowStrafing);
-		
-		GetMovementController()->RequestMovement(request);
+		request.SetAimTarget(m_vAimTarget);
 
 		if (IVehicle* pVehicle = GetLinkedVehicle())
 		{
@@ -204,8 +188,45 @@ void CCoopGrunt::UpdateMovementState()
 				pWeapon->SetTargetLocation(m_vAimTarget);
 			}
 		}
-
 	}
+	else
+	{
+		request.ClearAimTarget();
+	}
+
+	// Vec3
+	if (m_bHasMoveTarget)
+		request.SetMoveTarget(m_vMoveTarget);
+	else
+		request.ClearMoveTarget();
+
+	if (m_bHasLookTarget)
+		request.SetLookTarget(m_vLookTarget);
+	else
+		request.ClearLookTarget();
+
+	if (m_bHasFireTarget)
+		request.SetFireTarget(m_vLookTarget);
+	else
+		request.ClearFireTarget();
+
+	if (m_bHasBodyTarget)
+		request.SetBodyTarget(m_vBodyTarget);
+	else
+		request.ClearBodyTarget();
+
+	// Float
+	request.SetPseudoSpeed(m_fPseudoSpeed);
+	request.SetDesiredSpeed(m_fDesiredSpeed);
+
+	// Int
+	request.SetAlertness(m_nAlertness);
+	request.SetStance((EStance)m_nStance);
+
+	// Bool
+	request.SetAllowStrafing(m_bAllowStrafing);
+		
+	GetMovementController()->RequestMovement(request);
 }
 
 void CCoopGrunt::ProcessEvent(SEntityEvent& event)
@@ -283,6 +304,7 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 			ser.Value("vAimTarget", m_vAimTarget, 'wrld');
 			ser.Value("vLookTarget", m_vLookTarget, 'wrld');
 			ser.Value("vBodyTarget", m_vBodyTarget, 'wrld');
+			ser.Value("vFireTarget", m_vFireTarget, 'wrld');
 
 			//Float
 			ser.Value("fpSpeed", m_fPseudoSpeed);
@@ -292,9 +314,12 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 			ser.Value("nAlert", m_nAlertness, 'i8');
 			ser.Value("nStance", m_nStance, 'i8');
 
-			//Bool
+			//Bool :: TODO Change these to flags
 			ser.Value("bStrafe", m_bAllowStrafing, 'bool');
 			ser.Value("bTarget", m_bHasAimTarget, 'bool');
+			ser.Value("bBody", m_bHasBodyTarget, 'bool');
+			ser.Value("bLook", m_bHasLookTarget, 'bool');
+			ser.Value("bHasMoveTarget", m_bHasMoveTarget, 'bool');
 			break;
 		}
 		case ASPECT_HIDE:

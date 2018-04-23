@@ -2262,7 +2262,7 @@ void CPlayer::UpdateSwimStats(float frameTime)
 		bool bIsCoop = !strcmp(gameRulesName, "Coop");
 
 		//by design : AI cannot swim and drowns no matter what
-		if ((GetHealth() > 0) && !isClient && (!gEnv->bMultiplayer || bIsCoop))
+		if ((GetHealth() > 0) && !IsPlayer() && (!gEnv->bMultiplayer || bIsCoop))
 		//if((GetHealth() > 0) && !isClient && !gEnv->bMultiplayer)
 		//~Crysis Co-op
 		{

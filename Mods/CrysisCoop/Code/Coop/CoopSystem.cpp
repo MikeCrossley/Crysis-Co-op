@@ -12,6 +12,7 @@
 
 #include <IVehicleSystem.h>
 #include <IConsole.h>
+#include <INetworkService.h>
 
 // Static CCoopSystem class instance forward declaration.
 CCoopSystem CCoopSystem::s_instance = CCoopSystem();
@@ -41,6 +42,8 @@ bool CCoopSystem::Initialize()
 		pSS->BeginCall("Init");
 		pSS->EndCall();
 	}
+
+	gEnv->pSystem->GetLocalizationManager()->LoadExcelXmlSpreadsheet("Languages/game_text_messages.xml");
 
 	InitCvars();
 
@@ -96,9 +99,6 @@ void CCoopSystem::Shutdown()
 	SAFE_DELETE(m_pDialogSystem);
 }
 
-bool bReinited = false;
-
-
 // Summary:
 //	Updates the CCoopSystem instance.
 void CCoopSystem::Update(float fFrameTime)
@@ -136,6 +136,13 @@ void CCoopSystem::Update(float fFrameTime)
 		}
 	}
 	CCoopCutsceneSystem::GetInstance()->Update(fFrameTime);
+
+	// Kill the cancer
+	/*INetworkService* serv = gEnv->pNetwork->GetService("GameSpy");
+	if (serv)
+	{
+		((CGameSpy*)serv)->m_loggedIn = true;
+	}*/
 
 	// Disable server time elapsing on the client ( server synced only )
 	if (!gEnv->bServer)

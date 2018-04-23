@@ -182,6 +182,9 @@ void CLam::ActivateLight(bool activate, bool aiRequest /* = false */)
 {
 	//GameWarning("CLam::ActivateLight(%i)", activate);
 	
+	if (activate)
+		CryLogAlways("[CLam::ActivateLight]");
+
 	CItem  *pParent = NULL;
   EntityId ownerId = 0;
 	

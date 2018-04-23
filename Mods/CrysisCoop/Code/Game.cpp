@@ -448,6 +448,9 @@ int CGame::Update(bool haveFocus, unsigned int updateFlags)
 		ITimeOfDay::SAdvancedInfo info;
 		gEnv->p3DEngine->GetTimeOfDay()->GetAdvancedInfo(info);
 
+		// Server decides TOD don't let client start elapsing TOD
+		if (!gEnv->bServer)
+			info.fAnimSpeed = 0.f;
 
 		m_pFramework->PostUpdate(true, updateFlags);
 

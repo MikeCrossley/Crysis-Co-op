@@ -119,6 +119,10 @@ private:
 
 	bool m_bAllowStrafing;
 	bool m_bHasAimTarget;
+	bool m_bHasLookTarget;
+	bool m_bHasBodyTarget;
+	bool m_bHasFireTarget;
+	bool m_bHasMoveTarget;
 
 	bool m_bHidden;
 };

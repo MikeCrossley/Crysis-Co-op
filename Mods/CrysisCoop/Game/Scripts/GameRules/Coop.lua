@@ -148,7 +148,7 @@ function Coop.Server:OnInit()
 	SinglePlayer.Server.OnInit(self);
 	
 	self.isServer=CryAction.IsServer();
-	self.isClient=CryAction.IsServer();
+	self.isClient=CryAction.IsClient();
 	
 	self.killHit={};
 	self.channelSpectatorMode={}; -- keep track of spectators
@@ -331,6 +331,8 @@ end
 
 ----------------------------------------------------------------------------------------------------
 function Coop.Client:OnUpdate(frameTime)
+	if (CryAction.IsServer()) then return end
+
 	SinglePlayer.Client.OnUpdate(self, frameTime);
 	if(self.show_scores == true) then
 		self:UpdateScores();
@@ -1266,7 +1268,12 @@ function Coop:ProcessDeath(hit)
 		self.Server.OnPlayerKilled(self, hit);
 	else
 		hit.target:Kill(true, hit.shooterId, hit.weaponId);
+		
+		if (self.isServer) then
+			self:ReleaseCorpseItem(hit.target);
+		end
 	end
+
 end
 
 
