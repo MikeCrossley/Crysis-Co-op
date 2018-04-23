@@ -5,11 +5,7 @@
 class CDedicatedServerHackScope
 {
 public:
-	CDedicatedServerHackScope();
-	~CDedicatedServerHackScope();
+	static void Enter();
 
-	void Exit();
-
-private:
-	bool m_bActive;
+	static void Exit();
 };

@@ -13,6 +13,7 @@
 /system.cfg
 /editor.cfg
 /AISignals.csv
+/server_profile.txt
 
 # And intermediate files.
 *.suo

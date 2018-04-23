@@ -95,8 +95,9 @@ void CCoopTrooper::Update(SEntityUpdateContext& ctx, int updateSlot)
 		// Only update on dedicated server.
 		if (gEnv->bServer && !gEnv->bClient)
 		{
-			CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+			CDedicatedServerHackScope::Enter();
 			pGraphState->Update();
+			CDedicatedServerHackScope::Exit();
 		}
 	}
 

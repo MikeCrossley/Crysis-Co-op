@@ -153,16 +153,16 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		UpdateMovementState();
 	}
 
-	DrawDebugInfo();
+	//DrawDebugInfo();
 	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
 	{
 		// Only update on dedicated server.
 		if (gEnv->bServer && !gEnv->bClient)
 		{
-			CDedicatedServerHackScope HackScope = CDedicatedServerHackScope();
+			CDedicatedServerHackScope::Enter();
 			pGraphState->Update();
+			CDedicatedServerHackScope::Exit();
 		}
-		
 	}
 }
 
@@ -339,7 +339,8 @@ IMPLEMENT_RMI(CCoopGrunt, ClChangeSuitMode)
 
 IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 {
-	//CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
+	//if(params.targetParams.animation.c_str() != nullptr && params.targetParams.animation.c_str()[0] != 0)
+	//	CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
 
 	if (!gEnv->bServer)
 	{
@@ -363,6 +364,7 @@ IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 
 void CCoopGrunt::SendSpecialMovementRequest(uint32 reqFlags, const SActorTargetParams& targetParams)
 {
-	//CryLogAlways("[%s] Sending actor target to clients with %s animation %s.", GetEntity()->GetName(), targetParams.signalAnimation ? "signal" : "action", targetParams.animation.c_str());
+	//if(targetParams.animation.c_str() != nullptr && targetParams.animation.c_str()[0] != 0)
+	//	CryLogAlways("[%s] Sending actor target to clients with %s animation %s.", GetEntity()->GetName(), targetParams.signalAnimation ? "signal" : "action", targetParams.animation.c_str());
 	GetGameObject()->InvokeRMI(ClSpecialMovementRequest(), SSpecialMovementRequestParams(reqFlags, targetParams, targetParams.animation), eRMI_ToAllClients | eRMI_NoLocalCalls);
 }

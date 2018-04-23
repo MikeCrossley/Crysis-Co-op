@@ -155,8 +155,7 @@ void CCoopSystem::Update(float fFrameTime)
 
 void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 {
-	if (gEnv->bEditor) return;
-	if (!gEnv->bServer) return;
+	if (gEnv->bEditor || !gEnv->bServer) return;
 
 	m_nInitialized = 0;
 	CryLogAlways("[CCoopSystem] Initializing AI System...");
@@ -167,7 +166,6 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 
 	gEnv->pAISystem->FlushSystem();
 	gEnv->pAISystem->Enable();
-
 	//gEnv->pAISystem->ReloadSmartObjectRules();
 	//gEnv->pAISystem->ReloadActions();
 	gEnv->pAISystem->LoadNavigationData(pLevel->GetPath(), "mission0");
@@ -218,7 +216,8 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 	gEnv->bMultiplayer = false;
 	m_nInitialized = 1;
 
-	gEnv->pAISystem->Reset(IAISystem::RESET_ENTER_GAME);
+	// Why?
+	// gEnv->pAISystem->Reset(IAISystem::RESET_ENTER_GAME);
 	gEnv->bMultiplayer = true;
 }
 
