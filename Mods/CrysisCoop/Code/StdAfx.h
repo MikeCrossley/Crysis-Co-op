@@ -17,13 +17,14 @@
 #if !defined(AFX_STDAFX_H__B36C365D_F0EA_4545_B3BC_1E0EAB3B5E43__INCLUDED_)
 #define AFX_STDAFX_H__B36C365D_F0EA_4545_B3BC_1E0EAB3B5E43__INCLUDED_
 
-
 //#define _CRTDBG_MAP_ALLOC
 #define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+#define ENTITY_ID_TO_POINTER(value) (void*)(((char*)(0)) + value)
 
 #include <CryModuleDefs.h>
 #define eCryModule eCryM_Game

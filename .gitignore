@@ -5,13 +5,10 @@
 /Game/
 /LogBackups/
 
-# Code directory for CryCommon and CryAction should be taken from the user's own mod SDK installation.
-# We should really consider removing it from the repository, we shall never change it because it would break compatibility with everything else and cause problems in the long run.
-/Code/
-
 # Ignore temporary files and user configuration
 *.log
 *.dmp
+*.bat
 /user.cfg
 /system.cfg
 /editor.cfg
@@ -20,6 +17,10 @@
 # And intermediate files.
 *.suo
 *.db
+*.opendb
+*.ipch
+*.db-shm
+*.db-wal
 /BinTemp/
 
 # And the Crysis Co-op mod binaries.

@@ -1450,7 +1450,7 @@ void CAlien::ProcessMovement2(float frameTime)
 		Vec3	move = m_velocity / velScale;
 		Vec3	forw = GetEntity()->GetRotation().GetColumn1(); //m_viewMtx.GetColumn(1);
 		float	dot = forw.Dot( move );
-		const float treshold = cosf(DEG2RAD(15.0));
+		const float treshold = cosf((float)DEG2RAD(15.0));
 		if( dot > treshold )
 			velScale = 1.0;
 		else
