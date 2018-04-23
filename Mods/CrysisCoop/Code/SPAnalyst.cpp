@@ -134,7 +134,7 @@ void CSPAnalyst::OnGameplayEvent(IEntity *pEntity, const GameplayEvent &event)
 		{
 			if(event.extra)
 			{
-				EntityId entityId = EntityId((int)(event.extra));
+				EntityId entityId = EntityId((int)((UINT_PTR)event.extra));
 				if(IItem* pItem = g_pGame->GetIGameFramework()->GetIItemSystem()->GetItem(entityId))
 				{
 					if(event.event == eGE_ItemSelected)
@@ -151,7 +151,7 @@ void CSPAnalyst::OnGameplayEvent(IEntity *pEntity, const GameplayEvent &event)
 		{
 			if(event.extra)
 			{
-				EntityId entityId = EntityId((int)(event.extra));
+				EntityId entityId = EntityId((int)((UINT_PTR)event.extra));
 				if(IVehicle *pVehicle = g_pGame->GetIGameFramework()->GetIVehicleSystem()->GetVehicle(entityId))
 					WriteValue("EnteredVehicle", pVehicle->GetEntity()->GetClass()->GetName());
 				else
@@ -163,7 +163,7 @@ void CSPAnalyst::OnGameplayEvent(IEntity *pEntity, const GameplayEvent &event)
 		{
 			if(event.extra)
 			{
-				EntityId entityId = EntityId((int)(event.extra));
+				EntityId entityId = EntityId((int)((UINT_PTR)event.extra));
 				if(IVehicle *pVehicle = g_pGame->GetIGameFramework()->GetIVehicleSystem()->GetVehicle(entityId))
 					WriteValue("EnteredVehicle", pVehicle->GetEntity()->GetClass()->GetName());
 				else

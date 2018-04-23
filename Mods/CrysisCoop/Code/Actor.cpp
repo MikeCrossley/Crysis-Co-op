@@ -2997,7 +2997,7 @@ bool CActor::PickUpItem(EntityId itemId, bool sound, bool ignoreOffhand)
 			}
 		}
 
-		m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemPickedUp, 0, 0, (void *)pItem->GetEntityId()));
+		m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemPickedUp, 0, 0, ENTITY_ID_TO_POINTER(pItem->GetEntityId())));
 	}
 	else
 		GetGameObject()->InvokeRMI(SvRequestPickUpItem(), ItemIdParam(itemId), eRMI_ToServer);
@@ -3039,7 +3039,7 @@ bool CActor::DropItem(EntityId itemId, float impulseScale, bool selectNext, bool
 			pItem->Drop(impulseScale, selectNext, bydeath);
 
 			if (!bydeath)
-				m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemDropped, 0, 0, (void *)itemId));
+				m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemDropped, 0, 0, ENTITY_ID_TO_POINTER(itemId)));
 		}
 		else
 			GetGameObject()->InvokeRMI(SvRequestDropItem(), DropItemParams(itemId, impulseScale, selectNext, bydeath), eRMI_ToServer);
@@ -3066,7 +3066,7 @@ void CActor::DropAttachedItems()
 			if(pItemBack)
 			{
 				pItemBack->Drop(1.0f,false,true);
-				m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemDropped, 0, 0, (void *)pItemBack->GetEntityId()));	
+				m_pGameplayRecorder->Event(GetEntity(), GameplayEvent(eGE_ItemDropped, 0, 0, ENTITY_ID_TO_POINTER(pItemBack->GetEntityId())));
 			}
 
 			it++;

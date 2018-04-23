@@ -331,7 +331,7 @@ bool CShotgun::Shoot(bool resetAnimation, bool autoreload/* =true */, bool noSou
 	m_pWeapon->OnShoot(m_pWeapon->GetOwnerId(), 0, ammo, pos, dir, vel);
 
 	if (m_pWeapon->IsServer())
-		g_pGame->GetIGameFramework()->GetIGameplayRecorder()->Event(m_pWeapon->GetOwner(), GameplayEvent(eGE_WeaponShot, ammo->GetName(), m_shotgunparams.pellets, (void *)m_pWeapon->GetEntityId()));
+		g_pGame->GetIGameFramework()->GetIGameplayRecorder()->Event(m_pWeapon->GetOwner(), GameplayEvent(eGE_WeaponShot, ammo->GetName(), m_shotgunparams.pellets, ENTITY_ID_TO_POINTER(m_pWeapon->GetEntityId())));
 
 	MuzzleFlashEffect(true);
 	RejectEffect();
@@ -452,7 +452,7 @@ void CShotgun::NetShootEx(const Vec3 &pos, const Vec3 &dir, const Vec3 &vel, con
 	m_pWeapon->OnShoot(m_pWeapon->GetOwnerId(), 0, ammo, pos, dir, vel);
 
 	if (m_pWeapon->IsServer())
-		g_pGame->GetIGameFramework()->GetIGameplayRecorder()->Event(m_pWeapon->GetOwner(), GameplayEvent(eGE_WeaponShot, ammo->GetName(), m_shotgunparams.pellets, (void *)m_pWeapon->GetEntityId()));
+		g_pGame->GetIGameFramework()->GetIGameplayRecorder()->Event(m_pWeapon->GetOwner(), GameplayEvent(eGE_WeaponShot, ammo->GetName(), m_shotgunparams.pellets, ENTITY_ID_TO_POINTER(m_pWeapon->GetEntityId())));
 
 	MuzzleFlashEffect(true);
 	RejectEffect();

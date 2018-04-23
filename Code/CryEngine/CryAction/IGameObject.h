@@ -376,8 +376,13 @@ public:
 			}
 			else
 			{
+#if _MSC_VER >= 1900 && defined(_WIN64)
+				sprintf(msg, "Game object extension with base %.16llx for entity %s for RMI %s not found", (uint64)m_pRMI->pBase, pGameObject->GetEntity()->GetName(), m_pRMI->pMsgDef->description);
+				GameWarning("%s", msg);
+#else
 				sprintf(msg, "Game object extension with base %.8x for entity %s for RMI %s not found", (uint32)m_pRMI->pBase, pGameObject->GetEntity()->GetName(), m_pRMI->pMsgDef->description);
 				GameWarning("%s", msg);
+#endif 
 			}
 		}
 		else
