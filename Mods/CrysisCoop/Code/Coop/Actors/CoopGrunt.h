@@ -117,12 +117,19 @@ private:
 	int m_nStance;
 	int m_nSuitMode;
 
-	bool m_bAllowStrafing;
-	bool m_bHasAimTarget;
-	bool m_bHasLookTarget;
-	bool m_bHasBodyTarget;
-	bool m_bHasFireTarget;
-	bool m_bHasMoveTarget;
+	enum EAIMovementNetFlags
+	{
+		eHasAimTarget = (1 << 0),
+		eHasLookTarget = (1 << 1),
+		eHasBodyTarget = (1 << 2),
+		eHasFireTarget = (1 << 3),
+		eHasMoveTarget = (1 << 4),
+		eAllowStrafing = (1 << 5),
+	};
+
+	bool HasMovementFlag(EAIMovementNetFlags flag) { return (m_nMovementNetworkFlags & flag) == flag; }
+
+	uint8 m_nMovementNetworkFlags;
 
 	bool m_bHidden;
 };

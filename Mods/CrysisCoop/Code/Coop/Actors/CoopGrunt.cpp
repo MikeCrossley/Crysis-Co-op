@@ -16,13 +16,8 @@ CCoopGrunt::CCoopGrunt() :
 	m_fPseudoSpeed(0.f),
 	m_fDesiredSpeed(0.f),
 	m_nAlertness(0.f),
-	m_bAllowStrafing(false),
-	m_bHasAimTarget(false),
-	m_bHasLookTarget(false),
-	m_bHasBodyTarget(false),
-	m_bHasFireTarget(false),
-	m_bHasMoveTarget(false),
 	m_nSuitMode(3),
+	m_nMovementNetworkFlags(0),
 	m_bHidden(false)
 {
 }
@@ -87,11 +82,11 @@ void CCoopGrunt::DrawDebugInfo()
 	else
 		gEnv->pRenderer->Draw2dLabel(5, 5, 2, color, false, "IsClient");
 
-	gEnv->pRenderer->Draw2dLabel(5, 25, 2, color, false, "MoveTarget x%f y%f z%f Has: %d", m_vMoveTarget.x, m_vMoveTarget.y, m_vMoveTarget.z, m_bHasMoveTarget ? 1 : 0);
-	gEnv->pRenderer->Draw2dLabel(5, 45, 2, color, false, "AimTarget x%f y%f z%f Has: %d", m_vAimTarget.x, m_vAimTarget.y, m_vAimTarget.z, m_bHasAimTarget ? 1 : 0);
-	gEnv->pRenderer->Draw2dLabel(5, 65, 2, color, false, "LookTarget x%f y%f z%f Has: %d", m_vLookTarget.x, m_vLookTarget.y, m_vLookTarget.z, m_bHasLookTarget ? 1 : 0);
-	gEnv->pRenderer->Draw2dLabel(5, 85, 2, color, false, "BodyTarget x%f y%f z%f Has: %d", m_vBodyTarget.x, m_vBodyTarget.y, m_vBodyTarget.z, m_bHasBodyTarget ? 1 : 0);
-	gEnv->pRenderer->Draw2dLabel(5, 105, 2, color, false, "FireTarget x%f y%f z%f Has: %d", m_vFireTarget.x, m_vFireTarget.y, m_vFireTarget.z, m_bHasFireTarget ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 25, 2, color, false, "MoveTarget x%f y%f z%f Has: %d", m_vMoveTarget.x, m_vMoveTarget.y, m_vMoveTarget.z, this->HasMovementFlag(EAIMovementNetFlags::eHasMoveTarget) ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 45, 2, color, false, "AimTarget x%f y%f z%f Has: %d", m_vAimTarget.x, m_vAimTarget.y, m_vAimTarget.z, this->HasMovementFlag(EAIMovementNetFlags::eHasAimTarget) ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 65, 2, color, false, "LookTarget x%f y%f z%f Has: %d", m_vLookTarget.x, m_vLookTarget.y, m_vLookTarget.z, this->HasMovementFlag(EAIMovementNetFlags::eHasLookTarget) ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 85, 2, color, false, "BodyTarget x%f y%f z%f Has: %d", m_vBodyTarget.x, m_vBodyTarget.y, m_vBodyTarget.z, this->HasMovementFlag(EAIMovementNetFlags::eHasBodyTarget) ? 1 : 0);
+	gEnv->pRenderer->Draw2dLabel(5, 105, 2, color, false, "FireTarget x%f y%f z%f Has: %d", m_vFireTarget.x, m_vFireTarget.y, m_vFireTarget.z, this->HasMovementFlag(EAIMovementNetFlags::eHasFireTarget) ? 1 : 0);
 
 	gEnv->pRenderer->Draw2dLabel(5, 145, 2, color, false, "PsuedoSpeed %f", m_fPseudoSpeed);
 	gEnv->pRenderer->Draw2dLabel(5, 165, 2, color, false, "DesiredSpeed %f", m_fDesiredSpeed);
@@ -99,7 +94,7 @@ void CCoopGrunt::DrawDebugInfo()
 	gEnv->pRenderer->Draw2dLabel(5, 185, 2, color, false, "Alertness %d", m_nAlertness);
 	gEnv->pRenderer->Draw2dLabel(5, 205, 2, color, false, "Stance %d", m_nStance);
 
-	gEnv->pRenderer->Draw2dLabel(5, 225, 2, color, false, "Allow Strafing %d     HasAimTarget %d", (int)m_bAllowStrafing, (int)m_bHasAimTarget);
+	gEnv->pRenderer->Draw2dLabel(5, 225, 2, color, false, "Allow Strafing %d     HasAimTarget %d", (int)this->HasMovementFlag(EAIMovementNetFlags::eAllowStrafing), (int)this->HasMovementFlag(EAIMovementNetFlags::eHasAimTarget));
 	if (GetNanoSuit())
 		gEnv->pRenderer->Draw2dLabel(5, 265, 2, color, false, "Suit mode %d", GetNanoSuit()->GetMode());
 }
@@ -133,12 +128,13 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_nAlertness = currMovement.GetAlertness();
 		
 		// Bool
-		m_bAllowStrafing = currMovement.AllowStrafing();
-		m_bHasAimTarget = currMovement.HasAimTarget();
-		m_bHasBodyTarget = currMovement.HasBodyTarget();
-		m_bHasLookTarget = currMovement.HasLookTarget();
-		m_bHasFireTarget = currMovement.HasFireTarget();
-		m_bHasMoveTarget = currMovement.HasMoveTarget();
+		m_nMovementNetworkFlags = currMovement.AllowStrafing() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eAllowStrafing) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eAllowStrafing);
+		m_nMovementNetworkFlags = currMovement.HasAimTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasAimTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasAimTarget);
+		m_nMovementNetworkFlags = currMovement.HasBodyTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasBodyTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasBodyTarget);
+		m_nMovementNetworkFlags = currMovement.HasLookTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasLookTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasLookTarget);
+		m_nMovementNetworkFlags = currMovement.HasFireTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasFireTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasFireTarget);
+		m_nMovementNetworkFlags = currMovement.HasMoveTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasMoveTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasMoveTarget);
+
 
 		if (GetNanoSuit())
 		{
@@ -157,7 +153,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		UpdateMovementState();
 	}
 
-	//DrawDebugInfo();
+	DrawDebugInfo();
 	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
 	{
 		// Only update on dedicated server.
@@ -174,7 +170,7 @@ void CCoopGrunt::UpdateMovementState()
 {
 	CMovementRequest request;
 
-	if (m_bHasAimTarget)
+	if (this->HasMovementFlag(EAIMovementNetFlags::eHasAimTarget))
 	{
 		request.SetAimTarget(m_vAimTarget);
 
@@ -195,22 +191,22 @@ void CCoopGrunt::UpdateMovementState()
 	}
 
 	// Vec3
-	if (m_bHasMoveTarget)
+	if (this->HasMovementFlag(EAIMovementNetFlags::eHasMoveTarget))
 		request.SetMoveTarget(m_vMoveTarget);
 	else
 		request.ClearMoveTarget();
 
-	if (m_bHasLookTarget)
+	if (this->HasMovementFlag(EAIMovementNetFlags::eHasLookTarget))
 		request.SetLookTarget(m_vLookTarget);
 	else
 		request.ClearLookTarget();
 
-	if (m_bHasFireTarget)
+	if (this->HasMovementFlag(EAIMovementNetFlags::eHasLookTarget))
 		request.SetFireTarget(m_vLookTarget);
 	else
 		request.ClearFireTarget();
 
-	if (m_bHasBodyTarget)
+	if (this->HasMovementFlag(EAIMovementNetFlags::eHasBodyTarget))
 		request.SetBodyTarget(m_vBodyTarget);
 	else
 		request.ClearBodyTarget();
@@ -224,7 +220,7 @@ void CCoopGrunt::UpdateMovementState()
 	request.SetStance((EStance)m_nStance);
 
 	// Bool
-	request.SetAllowStrafing(m_bAllowStrafing);
+	request.SetAllowStrafing(this->HasMovementFlag(EAIMovementNetFlags::eAllowStrafing));
 		
 	GetMovementController()->RequestMovement(request);
 }
@@ -313,13 +309,8 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 			//Int
 			ser.Value("nAlert", m_nAlertness, 'i8');
 			ser.Value("nStance", m_nStance, 'i8');
+			ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
 
-			//Bool :: TODO Change these to flags
-			ser.Value("bStrafe", m_bAllowStrafing, 'bool');
-			ser.Value("bTarget", m_bHasAimTarget, 'bool');
-			ser.Value("bBody", m_bHasBodyTarget, 'bool');
-			ser.Value("bLook", m_bHasLookTarget, 'bool');
-			ser.Value("bHasMoveTarget", m_bHasMoveTarget, 'bool');
 			break;
 		}
 		case ASPECT_HIDE:
