@@ -67,8 +67,10 @@ void CHUDMissionObjectiveSystem::LoadLevelObjectives(bool forceReloading)
 		CryFixedStringT<32> filename;
 
 		filename = "Libs/UI/Objectives_new.xml";
-		if(gEnv->bMultiplayer)
-			filename = "Libs/UI/MP_Objectives.xml";
+		// Crysis Co-op :: Find a way to load these back in if we actually don't want to play co-op
+		//if(gEnv->bMultiplayer)
+		//	filename = "Libs/UI/MP_Objectives.xml";
+		// ~Crysis Co-op
 		LoadLevelObjectives(filename.c_str());
 
 		//additional objectives
