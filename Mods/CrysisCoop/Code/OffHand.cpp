@@ -1541,7 +1541,7 @@ void COffHand::FinishAction(EOffHandActions eOHA)
 		case eOHA_THROW_OBJECT:								{
 																if (gEnv->bServer)
 																{
-																	this->GetGameObject()->InvokeRMI(COffHand::ClThrow(), COffHand::OffHandThrowParams(), eRMI_ToAllClients | eRMI_NoLocalCalls);
+																	this->GetGameObject()->InvokeRMI(COffHand::ClThrow(), COffHand::OffHandThrowParams(), gEnv->bClient ? eRMI_ToOtherClients : eRMI_ToAllClients);
 																}
 
 																// after it's thrown, wait 500ms to enable collisions again
@@ -2231,6 +2231,7 @@ bool COffHand::PerformPickUp()
 	{
 		if (!gEnv->bServer)
 		{
+			CryLogAlways("[COffHand::PerformPickUp] Player %s requesting picking up entity %d", GetOwnerActor()->GetEntity()->GetName(), m_preHeldEntityId);
 			this->GetGameObject()->InvokeRMI(COffHand::SvRequestPickup(), COffHand::OffHandGrabParams(m_preHeldEntityId, m_grabType), eRMI_ToServer);
 			m_preHeldEntityId = 0;
 			m_startPickUp = false;
@@ -2874,7 +2875,7 @@ void COffHand::ThrowObject(int activationMode, bool isLivingEnt /*= false*/)
 		// ~Crysis Co-op
 	}
 
-	if (IsClient() && gEnv->bMultiplayer)
+	if (IsClient() && !gEnv->bServer && gEnv->bMultiplayer)
 	{
 		Vec3 vPos = Vec3(ZERO);
 		Quat qRot = Quat::CreateIdentity();
@@ -2884,6 +2885,8 @@ void COffHand::ThrowObject(int activationMode, bool isLivingEnt /*= false*/)
 			qRot = pEntity->GetRotation();
 		}
 		this->GetGameObject()->InvokeRMI(COffHand::SvRequestThrow(), COffHand::OffHandThrowParams(m_grabType, m_currentState, m_forceThrow, activationMode, vPos, qRot), eRMI_ToServer);
+		//if(!gEnv->bServer)
+		//this->FinishAction(eOHA_THROW_OBJECT); // prediction?
 	}
 
 	PerformThrow(activationMode, m_heldEntityId, m_lastFireModeId, isLivingEnt);
@@ -3524,7 +3527,7 @@ IMPLEMENT_RMI(COffHand, SvRequestPickup)
 	CryLogAlways("[COffHand::SvRequestPickup] Requested pickup of entity id %d", m_heldEntityId);
 
 	this->PerformPickUp();
-	this->GetGameObject()->InvokeRMI(COffHand::ClPickup(), COffHand::OffHandGrabParams(m_heldEntityId, m_grabType), eRMI_ToAllClients | eRMI_NoLocalCalls);
+	this->GetGameObject()->InvokeRMI(COffHand::ClPickup(), COffHand::OffHandGrabParams(m_heldEntityId, m_grabType), gEnv->bClient ? eRMI_ToOtherClients : eRMI_ToAllClients | eRMI_NoLocalCalls);
 
 	return true;
 }

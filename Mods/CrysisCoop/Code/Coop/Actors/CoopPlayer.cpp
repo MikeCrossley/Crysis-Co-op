@@ -47,7 +47,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 		if (m_fNetDetectionDelay > 0.1f)
 		{
 			m_fNetDetectionDelay = 0.f;
-			GetGameObject()->InvokeRMI(CCoopPlayer::ClUpdateAwareness(), SAwarenessParams(m_fDetectionValue),  eRMI_ToClientChannel, GetChannelId());
+			GetGameObject()->InvokeRMI(CCoopPlayer::ClUpdateAwareness(), SAwarenessParams(m_fDetectionValue),  eRMI_ToClientChannel | eRMI_NoLocalCalls, GetChannelId());
 		}
 		else
 			m_fNetDetectionDelay += ctx.fFrameTime;
@@ -107,7 +107,7 @@ void CCoopPlayer::UpdateMusic(float frameTime)
 {
 	m_fMusicDelay += frameTime;
 
-	if (IsClient() && m_fMusicDelay > 3.0f)
+	if (IsClient() && m_fMusicDelay > 3.0f && !gEnv->bServer)
 	{
 		m_fMusicDelay = 0.f;
 

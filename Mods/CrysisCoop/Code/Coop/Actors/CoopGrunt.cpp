@@ -47,7 +47,7 @@ void CCoopGrunt::PostInit( IGameObject * pGameObject )
 
 void CCoopGrunt::RegisterMultiplayerAI()
 {
-	if (GetHealth() <= 0 && GetEntity()->GetAI())
+	if ((GetHealth() <= 0 && GetEntity()->GetAI()) || (GetEntity()->GetAI() && !gEnv->pAISystem->IsEnabled()))
 	{
 		gEnv->bMultiplayer = false;
 
@@ -59,7 +59,7 @@ void CCoopGrunt::RegisterMultiplayerAI()
 
 		gEnv->bMultiplayer = true;
 	}
-	else if (!GetEntity()->GetAI() && GetHealth() > 0)
+	else if (!GetEntity()->GetAI() && GetHealth() > 0 && gEnv->pAISystem->IsEnabled())
 	{
 		gEnv->bMultiplayer = false;
 

@@ -44,6 +44,14 @@ public:
 	void Update(float fFrameTime);
 
 
+	// Summary:
+	//	Called before the game rules have reseted entities.
+	void OnPreResetEntities();
+
+	// Summary:
+	//	Called after the game rules have reseted entities.
+	void OnPostResetEntities();
+
 	// ILevelSystemListener
 	virtual void OnLevelNotFound(const char *levelName) { };
 	virtual void OnLoadingStart(ILevelInfo *pLevel);
@@ -51,6 +59,7 @@ public:
 	virtual void OnLoadingError(ILevelInfo *pLevel, const char *error) { };
 	virtual void OnLoadingProgress(ILevelInfo *pLevel, int progressAmount) { };
 	// ~ILevelSystemListener
+
 
 
 	// Summary:
@@ -65,18 +74,21 @@ public:
 
 private:
 	int					m_nInitialized;
+	IEntityClass*		m_pEntityClassPlayer;
+	IEntityClass*		m_pEntityClassGrunt;
+	IEntityClass*		m_pEntityClassAlien;
+	IEntityClass*		m_pEntityClassScout;
+	IEntityClass*		m_pEntityClassTrooper;
+	IEntityClass*		m_pEntityClassHunter;
 
-	IEntityClass* m_pEntityClassPlayer;
-	IEntityClass* m_pEntityClassGrunt;
-	IEntityClass* m_pEntityClassAlien;
-	IEntityClass* m_pEntityClassScout;
-	IEntityClass* m_pEntityClassTrooper;
-	IEntityClass* m_pEntityClassHunter;
+private:
+	// State reset temporary variables.
+	std::map<EntityId, unsigned short> m_aiEntities;
 
 private:
 
 	CDialogSystem* m_pDialogSystem;
-
+	
 };
 
 #endif // _CoopSystem_H_

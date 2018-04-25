@@ -205,7 +205,7 @@ end
 function Coop:RestartGame(forceInGame)	
 	self:GotoState("Reset");
 
-	--self.game:ResetEntities();
+	self.game:ResetEntities();
 	self.bMissionFailed = false;
 
 	if (forceInGame) then

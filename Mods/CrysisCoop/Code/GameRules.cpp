@@ -43,6 +43,8 @@
 #include <StlUtils.h>
 #include <StringUtils.h>
 
+#include <Coop\CoopSystem.h>
+
 DbgPlotter	g_dbgPlotter;
 
 int CGameRules::s_invulnID = 0;
@@ -3878,10 +3880,9 @@ void CGameRules::ResetEntities()
 	for (TPlayerTeamIdMap::iterator tit=m_playerteams.begin(); tit!=m_playerteams.end(); tit++)
 		tit->second.resize(0);
 
+	CCoopSystem::GetInstance()->OnPreResetEntities();
 	g_pGame->GetIGameFramework()->Reset(gEnv->bServer);
-
-//	SEntityEvent event(ENTITY_EVENT_START_GAME);
-//	gEnv->pEntitySystem->SendEventToAll(event);
+	CCoopSystem::GetInstance()->OnPostResetEntities();
 }
 
 //------------------------------------------------------------------------
@@ -4309,6 +4310,7 @@ void CGameRules::ReconfigureVoiceGroups(EntityId id,int old_team,int new_team)
 		IVoiceGroup* pVoiceGroup=pVoiceContext->CreateVoiceGroup();
 		iter=m_teamVoiceGroups.insert(std::make_pair(new_team,pVoiceGroup)).first;
 	}
+
 	iter->second->AddEntity(id);
 	pVoiceContext->InvalidateRoutingTable();
 	//CryLog("-->Adding entity %d to team %d", id, new_team);
