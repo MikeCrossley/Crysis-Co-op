@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "Movement\CoopGruntMovementController.h"
 #include <Coop\Utilities\DedicatedServerHackScope.h>
+#include <Coop/CoopSystem.h>
 
 CCoopGrunt::CCoopGrunt() :
 	m_nStance(STANCE_RELAXED),
@@ -55,7 +56,8 @@ void CCoopGrunt::RegisterMultiplayerAI()
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		CryLogAlways("AI Unregistered for Grunt %s", GetEntity()->GetName());
+		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+			CryLogAlways("AI Unregistered for Grunt %s", GetEntity()->GetName());
 
 		gEnv->bMultiplayer = true;
 	}
@@ -67,7 +69,8 @@ void CCoopGrunt::RegisterMultiplayerAI()
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		CryLogAlways("AI Registered for Grunt %s", GetEntity()->GetName());
+		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+			CryLogAlways("AI Registered for Grunt %s", GetEntity()->GetName());
 
 		gEnv->bMultiplayer = true;
 	}

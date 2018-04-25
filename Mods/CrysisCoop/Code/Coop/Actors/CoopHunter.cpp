@@ -43,7 +43,8 @@ void CCoopHunter::RegisterMultiplayerAI()
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		CryLogAlways("AI Unregistered for Hunter %s", GetEntity()->GetName());
+		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+			CryLogAlways("AI Unregistered for Hunter %s", GetEntity()->GetName());
 
 		gEnv->bMultiplayer = true;
 	}
@@ -55,7 +56,8 @@ void CCoopHunter::RegisterMultiplayerAI()
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		CryLogAlways("AI Registered for Hunter %s", GetEntity()->GetName());
+		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+			CryLogAlways("AI Registered for Hunter %s", GetEntity()->GetName());
 
 		gEnv->bMultiplayer = true;
 	}

@@ -3,6 +3,8 @@
 #include <IConsole.h>
 #include <IGameFramework.h>
 
+#include <Coop/CoopSystem.h>
+
 CCoopPlayer::CCoopPlayer() : m_pSystemUpdateRate(0),
 	m_fDetectionTimer(0),
 	m_fDetectionValue(0),
@@ -66,7 +68,8 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
             gEnv->pScriptSystem->PushFuncParam(pScriptTable);
             gEnv->pScriptSystem->EndCall(pScriptTable);
 
-			CryLogAlways("AI Registered for Player %s", GetEntity()->GetName());
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+				CryLogAlways("AI Registered for Player %s", GetEntity()->GetName());
  
             gEnv->bMultiplayer = true;
         }
@@ -80,7 +83,8 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
             gEnv->pScriptSystem->PushFuncParam(pScriptTable);
             gEnv->pScriptSystem->EndCall(pScriptTable);
 
-			CryLogAlways("AI Unregistered for Player %s", GetEntity()->GetName());
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+				CryLogAlways("AI Unregistered for Player %s", GetEntity()->GetName());
  
             gEnv->bMultiplayer = true;
         }

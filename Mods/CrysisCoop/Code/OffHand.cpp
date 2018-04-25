@@ -27,6 +27,8 @@ History:
 #include "WeaponSystem.h"
 #include "Projectile.h"
 
+#include <Coop/CoopSystem.h>
+
 #define KILL_NPC_TIMEOUT	7.25f
 #define TIME_TO_UPDATE_CH 0.25f
 
@@ -1931,8 +1933,7 @@ int COffHand::CanPerformPickUp(CActor *pActor, IPhysicalEntity *pPhysicalEntity 
 	pMC->GetMovementState(info);
 
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	if(gEnv->bMultiplayer && !bIsCoop)
@@ -2456,8 +2457,7 @@ void COffHand::DrawNear(bool drawNear, EntityId entityId /*=0*/)
 void COffHand::SelectGrabType(IEntity* pEntity)
 {
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	if(gEnv->bMultiplayer && !bIsCoop)

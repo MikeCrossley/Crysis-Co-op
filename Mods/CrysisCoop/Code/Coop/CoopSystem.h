@@ -60,13 +60,17 @@ public:
 	virtual void OnLoadingProgress(ILevelInfo *pLevel, int progressAmount) { };
 	// ~ILevelSystemListener
 
-
-
 	// Summary:
 	//	Dumps debug information about entities to the console.
 	void DumpEntityDebugInformation();
 
+	// Summary:
+	//	Returns the debug log mode the coopsystem is currently using.
+	int GetDebugLog() { return m_nDebugLog; }
 
+	// Summary:
+	//	Returns if the current gamerules being played is cooperative.
+	bool IsCoop();
 
 	CDialogSystem* GetDialogSystem() { return m_pDialogSystem; }
 
@@ -82,13 +86,8 @@ private:
 	IEntityClass*		m_pEntityClassHunter;
 
 private:
-	// State reset temporary variables.
-	std::map<EntityId, unsigned short> m_aiEntities;
-
-private:
-
-	CDialogSystem* m_pDialogSystem;
-	
+	CDialogSystem*	m_pDialogSystem;
+	int				m_nDebugLog;
 };
 
 #endif // _CoopSystem_H_

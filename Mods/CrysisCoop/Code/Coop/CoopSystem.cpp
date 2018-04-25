@@ -8,6 +8,8 @@
 #include "CoopSystem.h"
 #include "CoopCutsceneSystem.h"
 
+#include <IGameRulesSystem.h>
+
 #include "Coop/DialogSystem/DialogSystem.h"
 
 #include <IVehicleSystem.h>
@@ -19,9 +21,8 @@
 CCoopSystem CCoopSystem::s_instance = CCoopSystem();
 
 CCoopSystem::CCoopSystem() :
-	m_nInitialized(0),
-	m_pReadability(NULL)
-	, m_aiEntities()
+	m_nInitialized(0)
+	, m_pReadability(NULL)
 {
 }
 
@@ -45,8 +46,6 @@ bool CCoopSystem::Initialize()
 		pSS->EndCall();
 	}
 
-	gEnv->pSystem->GetLocalizationManager()->LoadExcelXmlSpreadsheet("Languages/game_text_messages.xml");
-
 	InitCvars();
 
 	m_pDialogSystem = new CDialogSystem();
@@ -57,18 +56,19 @@ bool CCoopSystem::Initialize()
 
 void CCoopSystem::InitCvars()
 {
-	ICVar* pAIUpdateAlways = gEnv->pConsole->GetCVar("ai_UpdateAllAlways");
-	ICVar* pCheatCvar = gEnv->pConsole->GetCVar("sv_cheatprotection");
-	ICVar* pGameRules = gEnv->pConsole->GetCVar("sv_gamerules");
+	IConsole* pConsole = gEnv->pConsole;
 
-	if (pAIUpdateAlways)
-		pAIUpdateAlways->ForceSet("1");
+	if (!pConsole) return;
 
-	if (pCheatCvar)
-		pCheatCvar->ForceSet("0");
+	ICVar* pAIUpdateAlways = pConsole->GetCVar("ai_UpdateAllAlways");
+	ICVar* pCheatCvar = pConsole->GetCVar("sv_cheatprotection");
+	ICVar* pGameRules = pConsole->GetCVar("sv_gamerules");
 
-	if (pGameRules)
-		pGameRules->ForceSet("coop");
+	if (pAIUpdateAlways)	{ pAIUpdateAlways->ForceSet("1"); }
+	if (pCheatCvar)			{ pCheatCvar->ForceSet("0"); }
+	if (pGameRules)			{ pGameRules->ForceSet("coop"); }
+
+	pConsole->Register("coop_log", &m_nDebugLog, 1, 0, "Determine wether or not to log coop debug information to the console.");
 
 	// TODO :: Hijack the map command to force DX10 and immersiveness to be enabled
 
@@ -162,7 +162,9 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 		return;
 
 	m_nInitialized = 0;
-	CryLogAlways("[CCoopSystem] Initializing AI System...");
+	
+	if (GetDebugLog() > 0)
+		CryLogAlways("[CCoopSystem] Initializing AI System...");
 
 
 	gEnv->bMultiplayer = false;
@@ -182,34 +184,6 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 
 	if (CDialogSystem::sAutoReloadScripts != 0)
 		m_pDialogSystem->ReloadScripts();
-
-	if (gEnv->bEditor) return;
-
-	/*CryLogAlways("Making smart objects non-removable.");
-	IGameFramework* pGameFramework = gEnv->pGame->GetIGameFramework();
-	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
-	pIterator->Release();
-	int nInitialized = 0;
-	gEnv->bMultiplayer = false;
-	m_nInitialized = 1;
-
-	// Why?
-	// gEnv->pAISystem->Reset(IAISystem::RESET_ENTER_GAME);
-	gEnv->bMultiplayer = true;*/
-}
-
-void LogEntities()
-{
-	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
-	while (!pIterator->IsEnd())
-	{
-		IEntity* pEntity = nullptr;
-		if ((pEntity = pIterator->This()))
-		{
-			CryLogAlways("[%d] %s", pEntity->GetId(), pEntity->GetName());
-		}
-		pIterator->Next();
-	} pIterator->Release();
 }
 
 // Summary:
@@ -220,77 +194,6 @@ void CCoopSystem::OnPreResetEntities()
 		return;
 
 	gEnv->bMultiplayer = true;
-
-	/*const char* sRecreateEntityClasses[] = { "SmartObject", "AIAnchor" };
-	const int nRecreateEntityClasses = sizeof(sRecreateEntityClasses) / sizeof(const char*);
-	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
-	while (!pIterator->IsEnd())
-	{
-		IEntity* pEntity = nullptr;
-		if ((pEntity = pIterator->This()) && pEntity->GetSmartObject())
-		{
-			const char* sClassName = pEntity->GetClass() ? pEntity->GetClass()->GetName() : "";
-			for (int nIndex = 0; nIndex < nRecreateEntityClasses; ++nIndex)
-			{
-				if (strcmp(sRecreateEntityClasses[nIndex], sClassName) == 0)
-				{
-					CryLogAlways("[CCoopSystem] Queued entity %s of class %s for re-initialization...", pEntity->GetName(), pEntity->GetClass()->GetName());
-					gEnv->pAISystem->RemoveSmartObject(pEntity);
-					if (pEntity->GetAI())
-						gEnv->pAISystem->RemoveObject(pEntity->GetAI());
-					pEntity->SetSmartObject(nullptr);
-				}
-			}
-		}
-		pIterator->Next();
-	} pIterator->Release();*/
-	/*IGameFramework* pGameFramework = gEnv->pGame->GetIGameFramework();
-	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
-	while (!pIterator->IsEnd())
-	{
-		IEntity* pEntity = nullptr;
-		if ((pEntity = pIterator->This()) && (pEntity->GetSmartObject()))
-		{
-			pEntity->SetFlags(pEntity->GetFlags() | ENTITY_FLAG_UNREMOVABLE);
-			
-		}
-		pIterator->Next();
-	}
-	*/
-	//gEnv->pAISystem->Reset(IAISystem::RESET_EXIT_GAME);
-}
-
-IScriptTable* DeserializeEntityProperties(IScriptTable* pBase, XmlNodeRef pNode)
-{
-	if (!pNode)
-		return nullptr;
-	if(!pBase)
-		pBase = gEnv->pScriptSystem->CreateTable(true);
-	pBase->AddRef();
-	IScriptTable* pScriptTable = gEnv->pScriptSystem->CreateTable(true);
-	pScriptTable->AddRef();
-	for (int i = 0; i < pNode->getNumAttributes(); ++i)
-	{
-		const char* attributeName = 0;
-		const char* attributeValue = 0;
-		pNode->getAttributeByIndex(i, &attributeName, &attributeValue);
-		pScriptTable->SetValue(attributeName, attributeValue);
-	}
-
-	for (int i = 0; i < pNode->getChildCount(); ++i)
-	{
-		DeserializeEntityProperties(pScriptTable, pNode->getChild(i));
-	}
-	
-
-	pBase->SetValue(pNode->getTag(), pScriptTable);
-	//pScriptTable->Release();
-
-	return pBase;
-	//pScriptTable->cxt
-
-	//
-	//pScriptTable.child
 }
 
 // Summary:
@@ -306,13 +209,15 @@ void CCoopSystem::OnPostResetEntities()
 		return;
 	}
 
-	CryLogAlways("Post-reseting entities.");
+	if (GetDebugLog() > 0)
+		CryLogAlways("Post-reseting entities.");
 
 	gEnv->bMultiplayer = false;
 
 	gEnv->pAISystem->Enable();
 	
-	CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
+	if (GetDebugLog() > 0)
+		CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
 	const char* sRecreateEntityClasses[] = { "SmartObject", "AIAnchor" };
 	const int nRecreateEntityClasses = sizeof(sRecreateEntityClasses) / sizeof(const char*);
 	std::map<EntityId, _smart_ptr<IScriptTable>> recreateObjects = std::map<EntityId, _smart_ptr<IScriptTable>>();
@@ -332,7 +237,8 @@ void CCoopSystem::OnPostResetEntities()
 				{
 					if (strcmp(sRecreateEntityClasses[nIndex], sClassName) == 0)
 					{
-						CryLogAlways("[CCoopSystem] Queued entity %s of class %s for re-initialization...", pEntity->GetName(), pEntity->GetClass()->GetName());
+						if (GetDebugLog() > 0)
+							CryLogAlways("[CCoopSystem] Queued entity %s of class %s for re-initialization...", pEntity->GetName(), pEntity->GetClass()->GetName());
 						gEnv->pAISystem->RemoveSmartObject(pEntity);
 						if (pEntity->GetAI())
 							gEnv->pAISystem->RemoveObject(pEntity->GetAI());
@@ -346,15 +252,16 @@ void CCoopSystem::OnPostResetEntities()
 		pIterator->Next();
 	} pIterator->Release();
 
-	CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
+	if (GetDebugLog() > 0)
+		CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
 	// Remove entities to be re-created...
 	for (std::map<EntityId, _smart_ptr<IScriptTable>>::iterator it = recreateObjects.begin(); it != recreateObjects.end(); ++it)
 	{
 		gEnv->pEntitySystem->RemoveEntity(it->first, true);
 	}
 
-
-	CryLogAlways("[CCoopSystem] Re-initializing entities...");
+	if (GetDebugLog() > 0)
+		CryLogAlways("[CCoopSystem] Re-initializing entities...");
 	ILevel*	pLevel = gEnv->pGame->GetIGameFramework()->GetILevelSystem()->GetCurrentLevel();
 	const char* sLevelName = gEnv->pGame->GetIGameFramework()->GetLevelName();
 	ILevelInfo* pLevelInfo = gEnv->pGame->GetIGameFramework()->GetILevelSystem()->GetLevelInfo(sLevelName);
@@ -434,8 +341,6 @@ void CCoopSystem::OnPostResetEntities()
 	}
 
 	gEnv->bMultiplayer = true;
-
-	m_aiEntities.clear();
 }
 
 // Summary:
@@ -553,4 +458,12 @@ void CCoopSystem::DumpEntityDebugInformation()
 		CryLogAlways(" - %s", it->c_str());
 	}
 
+}
+
+// Summary:
+//	Returns if the current gamerules being played is cooperative.
+bool CCoopSystem::IsCoop()
+{
+	const char* gameRulesName = gEnv->pGame->GetIGameFramework()->GetIGameRulesSystem()->GetCurrentGameRules()->GetEntity()->GetClass()->GetName();
+	return (strcmp(gameRulesName, "Coop") == 0);
 }

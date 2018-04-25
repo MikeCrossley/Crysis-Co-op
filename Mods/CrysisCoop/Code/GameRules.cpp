@@ -407,10 +407,9 @@ void CGameRules::ProcessEvent( SEntityEvent& event)
 		m_timeOfDayInitialized = false;
 		g_pGame->GetWeaponSystem()->GetTracerManager().Reset();
 
-		// Crysis Co-op
-		const char* gameRulesName = GetEntity()->GetClass()->GetName();
-		bool bIsCoop = !strcmp(gameRulesName, "Coop");
-		// ~Crysis Co-op
+		//Crysis Co-op
+		bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
+		//~Crysis Co-op
 
 		if (!bIsCoop)
 		{

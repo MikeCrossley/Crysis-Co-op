@@ -29,6 +29,8 @@
 #include <IGameTokens.h>
 #include <IMaterialEffects.h>
 
+#include <Coop/CoopSystem.h>
+
 CNanoSuit::SNanoMaterial g_USNanoMats[NANOMODE_LAST];
 CNanoSuit::SNanoMaterial g_AsianNanoMats[NANOMODE_LAST];
 static const float HIT_EFFECT_TIME = 0.5f;
@@ -365,8 +367,7 @@ void CNanoSuit::Update(float frameTime)
 		return;
 
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	// invulnerability effect works even with a powered down suit
@@ -647,8 +648,7 @@ void CNanoSuit::Balance(float energy)
 void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 {
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	value = clamp(value, 0.0f, NANOSUIT_ENERGY);
@@ -711,8 +711,7 @@ void CNanoSuit::SetSuitEnergy(float value, bool playerInitiated /* = false */)
 void CNanoSuit::Hit(int damage)
 {
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	//server only
@@ -1611,8 +1610,7 @@ void CNanoSuit::SetModeDefect(ENanoMode mode, bool defect)
 float CNanoSuit::GetSprintMultiplier(bool strafing)
 {
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	if(m_pOwner && !m_pOwner->GetActorStats()->inZeroG && m_currentMode == NANOMODE_SPEED && m_startedSprinting)
@@ -1653,8 +1651,7 @@ float CNanoSuit::GetSprintMultiplier(bool strafing)
 void CNanoSuit::UpdateSprinting(float &recharge, const SPlayerStats &stats, float frametime)
 {
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	if(!stats.inZeroG)

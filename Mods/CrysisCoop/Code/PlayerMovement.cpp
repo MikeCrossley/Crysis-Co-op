@@ -8,6 +8,8 @@
 #include "NetInputChainDebug.h"
 #include "GameRules.h"
 
+#include <Coop/CoopSystem.h>
+
 #undef CALL_PLAYER_EVENT_LISTENERS
 #define CALL_PLAYER_EVENT_LISTENERS(func) \
 { \
@@ -1401,8 +1403,7 @@ void CPlayerMovement::AdjustMovementForEnvironment( Vec3& move, bool sprinting )
 	if(CNanoSuit *pSuit = m_player.GetNanoSuit())
 	{
 		//Crysis Co-op
-		const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-		bool bIsCoop = !strcmp(gameRulesName, "Coop");
+		bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 		//~Crysis Co-op
 
 		if (gEnv->bMultiplayer && !bIsCoop)

@@ -69,6 +69,8 @@ History:
 #include "Binocular.h"
 #include "SoundMoods.h"
 
+#include <Coop/CoopSystem.h>
+
 // enable this to check nan's on position updates... useful for debugging some weird crashes
 #define ENABLE_NAN_CHECK
 
@@ -1971,8 +1973,7 @@ void CPlayer::SetParams(SmartScriptTable &rTable,bool resetFirst)
 	CActor::SetParams(rTable,resetFirst);
 
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	CScriptSetGetChain params(rTable);
@@ -2039,8 +2040,7 @@ bool CPlayer::GetParams(SmartScriptTable &rTable)
 	FUNCTION_PROFILER(gEnv->pSystem, PROFILE_GAME);
 
 	//Crysis Co-op
-	const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-	bool bIsCoop = !strcmp(gameRulesName, "Coop");
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 	//~Crysis Co-op
 
 	CScriptSetGetChain params(rTable);
@@ -2258,8 +2258,7 @@ void CPlayer::UpdateSwimStats(float frameTime)
 	if (ShouldSwim())
 	{
 		//Crysis Co-op
-		const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-		bool bIsCoop = !strcmp(gameRulesName, "Coop");
+		bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
 
 		//by design : AI cannot swim and drowns no matter what
 		if ((GetHealth() > 0) && !IsPlayer() && (!gEnv->bMultiplayer || bIsCoop))
@@ -5046,8 +5045,8 @@ void CPlayer::UpdateFootSteps(float frameTime)
 		m_currentFootID = footID;	
 
 		// Crysis Co-op :: we certainly want footsteps alerting AI in co-op
-		const char* gameRulesName = g_pGame->GetGameRules()->GetEntity()->GetClass()->GetName();
-		bool bIsCoop = !strcmp(gameRulesName, "Coop");
+		bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
+
 		//if (!gEnv->bMultiplayer && gEnv->pAISystem)
 		if ((!gEnv->bMultiplayer || bIsCoop) && gEnv->pAISystem)
 		//~Crysis Co-op
