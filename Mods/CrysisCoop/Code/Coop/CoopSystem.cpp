@@ -17,12 +17,28 @@
 #include <INetworkService.h>
 #include <IEntityClass.h>
 
+
+// Summary:
+//	Registers the ICoopSystemEventListener implementation instance to the coop system.
+void ICoopSystemEventListener::RegisterEventListener()
+{
+	CCoopSystem::GetInstance()->m_eventListeners.push_back(this);
+}
+
+// Summary:
+//	Unregisters the ICoopSystemEventListener implementation instance from the coop system.
+void ICoopSystemEventListener::UnregisterEventListener()
+{
+	CCoopSystem::GetInstance()->m_eventListeners.remove(this);
+}
+
 // Static CCoopSystem class instance forward declaration.
 CCoopSystem CCoopSystem::s_instance = CCoopSystem();
 
-CCoopSystem::CCoopSystem() :
-	m_nInitialized(0)
+CCoopSystem::CCoopSystem() 
+	: m_nInitialized(0)
 	, m_pReadability(NULL)
+	, m_eventListeners()
 {
 }
 
@@ -152,6 +168,8 @@ void CCoopSystem::Update(float fFrameTime)
 
 void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 {
+	m_eventListeners.clear();
+
 	// Shared initialization.
 	ICVar* pSystemUpdate = gEnv->pConsole->GetCVar("ai_systemupdate");
 	pSystemUpdate->SetFlags(pSystemUpdate->GetFlags() | EVarFlags::VF_NOT_NET_SYNCED);
@@ -190,6 +208,11 @@ void CCoopSystem::OnLoadingComplete(ILevel *pLevel)
 //	Called before the game rules have reseted entities.
 void CCoopSystem::OnPreResetEntities()
 {
+	for (auto it = m_eventListeners.begin(); it != m_eventListeners.end(); ++it)
+	{
+		(*it)->OnPreResetEntities();
+	}
+
 	if (!gEnv->bServer)
 		return;
 
@@ -206,6 +229,10 @@ void CCoopSystem::OnPostResetEntities()
 	if (!gEnv->bServer)
 	{
 		gEnv->pAISystem->Enable(false);
+		for (auto it = m_eventListeners.begin(); it != m_eventListeners.end(); ++it)
+		{
+			(*it)->OnPostResetEntities();
+		}
 		return;
 	}
 
@@ -338,6 +365,12 @@ void CCoopSystem::OnPostResetEntities()
 			sSpawnParams.pPropertiesTable = instance->second;
 		gEnv->pEntitySystem->InitEntity(pEntity, sSpawnParams);
 		
+	}
+
+	// gEnv->bMultiplayer will be true after event listeners.
+	for (auto it = m_eventListeners.begin(); it != m_eventListeners.end(); ++it)
+	{
+		(*it)->OnPostResetEntities();
 	}
 
 	gEnv->bMultiplayer = true;

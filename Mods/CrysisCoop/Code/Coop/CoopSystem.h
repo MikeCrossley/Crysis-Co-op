@@ -6,9 +6,32 @@
 
 class CDialogSystem;
 
+// Summary:
+//	Interface for listening to coop system events.
+struct ICoopSystemEventListener
+{
+protected:
+	// Summary:
+	//	Registers the ICoopSystemEventListener implementation instance to the coop system.
+	void RegisterEventListener();
+
+	// Summary:
+	//	Unregisters the ICoopSystemEventListener implementation instance from the coop system.
+	void UnregisterEventListener();
+public:
+	// Summary:
+	//	Called before the game rules have reseted entities.
+	virtual void OnPreResetEntities() {};
+
+	// Summary:
+	//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
+	virtual void OnPostResetEntities() {};
+};
+
 class CCoopSystem 
 	: public ILevelSystemListener
 {
+	friend struct ICoopSystemEventListener;
 private:
 	// Static CCoopSystem class instance forward declaration.
 	static CCoopSystem s_instance;
@@ -76,6 +99,10 @@ public:
 
 	CCoopReadability* m_pReadability;
 
+
+public:
+
+
 private:
 	int					m_nInitialized;
 	IEntityClass*		m_pEntityClassPlayer;
@@ -88,6 +115,8 @@ private:
 private:
 	CDialogSystem*	m_pDialogSystem;
 	int				m_nDebugLog;
+
+	std::list<ICoopSystemEventListener*> m_eventListeners;
 };
 
 #endif // _CoopSystem_H_
