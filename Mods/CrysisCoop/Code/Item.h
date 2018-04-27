@@ -1255,6 +1255,16 @@ public:
 
 	ILINE bool IsServer() {	return gEnv->bServer; }
 	ILINE bool IsClient() {	return gEnv->bClient; }
+
+	// Crysis Co-op
+
+	// Summary:
+	//	Sends accessories to clients.
+	void SendAccessoriesToClients(int nChannelID = -1);
+
+	DECLARE_CLIENT_RMI_NOATTACH_FAST(ClAttachAIAccessory, RequestAttachAccessoryParams, eNRT_ReliableUnordered);
+
+	// ~Crysis Co-op
 protected:
 	// data
 	_smart_ptr<class CItemSharedParams> m_sharedparams;

@@ -6,6 +6,7 @@
 #include "Movement\CoopGruntMovementController.h"
 #include <Coop\Utilities\DedicatedServerHackScope.h>
 #include <Coop/CoopSystem.h>
+#include <Item.h>
 
 CCoopGrunt::CCoopGrunt() :
 	m_nStance(STANCE_RELAXED),
@@ -74,11 +75,7 @@ void CCoopGrunt::OnPostResetEntities()
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
 		assert(this->GetEntity()->GetAI() != nullptr);
-		// Call CheckWeaponAttachments to attach things.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-
+		
 		// Equip the actor's equipment pack.
 		SmartScriptTable pPropertiesTable = nullptr;
 		if (pScriptTable->GetValue("Properties", pPropertiesTable))
@@ -96,7 +93,23 @@ void CCoopGrunt::OnPostResetEntities()
 					CryLogAlways(bResult ? "[CCoopGrunt] Succeeded giving actor %s equipment pack %s." : "[CCoopGrunt] Failed to give actor %s equipment pack %s.", this->GetEntity()->GetName(), sEquipmentPack);
 				}
 			}
-				
+		}
+
+		// Call CheckWeaponAttachments to attach things.
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
+		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+		gEnv->pScriptSystem->EndCall(pScriptTable);
+
+		if (IInventory* pInventory = this->GetInventory())
+		{
+			for (int nItem = 0; nItem < pInventory->GetCount(); ++nItem)
+			{
+				CItem* pItem = (CItem*)gEnv->pGame->GetIGameFramework()->GetGameObject(pInventory->GetItem(nItem))->QueryExtension(gEnv->pEntitySystem->GetEntity(pInventory->GetItem(nItem))->GetClass()->GetName());
+				if (pItem)
+				{
+					pItem->SendAccessoriesToClients();
+				}
+			}
 		}
 	}
 	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
