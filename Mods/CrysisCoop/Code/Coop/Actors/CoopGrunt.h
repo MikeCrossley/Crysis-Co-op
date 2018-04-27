@@ -142,9 +142,17 @@ private:
 		eAllowStrafing = (1 << 5),
 	};
 
+	enum EAIWeaponNetFlags
+	{
+		eLaserActive = (1 << 0),
+		eFlashlightActive = (1 << 1),
+	};
+
 	bool HasMovementFlag(EAIMovementNetFlags flag) { return (m_nMovementNetworkFlags & flag) == flag; }
+	bool HasWeaponFlag(EAIWeaponNetFlags flag) { return (m_nWeaponNetworkFlags & flag) == flag; }
 
 	uint8 m_nMovementNetworkFlags;
+	uint8 m_nWeaponNetworkFlags;
 
 	bool m_bHidden;
 };

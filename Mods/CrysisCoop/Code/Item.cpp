@@ -3072,34 +3072,3 @@ SItemStrings::SItemStrings()
 	lever_layer_2 = "lever_layer_2";
 
 };
-
-// Crysis Co-op
-
-#include <Coop\CoopSystem.h>
-
-void CItem::SendAccessoriesToClients(int nChannelID)
-{
-	if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-		CryLogAlways("[%s] Sending accessories to client.", GetEntity()->GetName());
-	if (nChannelID == -1)
-	{
-		for (TAccessoryMap::iterator it = m_accessories.begin(); it != m_accessories.end(); ++it)
-			GetGameObject()->InvokeRMI(ClAttachAIAccessory(), RequestAttachAccessoryParams(it->first.c_str()), gEnv->pSystem->IsDedicated() ? eRMI_ToAllClients : eRMI_ToOtherClients);
-	}
-	else
-	{
-		for (TAccessoryMap::iterator it = m_accessories.begin(); it != m_accessories.end(); ++it)
-			GetGameObject()->InvokeRMI(ClAttachAIAccessory(), RequestAttachAccessoryParams(it->first.c_str()), eRMI_ToClientChannel | eRMI_NoLocalCalls, nChannelID);
-	}
-}
-
-IMPLEMENT_RMI(CItem, ClAttachAIAccessory)
-{
-	if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-		CryLogAlways("[%s] Attaching accessory %s.", GetEntity()->GetName(), params.accessory);
-
-	this->AttachAccessory(ItemString(params.accessory.c_str()), true, true, true, false);
-	return true;
-}
-
-// ~Crysis Co-op

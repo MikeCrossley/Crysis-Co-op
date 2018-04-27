@@ -117,7 +117,8 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 	if (m_laserActivated == activate)
 		return;
 
-	CryLogAlways("[CLam::ActivateLaser]");
+	if (activate && aiRequest)
+		CryLogAlways("[CLam::ActivateLaser]");
 
 	CItem  *pParent = NULL;
 	EntityId ownerId = 0;
@@ -184,7 +185,7 @@ void CLam::ActivateLight(bool activate, bool aiRequest /* = false */)
 {
 	//GameWarning("CLam::ActivateLight(%i)", activate);
 	
-	if (activate)
+	if (activate && aiRequest)
 		CryLogAlways("[CLam::ActivateLight]");
 
 	CItem  *pParent = NULL;

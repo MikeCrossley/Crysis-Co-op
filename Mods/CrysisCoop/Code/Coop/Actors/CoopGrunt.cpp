@@ -20,6 +20,7 @@ CCoopGrunt::CCoopGrunt() :
 	m_nAlertness(0.f),
 	m_nSuitMode(3),
 	m_nMovementNetworkFlags(0),
+	m_nWeaponNetworkFlags(0),
 	m_bHidden(false)
 {
 	this->RegisterEventListener();
@@ -99,19 +100,8 @@ void CCoopGrunt::OnPostResetEntities()
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-
-		if (IInventory* pInventory = this->GetInventory())
-		{
-			for (int nItem = 0; nItem < pInventory->GetCount(); ++nItem)
-			{
-				CItem* pItem = (CItem*)gEnv->pGame->GetIGameFramework()->GetGameObject(pInventory->GetItem(nItem))->QueryExtension(gEnv->pEntitySystem->GetEntity(pInventory->GetItem(nItem))->GetClass()->GetName());
-				if (pItem)
-				{
-					pItem->SendAccessoriesToClients();
-				}
-			}
-		}
 	}
+
 	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
 	gEnv->bMultiplayer = true;
 }
@@ -189,6 +179,9 @@ void CCoopGrunt::DrawDebugInfo()
 	gEnv->pRenderer->Draw2dLabel(5, 225, 2, color, false, "Allow Strafing %d     HasAimTarget %d", (int)this->HasMovementFlag(EAIMovementNetFlags::eAllowStrafing), (int)this->HasMovementFlag(EAIMovementNetFlags::eHasAimTarget));
 	if (GetNanoSuit())
 		gEnv->pRenderer->Draw2dLabel(5, 265, 2, color, false, "Suit mode %d", GetNanoSuit()->GetMode());
+
+	gEnv->pRenderer->Draw2dLabel(5, 305, 2, color, false, "Flashlight Active %d", (int)this->HasWeaponFlag(EAIWeaponNetFlags::eFlashlightActive));
+	gEnv->pRenderer->Draw2dLabel(5, 325, 2, color, false, "Laser Active %d", (int)this->HasWeaponFlag(EAIWeaponNetFlags::eLaserActive));
 }
 
 void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
@@ -227,6 +220,19 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_nMovementNetworkFlags = currMovement.HasFireTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasFireTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasFireTarget);
 		m_nMovementNetworkFlags = currMovement.HasMoveTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasMoveTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasMoveTarget);
 
+		// Weapons
+		IItem* pItem = this->GetCurrentItem();
+		IWeapon* pWeapon = nullptr;
+		if (pItem) { pWeapon = pItem->GetIWeapon(); }
+		if (pWeapon && GetHolsteredItem() != pItem)
+		{
+			m_nWeaponNetworkFlags = pWeapon->IsLamLightActivated() ? (m_nWeaponNetworkFlags | EAIWeaponNetFlags::eFlashlightActive) : (m_nWeaponNetworkFlags & ~EAIWeaponNetFlags::eFlashlightActive);
+			m_nWeaponNetworkFlags = pWeapon->IsLamLaserActivated() ? (m_nWeaponNetworkFlags | EAIWeaponNetFlags::eLaserActive) : (m_nWeaponNetworkFlags & ~EAIWeaponNetFlags::eLaserActive);
+		}
+		else
+		{
+			m_nWeaponNetworkFlags = 0;
+		}
 
 		if (GetNanoSuit())
 		{
@@ -245,7 +251,8 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		UpdateMovementState();
 	}
 
-	//DrawDebugInfo();
+	//this->DrawDebugInfo();
+
 	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
 	{
 		// Only update on dedicated server.
@@ -315,6 +322,32 @@ void CCoopGrunt::UpdateMovementState()
 	request.SetAllowStrafing(this->HasMovementFlag(EAIMovementNetFlags::eAllowStrafing));
 		
 	GetMovementController()->RequestMovement(request);
+
+	// Weapons
+
+	IItem* pItem = this->GetCurrentItem();
+	IWeapon* pWeapon = nullptr;
+	if (pItem) { pWeapon = pItem->GetIWeapon(); }
+	if (pWeapon)
+	{
+		if (this->HasWeaponFlag(EAIWeaponNetFlags::eFlashlightActive) && !pWeapon->IsLamLightActivated())
+		{
+			pWeapon->ActivateLamLight(true, true);
+		}
+		else if (pWeapon->IsLamLaserActivated())
+		{
+			pWeapon->ActivateLamLight(false, true);
+		}
+
+		if (this->HasWeaponFlag(EAIWeaponNetFlags::eLaserActive) && !pWeapon->IsLamLaserActivated())
+		{
+			pWeapon->ActivateLamLaser(true, true);
+		}
+		else if (pWeapon->IsLamLaserActivated())
+		{
+			pWeapon->ActivateLamLaser(false, true);
+		}
+	}
 }
 
 void CCoopGrunt::ProcessEvent(SEntityEvent& event)
@@ -422,6 +455,7 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 			ser.Value("nAlert", m_nAlertness, 'i8');
 			ser.Value("nStance", m_nStance, 'i8');
 			ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
+			ser.Value("nWep", m_nWeaponNetworkFlags, 'i8');
 
 			break;
 		}

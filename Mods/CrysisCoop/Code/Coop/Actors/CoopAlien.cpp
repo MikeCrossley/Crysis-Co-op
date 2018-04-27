@@ -111,7 +111,7 @@ void CCoopAlien::Update(SEntityUpdateContext& ctx, int updateSlot)
 
 	}
 
-	DrawDebugInfo();
+	//this->DrawDebugInfo();
 }
 
 void CCoopAlien::DrawDebugInfo()
