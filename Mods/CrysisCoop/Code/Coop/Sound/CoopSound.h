@@ -6,9 +6,10 @@
 
 class CCoopSound : public ISound
 {
+	friend class CCoopSoundSystem;
 public:
-	CCoopSound() {};
-	~CCoopSound() {};
+	CCoopSound();
+	~CCoopSound();
 
 	// ISound
 	virtual void		AddEventListener(ISoundEventListener *pListener, const char *sWho) { m_lSoundEventListener.push_back(pListener); }
@@ -27,8 +28,8 @@ public:
 	virtual void		SetSemantic(ESoundSemantic eSemantic) { m_nSoundSemantic = eSemantic; }
 	virtual ESoundSemantic GetSemantic() { return m_nSoundSemantic; }
 	virtual const char*	GetName() { return m_sSoundName.c_str(); }
-	virtual const tSoundID	GetId() const { return 0; }
-	virtual	void		SetId(tSoundID SoundID) {}
+	virtual const tSoundID	GetId() const { return m_nIdentifier; }
+	virtual	void		SetId(tSoundID SoundID) { m_nIdentifier = SoundID; }
 	virtual void		SetLoopMode(bool bLoop) {}
 	virtual bool		Preload() { return false; }
 	virtual unsigned int GetCurrentSamplePos(bool bMilliSeconds = false) const { return 0; }
@@ -63,10 +64,10 @@ public:
 	virtual void		SetDirection(const Vec3 &dir) {}
 	virtual Vec3		GetDirection() const { return Vec3(ZERO); }
 	virtual bool		IsRelative() const { return false; }
-	virtual int			AddRef() { return 0; }
-	virtual int			Release() { return 0; }
-	virtual void		SetFlags(uint32 nFlags) {}
-	virtual uint32		GetFlags() const { return 0; }
+	virtual int			AddRef();
+	virtual int			Release();
+	virtual void		SetFlags(uint32 nFlags) { m_nFlags = nFlags; }
+	virtual uint32		GetFlags() const { return m_nFlags; }
 	virtual	void		FXEnable(int nEffectNumber) {}
 	virtual	void		FXSetParamEQ(float fCenter, float fBandwidth, float fGain) {}
 	virtual int			GetLengthMs() const { return 0; }
@@ -83,11 +84,17 @@ public:
 
 	virtual void SetName(const char* szName) { m_sSoundName = szName; }
 	virtual void OnEvent(ESoundCallbackEvent event);
+private:
+
+	void Reset();
 
 private:
-	std::list<ISoundEventListener*> m_lSoundEventListener;
+	tSoundID m_nIdentifier;
+	volatile int m_nReferenceCount;
 	ESoundSemantic	m_nSoundSemantic;
+	std::list<ISoundEventListener*> m_lSoundEventListener;
 	string			m_sSoundName;
+	uint32			m_nFlags;
 };
 
 

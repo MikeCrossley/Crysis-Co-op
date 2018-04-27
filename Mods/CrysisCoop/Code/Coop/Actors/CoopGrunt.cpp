@@ -75,6 +75,7 @@ void CCoopGrunt::OnPostResetEntities()
 		gEnv->pScriptSystem->EndCall(pScriptTable);
 		assert(this->GetEntity()->GetAI() != nullptr);
 
+
 		// Equip the actor's equipment pack.
 		SmartScriptTable pPropertiesTable = nullptr;
 		if (pScriptTable->GetValue("Properties", pPropertiesTable))
