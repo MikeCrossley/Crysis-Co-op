@@ -12,7 +12,7 @@ void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio
 	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_STOP);
 
 	// Until we implement proper sound timing we need to get rid of the sound
-	delete this;
+	//delete this;
 }
 
 

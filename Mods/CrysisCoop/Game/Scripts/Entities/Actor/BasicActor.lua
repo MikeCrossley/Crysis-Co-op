@@ -2469,9 +2469,9 @@ function BasicActor:OnSpawn()
   self.actorStats = new(self.actorStats);
   
   if (CryAction.IsServer()) then
-  --	if (g_gameRules and g_gameRules.EquipActor and self.actor:IsPlayer()) then
-	--		g_gameRules:EquipActor(self);
-	--	end
+  	if (g_gameRules and g_gameRules.EquipActor) then
+			g_gameRules:EquipActor(self);
+		end
   end
   
   self.prevFrozenAmount = 0;

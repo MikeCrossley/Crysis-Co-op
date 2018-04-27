@@ -9,11 +9,11 @@
 
 CCoopGrunt::CCoopGrunt() :
 	m_nStance(STANCE_RELAXED),
-	m_vMoveTarget(Vec3(0,0,0)),
-	m_vAimTarget(Vec3(0,0,0)),
-	m_vLookTarget(Vec3(0,0,0)),
-	m_vBodyTarget(Vec3(0,0,0)),
-	m_vFireTarget(Vec3(0,0,0)),
+	m_vMoveTarget(Vec3(0, 0, 0)),
+	m_vAimTarget(Vec3(0, 0, 0)),
+	m_vLookTarget(Vec3(0, 0, 0)),
+	m_vBodyTarget(Vec3(0, 0, 0)),
+	m_vFireTarget(Vec3(0, 0, 0)),
 	m_fPseudoSpeed(0.f),
 	m_fDesiredSpeed(0.f),
 	m_nAlertness(0.f),
@@ -60,7 +60,7 @@ void CCoopGrunt::OnPreResetEntities()
 //	Called after the game rules have reseted entities and the coop system has re-created AI objects.
 void CCoopGrunt::OnPostResetEntities()
 {
-	if (!gEnv->bServer)
+	if (!gEnv->bServer || gEnv->bEditor)
 		return;
 
 	gEnv->bMultiplayer = false;
@@ -69,26 +69,18 @@ void CCoopGrunt::OnPostResetEntities()
 
 	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
 	{
-		if (!gEnv->bEditor)
-		{
-			// Register the actor's AI on the server.
-			gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
-			gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-			gEnv->pScriptSystem->EndCall(pScriptTable);
-			assert(this->GetEntity()->GetAI() != nullptr);
-		}
-
-		// Call CheckWeaponAttachments to attach things.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
+		// Register the actor's AI on the server.
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
+		assert(this->GetEntity()->GetAI() != nullptr);
 
 		// Equip the actor's equipment pack.
 		SmartScriptTable pPropertiesTable = nullptr;
 		if (pScriptTable->GetValue("Properties", pPropertiesTable))
 		{
 			int bNanosuit = 0;
-			if(pPropertiesTable->GetValue("bNanoSuit", bNanosuit) && bNanosuit == 1)
+			if (pPropertiesTable->GetValue("bNanoSuit", bNanosuit) && bNanosuit == 1)
 				gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GiveItem(this, "NanoSuit", false, false, false);
 
 			const char* sEquipmentPack = nullptr;
@@ -100,11 +92,13 @@ void CCoopGrunt::OnPostResetEntities()
 					CryLogAlways(bResult ? "[CCoopGrunt] Succeeded giving actor %s equipment pack %s." : "[CCoopGrunt] Failed to give actor %s equipment pack %s.", this->GetEntity()->GetName(), sEquipmentPack);
 				}
 			}
-				
 		}
 	}
+
 	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
-	gEnv->bMultiplayer = true;
+
+	if (!gEnv->bEditor)
+		gEnv->bMultiplayer = true;
 }
 
 bool CCoopGrunt::Init(IGameObject * pGameObject)
@@ -115,11 +109,11 @@ bool CCoopGrunt::Init(IGameObject * pGameObject)
 }
 
 
-void CCoopGrunt::PostInit( IGameObject * pGameObject )
+void CCoopGrunt::PostInit(IGameObject * pGameObject)
 {
 	CPlayer::PostInit(pGameObject);
 
-	
+
 
 	if (gEnv->bServer)
 		GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
@@ -130,29 +124,29 @@ void CCoopGrunt::RegisterMultiplayerAI()
 {
 	/*if ((GetHealth() <= 0 && GetEntity()->GetAI()) || (GetEntity()->GetAI() && !gEnv->pAISystem->IsEnabled()))
 	{
-		gEnv->bMultiplayer = false;
+	gEnv->bMultiplayer = false;
 
-		IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-			CryLogAlways("AI Unregistered for Grunt %s", GetEntity()->GetName());
+	IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
+	gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
+	gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+	gEnv->pScriptSystem->EndCall(pScriptTable);
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+	CryLogAlways("AI Unregistered for Grunt %s", GetEntity()->GetName());
 
-		gEnv->bMultiplayer = true;
+	gEnv->bMultiplayer = true;
 	}
 	else if (!GetEntity()->GetAI() && GetHealth() > 0 && gEnv->pAISystem->IsEnabled())
 	{
-		gEnv->bMultiplayer = false;
+	gEnv->bMultiplayer = false;
 
-		IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-			CryLogAlways("AI Registered for Grunt %s", GetEntity()->GetName());
+	IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
+	gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
+	gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+	gEnv->pScriptSystem->EndCall(pScriptTable);
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+	CryLogAlways("AI Registered for Grunt %s", GetEntity()->GetName());
 
-		gEnv->bMultiplayer = true;
+	gEnv->bMultiplayer = true;
 	}*/
 }
 
@@ -189,7 +183,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 	// Register AI System in MP
 	if (gEnv->bServer && !gEnv->bEditor)
 		RegisterMultiplayerAI();
-	
+
 	// Movement reqeust stuff so proper anims play on client
 	if (gEnv->bServer)
 	{
@@ -201,7 +195,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_vLookTarget = currMovement.GetLookTarget();
 		m_vBodyTarget = currMovement.GetBodyTarget();
 		m_vFireTarget = currMovement.GetFireTarget();
-		
+
 		// Float
 		m_fPseudoSpeed = currMovement.GetPseudoSpeed();
 		m_fDesiredSpeed = currMovement.GetDesiredSpeed();
@@ -209,7 +203,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		// Int
 		m_nStance = currMovement.GetStance();
 		m_nAlertness = currMovement.GetAlertness();
-		
+
 		// Bool
 		m_nMovementNetworkFlags = currMovement.AllowStrafing() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eAllowStrafing) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eAllowStrafing);
 		m_nMovementNetworkFlags = currMovement.HasAimTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasAimTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasAimTarget);
@@ -304,7 +298,7 @@ void CCoopGrunt::UpdateMovementState()
 
 	// Bool
 	request.SetAllowStrafing(this->HasMovementFlag(EAIMovementNetFlags::eAllowStrafing));
-		
+
 	GetMovementController()->RequestMovement(request);
 }
 
@@ -312,73 +306,73 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 {
 	CPlayer::ProcessEvent(event);
 
-	switch(event.event)
+	switch (event.event)
 	{
 	case ENTITY_EVENT_HIDE:
+	{
+		if (gEnv->bServer)
 		{
-			if (gEnv->bServer)
-			{
-				//GetInventory()->Clear();
-				m_bHidden = true;
-				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
-				OnPreResetEntities();
-			}
-
-			break;
+			//GetInventory()->Clear();
+			m_bHidden = true;
+			GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
+			OnPreResetEntities();
 		}
+
+		break;
+	}
 	case ENTITY_EVENT_UNHIDE:
+	{
+		if (gEnv->bServer)
 		{
-			if (gEnv->bServer)
-			{
-				GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
-				m_bHidden = false;
-				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
-				OnPostResetEntities();
-			}
-
-			break;
+			GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
+			m_bHidden = false;
+			GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
+			OnPostResetEntities();
 		}
-		// Register AI when initializing for dynamically spawned AI, too.
+
+		break;
+	}
+	// Register AI when initializing for dynamically spawned AI, too.
 	case ENTITY_EVENT_INIT:
+	{
+		if (gEnv->bServer)
 		{
-			if (gEnv->bServer)
-			{
-				OnPostResetEntities();
-			}
-		} break;
-		// And clean state when the game is being started for non-hidden AI.
-		// This is mostly a fallback for when everything else fails.
-	case ENTITY_EVENT_START_GAME:
-		{
-			if (gEnv->bServer)
-			{
-				OnPreResetEntities();
-				OnPostResetEntities();
-			}
-		} break;
-	/*case ENTITY_EVENT_TIMER:
-		{
-			switch(event.nParam[0])
-			{
-			case eTIMER_WEAPONDELAY:
-				IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-				SmartScriptTable props;
-				if(pScriptTable->GetValue("Properties", props))
-				{
-					int bNanosuit ;
-					char* equip;
-					props->GetValue("bNanoSuit", bNanosuit);
-					if (bNanosuit == 1)
-						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GiveItem(this, "NanoSuit", false, false, false);
-
-					if (props->GetValue("equip_EquipmentPack", equip))
-						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, equip, true, true);
-				}
-
-				break;
-			}
+			OnPostResetEntities();
 		}
-		break;*/
+	} break;
+	// And clean state when the game is being started for non-hidden AI.
+	// This is mostly a fallback for when everything else fails.
+	case ENTITY_EVENT_START_GAME:
+	{
+		if (gEnv->bServer)
+		{
+			OnPreResetEntities();
+			OnPostResetEntities();
+		}
+	} break;
+	/*case ENTITY_EVENT_TIMER:
+	{
+	switch(event.nParam[0])
+	{
+	case eTIMER_WEAPONDELAY:
+	IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
+	SmartScriptTable props;
+	if(pScriptTable->GetValue("Properties", props))
+	{
+	int bNanosuit ;
+	char* equip;
+	props->GetValue("bNanoSuit", bNanosuit);
+	if (bNanosuit == 1)
+	gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GiveItem(this, "NanoSuit", false, false, false);
+
+	if (props->GetValue("equip_EquipmentPack", equip))
+	gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, equip, true, true);
+	}
+
+	break;
+	}
+	}
+	break;*/
 	}
 }
 
@@ -387,7 +381,7 @@ IActorMovementController* CCoopGrunt::CreateMovementController()
 	return new CCoopGruntMovementController(this);
 }
 
-bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile, int flags )
+bool CCoopGrunt::NetSerialize(TSerialize ser, EEntityAspects aspect, uint8 profile, int flags)
 {
 	if (!CPlayer::NetSerialize(ser, aspect, profile, flags))
 		return false;
@@ -396,37 +390,37 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 
 	switch (aspect)
 	{
-		case ASPECT_ALIVE:
-		{
-			//Vec3
-			ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
-			ser.Value("vAimTarget", m_vAimTarget, 'wrld');
-			ser.Value("vLookTarget", m_vLookTarget, 'wrld');
-			ser.Value("vBodyTarget", m_vBodyTarget, 'wrld');
-			ser.Value("vFireTarget", m_vFireTarget, 'wrld');
+	case ASPECT_ALIVE:
+	{
+		//Vec3
+		ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
+		ser.Value("vAimTarget", m_vAimTarget, 'wrld');
+		ser.Value("vLookTarget", m_vLookTarget, 'wrld');
+		ser.Value("vBodyTarget", m_vBodyTarget, 'wrld');
+		ser.Value("vFireTarget", m_vFireTarget, 'wrld');
 
-			//Float
-			ser.Value("fpSpeed", m_fPseudoSpeed);
-			ser.Value("fdSpeed", m_fDesiredSpeed);
+		//Float
+		ser.Value("fpSpeed", m_fPseudoSpeed);
+		ser.Value("fdSpeed", m_fDesiredSpeed);
 
-			//Int
-			ser.Value("nAlert", m_nAlertness, 'i8');
-			ser.Value("nStance", m_nStance, 'i8');
-			ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
+		//Int
+		ser.Value("nAlert", m_nAlertness, 'i8');
+		ser.Value("nStance", m_nStance, 'i8');
+		ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
 
-			break;
-		}
-		case ASPECT_HIDE:
-		{
-			ser.Value("hide", m_bHidden, 'bool');
-
-			if (bReading)
-				GetEntity()->Hide(m_bHidden);
-
-			break;
-		}
+		break;
 	}
-	
+	case ASPECT_HIDE:
+	{
+		ser.Value("hide", m_bHidden, 'bool');
+
+		if (bReading)
+			GetEntity()->Hide(m_bHidden);
+
+		break;
+	}
+	}
+
 	return true;
 }
 
@@ -460,7 +454,7 @@ IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 
 		this->GetMovementController()->RequestMovement(movRequest);
 	}
-	
+
 
 	return true;
 }
