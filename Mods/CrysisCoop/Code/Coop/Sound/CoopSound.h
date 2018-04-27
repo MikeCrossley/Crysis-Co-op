@@ -11,8 +11,8 @@ public:
 	~CCoopSound() {};
 
 	// ISound
-	virtual void		AddEventListener(ISoundEventListener *pListener, const char *sWho) {}
-	virtual void		RemoveEventListener(ISoundEventListener *pListener) {}
+	virtual void		AddEventListener(ISoundEventListener *pListener, const char *sWho) { m_lSoundEventListener.push_back(pListener); }
+	virtual void		RemoveEventListener(ISoundEventListener *pListener) { m_lSoundEventListener.remove(pListener); }
 	virtual bool		IsPlaying() const { return false; }
 	virtual bool		IsPlayingVirtual() const { return false; }
 	virtual bool		IsLoading() const { return false; }
@@ -82,7 +82,10 @@ public:
 	// ~ ISound
 
 	virtual void SetName(const char* szName) { m_sSoundName = szName; }
+	virtual void OnEvent(ESoundCallbackEvent event);
+
 private:
+	std::list<ISoundEventListener*> m_lSoundEventListener;
 	ESoundSemantic	m_nSoundSemantic;
 	string			m_sSoundName;
 };

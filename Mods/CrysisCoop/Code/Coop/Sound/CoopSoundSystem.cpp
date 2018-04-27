@@ -20,7 +20,6 @@ void CCoopSoundSystem::RemoveEventListener(ISoundSystemEventListener *pListener)
 
 ISound* CCoopSoundSystem::CreateSound(const char *sGroupAndSoundName, uint32 nFlags)
 {
-	// Memory leak, we must find way to handle all sound instances
 	CCoopSound* pSound = new CCoopSound();
 	pSound->SetName(sGroupAndSoundName);
 
