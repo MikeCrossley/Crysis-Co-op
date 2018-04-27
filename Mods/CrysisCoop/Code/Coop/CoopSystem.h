@@ -4,6 +4,7 @@
 #include <ILevelSystem.h>
 #include "CoopReadability.h"
 
+class CCoopSoundSystem;
 class CDialogSystem;
 
 // Summary:
@@ -96,6 +97,7 @@ public:
 	bool IsCoop();
 
 	CDialogSystem* GetDialogSystem() { return m_pDialogSystem; }
+	CCoopSoundSystem* GetSoundSystem() { return m_pSoundSystem; }
 
 	CCoopReadability* m_pReadability;
 
@@ -113,6 +115,7 @@ private:
 	IEntityClass*		m_pEntityClassHunter;
 
 private:
+	CCoopSoundSystem* m_pSoundSystem;
 	CDialogSystem*	m_pDialogSystem;
 	int				m_nDebugLog;
 

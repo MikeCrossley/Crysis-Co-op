@@ -11,11 +11,14 @@
 #include <IGameRulesSystem.h>
 
 #include "Coop/DialogSystem/DialogSystem.h"
+#include <Coop/Sound/CoopSoundSystem.h>
 
 #include <IVehicleSystem.h>
 #include <IConsole.h>
 #include <INetworkService.h>
 #include <IEntityClass.h>
+
+
 
 
 // Summary:
@@ -50,6 +53,15 @@ CCoopSystem::~CCoopSystem()
 //	Initializes the CCoopSystem instance.
 bool CCoopSystem::Initialize()
 {
+	if (gEnv->pSystem->IsDedicated())
+	{
+		m_pSoundSystem = new CCoopSoundSystem();
+		m_pSoundSystem->Init();
+
+		gEnv->pSoundSystem = m_pSoundSystem;
+	}
+
+
 	gEnv->pGame->GetIGameFramework()->GetILevelSystem()->AddListener(this);
 	m_pReadability = new CCoopReadability();
 
