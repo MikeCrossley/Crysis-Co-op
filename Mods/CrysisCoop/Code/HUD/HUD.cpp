@@ -180,6 +180,8 @@ CHUD::CHUD()
 	m_bigOverlayTextY = 768 / 2;
 	m_curFireMode = 0;
 
+	m_bDead = false;
+
 	m_fFlashTimer = -1.0f;
 	m_fFlashTime = -1.0f;
 	m_fBlindTime = -1.0f;
@@ -4069,6 +4071,12 @@ bool CHUD::UpdateTimers(float frameTime)
 	if (gEnv->bMultiplayer && m_currentGameRules == EHUD_COOP && pPlayer->GetHealth() <= 0.f)
 	{
 		DisplayOverlayFlashMessage("Waiting for Revive.", ColorF(0, 1.0, 0), false);
+		m_bDead = true;
+	}
+	else if (m_bDead)
+	{
+		m_bDead = false;
+		DisplayOverlayFlashMessage("");
 	}
 	// ~Crysis Co-op
 

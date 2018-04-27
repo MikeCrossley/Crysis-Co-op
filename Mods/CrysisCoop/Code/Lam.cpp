@@ -117,6 +117,8 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 	if (m_laserActivated == activate)
 		return;
 
+	CryLogAlways("[CLam::ActivateLaser]");
+
 	CItem  *pParent = NULL;
 	EntityId ownerId = 0;
 	bool ok = false;

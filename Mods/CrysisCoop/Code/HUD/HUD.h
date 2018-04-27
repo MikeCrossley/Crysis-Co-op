@@ -879,6 +879,7 @@ private:
 
 	bool m_quietMode;
 	string m_delayedMessage;
+	bool m_bDead;
 
 	// list of claymore and mines (placed by all players)
 	std::list<EntityId> m_explosiveList;

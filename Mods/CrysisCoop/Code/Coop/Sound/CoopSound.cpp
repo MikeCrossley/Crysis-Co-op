@@ -22,6 +22,7 @@ CCoopSound::~CCoopSound()
 void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio, IEntitySoundProxy *pEntitySoundProxy) 
 {
 	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_START);
+	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_STOP);
 }
 
 
