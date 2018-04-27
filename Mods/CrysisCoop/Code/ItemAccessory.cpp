@@ -128,6 +128,7 @@ struct CItem::DetachAction
 
 void CItem::AttachAccessory(const ItemString& name, bool attach, bool noanim, bool force, bool initialSetup)
 {
+	CryLogAlways("[%s] Attaching accessory %s.", GetEntity()->GetName(), name.c_str());
 	if (!force && IsBusy())
 		return;
 
