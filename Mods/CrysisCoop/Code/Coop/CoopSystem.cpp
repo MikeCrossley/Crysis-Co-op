@@ -53,6 +53,9 @@ CCoopSystem::~CCoopSystem()
 //	Initializes the CCoopSystem instance.
 bool CCoopSystem::Initialize()
 {
+	if (gEnv->bEditor)
+		return true;
+
 	if (gEnv->pSystem->IsDedicated())
 	{
 		m_pSoundSystem = new CCoopSoundSystem();
@@ -88,6 +91,7 @@ void CCoopSystem::InitCvars()
 
 	if (!pConsole) return;
 
+	
 	ICVar* pAIUpdateAlways = pConsole->GetCVar("ai_UpdateAllAlways");
 	ICVar* pCheatCvar = pConsole->GetCVar("sv_cheatprotection");
 	ICVar* pGameRules = pConsole->GetCVar("sv_gamerules");
