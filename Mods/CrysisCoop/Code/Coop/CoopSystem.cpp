@@ -261,7 +261,7 @@ void CCoopSystem::OnPostResetEntities()
 	
 	if (GetDebugLog() > 0)
 		CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
-	const char* sRecreateEntityClasses[] = { "SmartObject", "AIAnchor" };
+	const char* sRecreateEntityClasses[] = { "SmartObject"/*, "AIAnchor"*/ };
 	const int nRecreateEntityClasses = sizeof(sRecreateEntityClasses) / sizeof(const char*);
 	std::map<EntityId, _smart_ptr<IScriptTable>> recreateObjects = std::map<EntityId, _smart_ptr<IScriptTable>>();
 	std::list<EntityId> networkBoundObjects = std::list<EntityId>();

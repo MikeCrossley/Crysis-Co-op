@@ -20,7 +20,7 @@ public:
 	virtual bool		IsLoaded() const { return false; }
 	virtual bool		UnloadBuffer() { return false; }
 	virtual void		Play(float fVolumeScale = 1.0f, bool bForceActiveState = true, bool bSetRatio = true, IEntitySoundProxy *pEntitySoundProxy = NULL);
-	virtual void		Stop(ESoundStopMode eStopMode = ESoundStopMode_EventFade) {}
+	virtual void		Stop(ESoundStopMode eStopMode = ESoundStopMode_EventFade);
 	virtual void		SetPaused(bool bPaused) {}
 	virtual bool		GetPaused() const { return false; }
 	virtual void		SetFade(const float fFadeGoal, const int nFadeTimeInMS) {}

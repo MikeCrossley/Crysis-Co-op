@@ -19,18 +19,30 @@ CCoopSound::~CCoopSound()
 
 }
 
-void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio, IEntitySoundProxy *pEntitySoundProxy) 
+void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio, IEntitySoundProxy *pEntitySoundProxy)
 {
 	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_START);
 	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_STOP);
 }
 
+void CCoopSound::Stop(ESoundStopMode eStopMode)
+{
+}
+
 
 void CCoopSound::OnEvent(ESoundCallbackEvent event)
 {
-	for (std::list<ISoundEventListener*>::iterator listener = m_lSoundEventListener.begin(); listener != m_lSoundEventListener.end(); ++listener)
+	// Prevent game from crashing on looping sounds
+	if ((m_nFlags & FLAG_SOUND_LOOP) == FLAG_SOUND_LOOP)
+		return;
+
+
+	if (GetSemantic() == ESoundSemantic::eSoundSemantic_AI_Readability)
 	{
-		(*listener)->OnSoundEvent(event, this);
+		for (auto listener : m_lSoundEventListener)
+		{
+			listener->OnSoundEvent(event, this);
+		}
 	}
 
 	// Tell the Soundsystem about this
