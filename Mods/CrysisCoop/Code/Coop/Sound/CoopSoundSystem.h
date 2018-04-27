@@ -3,12 +3,15 @@
 
 #include "ISerialize.h"
 #include <ISound.h>
+#include "CoopSound.h"
+
+#define COOP_SOUND_SYSTEM_MAXIMUM_SOUNDS 1024
 
 class CCoopSoundSystem : public ISoundSystem
 {
 public:
-	CCoopSoundSystem() {};
-	~CCoopSoundSystem() {};
+	CCoopSoundSystem();
+	~CCoopSoundSystem();
 
 	// ISoundSystem
 	virtual bool Init();
@@ -26,7 +29,7 @@ public:
 	virtual float GetSFXVolume() { return 0.f; }
 	virtual void SetSoundActiveState(ISound *pSound, ESoundActiveState State) {}
 	virtual void SetMasterPitch(float fPitch) {}
-	virtual struct ISound* GetSound(tSoundID nSoundID) const { return nullptr; }
+	virtual ISound* GetSound(tSoundID nSoundID) const;
 	virtual EPrecacheResult Precache(const char *sGroupAndSoundName, uint32 nSoundFlags, uint32 nPrecacheFlags) { return EPrecacheResult::ePrecacheResult_Error; }
 	virtual ISound* CreateSound(const char *sGroupAndSoundName, uint32 nFlags);
 	virtual ISound* CreateLineSound(const char *sGroupAndSoundName, uint32 nFlags, const Vec3 &vStart, const Vec3 &VEnd) { return nullptr; }
@@ -76,10 +79,19 @@ public:
 	virtual void Serialize(TSerialize ser) {}
 	// ~ ISoundSystem
 
+	
 	void OnEvent(ESoundSystemCallbackEvent event, ISound *pSound);
 
 private:
+	CCoopSound* ReserveSound();
+
+public:
+	void OnSoundReleased(CCoopSound& sound);
+
+private:
 	std::list<ISoundSystemEventListener*> m_lSoundSystemEventListener;
+	CCoopSound m_pSounds[COOP_SOUND_SYSTEM_MAXIMUM_SOUNDS]; // Array containing pre-allocated sound instances.
+	int m_nSoundUsages[COOP_SOUND_SYSTEM_MAXIMUM_SOUNDS]; // Array containing how many times the sound slot has been re-used.
 };
 
 #endif // _CoopSoundSystem_H_

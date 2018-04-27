@@ -4,25 +4,62 @@
 #include <Coop/CoopSystem.h>
 #include <Coop/Sound/CoopSoundSystem.h>
 
+CCoopSound::CCoopSound()
+	: m_nIdentifier(0)
+	, m_nReferenceCount(0)
+	, m_lSoundEventListener()
+	, m_nSoundSemantic(eSoundSemantic_None)
+	, m_sSoundName()
+{
+
+}
+
+CCoopSound::~CCoopSound()
+{
+
+}
+
 void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio, IEntitySoundProxy *pEntitySoundProxy) 
 {
-	// Send sound through the system listener
-	// Really we could actually use this to call on actors directly now?
 	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_START);
-	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_STOP);
-
-	// Until we implement proper sound timing we need to get rid of the sound
-	delete this;
 }
 
 
 void CCoopSound::OnEvent(ESoundCallbackEvent event)
 {
-	for (auto listener : m_lSoundEventListener)
+	for (std::list<ISoundEventListener*>::iterator listener = m_lSoundEventListener.begin(); listener != m_lSoundEventListener.begin(); ++listener)
 	{
-		listener->OnSoundEvent(event, this);
+		(*listener)->OnSoundEvent(event, this);
 	}
 
 	// Tell the Soundsystem about this
 	CCoopSystem::GetInstance()->GetSoundSystem()->OnEvent((ESoundSystemCallbackEvent)event, this);
+}
+
+int	CCoopSound::AddRef()
+{
+	int nReferenceCount = CryInterlockedIncrement(&m_nReferenceCount);
+	return nReferenceCount;
+}
+
+int	CCoopSound::Release() 
+{
+	int nReferenceCount = CryInterlockedDecrement(&m_nReferenceCount);
+	if (nReferenceCount <= 0)
+	{
+		CCoopSystem::GetInstance()->GetSoundSystem()->OnSoundReleased(*this);
+	}
+	return nReferenceCount;
+}
+
+void CCoopSound::Reset()
+{
+	this->OnEvent(ESoundCallbackEvent::SOUND_EVENT_ON_STOP);
+
+	m_nIdentifier = 0;
+	m_nReferenceCount = 0;
+	m_nSoundSemantic = ESoundSemantic::eSoundSemantic_None;
+	m_lSoundEventListener.clear();
+	m_sSoundName = nullptr;
+	m_nFlags = 0;
 }
