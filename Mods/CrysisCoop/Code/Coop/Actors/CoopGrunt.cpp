@@ -60,7 +60,7 @@ void CCoopGrunt::OnPreResetEntities()
 //	Called after the game rules have reseted entities and the coop system has re-created AI objects.
 void CCoopGrunt::OnPostResetEntities()
 {
-	if (!gEnv->bServer || gEnv->bEditor)
+	if (!gEnv->bServer)
 		return;
 
 	gEnv->bMultiplayer = false;
@@ -69,11 +69,19 @@ void CCoopGrunt::OnPostResetEntities()
 
 	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
 	{
-		// Register the actor's AI on the server.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
+		if (!gEnv->bEditor)
+		{
+			// Register the actor's AI on the server.
+			gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
+			gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+			gEnv->pScriptSystem->EndCall(pScriptTable);
+			assert(this->GetEntity()->GetAI() != nullptr);
+		}
+
+		// Call CheckWeaponAttachments to attach things.
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		assert(this->GetEntity()->GetAI() != nullptr);
 
 		// Equip the actor's equipment pack.
 		SmartScriptTable pPropertiesTable = nullptr;
