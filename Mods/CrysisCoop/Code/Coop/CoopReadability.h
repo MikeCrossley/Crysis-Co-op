@@ -10,6 +10,8 @@ public:
 	CCoopReadability();
 	~CCoopReadability();
 
+	virtual void Initialize();
+
 	//ISoundSystemEventListener
 	virtual void OnSoundSystemEvent( ESoundSystemCallbackEvent event,ISound *pSound );
 	//~ISoundSystemEventListener

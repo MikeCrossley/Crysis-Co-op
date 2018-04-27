@@ -267,6 +267,8 @@
     <ClCompile Include="Coop\Nodes\CoopHudNodes.cpp" />
     <ClCompile Include="Coop\Nodes\CoopSequenceNodes.cpp" />
     <ClCompile Include="Coop\Nodes\CoopSpawnArchetype.cpp" />
+    <ClCompile Include="Coop\Sound\CoopSound.cpp" />
+    <ClCompile Include="Coop\Sound\CoopSoundSystem.cpp" />
     <ClCompile Include="Coop\Utilities\DedicatedServerHackScope.cpp" />
     <ClCompile Include="DebugGun.cpp" />
     <ClCompile Include="Defib.cpp" />
@@ -499,6 +501,8 @@
     <ClInclude Include="Coop\Entities\EventSynchronizer.h" />
     <ClInclude Include="Coop\Entities\HUDSynchronizer.h" />
     <ClInclude Include="Coop\Entities\SequenceSynchronizer.h" />
+    <ClInclude Include="Coop\Sound\CoopSound.h" />
+    <ClInclude Include="Coop\Sound\CoopSoundSystem.h" />
     <ClInclude Include="Coop\Utilities\DedicatedServerHackScope.h" />
     <ClInclude Include="DebugGun.h" />
     <ClInclude Include="Defib.h" />

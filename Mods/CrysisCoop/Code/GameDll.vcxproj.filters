@@ -133,6 +133,9 @@
     <Filter Include="Coop\Utilities">
       <UniqueIdentifier>{56a520b9-e20d-43aa-a5fd-4dc09db4a00e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coop\Sound">
+      <UniqueIdentifier>{be177c43-30a8-4984-9432-28d222e69900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -815,6 +818,12 @@
     <ClCompile Include="Defib.cpp">
       <Filter>Item Files\Weapon Files\Fire Modes</Filter>
     </ClCompile>
+    <ClCompile Include="Coop\Sound\CoopSoundSystem.cpp">
+      <Filter>Coop\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop\Sound\CoopSound.cpp">
+      <Filter>Coop\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -1417,6 +1426,12 @@
     </ClInclude>
     <ClInclude Include="Defib.h">
       <Filter>Item Files\Weapon Files\Fire Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Sound\CoopSoundSystem.h">
+      <Filter>Coop\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Coop\Sound\CoopSound.h">
+      <Filter>Coop\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

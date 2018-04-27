@@ -2,6 +2,8 @@
 #include "CoopReadability.h"
 #include "Actor.h"
 
+#include <Coop/Sound/CoopSoundSystem.h>
+
 CCoopReadability::CCoopReadability()
 {
 	if (gEnv->pSoundSystem)
@@ -12,6 +14,10 @@ CCoopReadability::~CCoopReadability()
 {
 	if (gEnv->pSoundSystem)
 		gEnv->pSoundSystem->RemoveEventListener(this);
+}
+
+void CCoopReadability::Initialize()
+{
 }
 
 // Summary:
@@ -30,6 +36,8 @@ bool CCoopReadability::SendSoundToClosestActor(ISound* pSound)
 	ESoundSemantic sem = pSound->GetSemantic();
 	if (sem == eSoundSemantic_AI_Readability)
 	{
+		CryLogAlways("Actor Sound %s:", pSound->GetName());
+
 		CActor* pClosestActor = NULL;
 		float fClosestDistance = 66666.6f;
  
