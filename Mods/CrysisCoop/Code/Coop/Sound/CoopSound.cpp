@@ -28,7 +28,7 @@ void CCoopSound::Play(float fVolumeScale, bool bForceActiveState, bool bSetRatio
 
 void CCoopSound::OnEvent(ESoundCallbackEvent event)
 {
-	for (std::list<ISoundEventListener*>::iterator listener = m_lSoundEventListener.begin(); listener != m_lSoundEventListener.begin(); ++listener)
+	for (std::list<ISoundEventListener*>::iterator listener = m_lSoundEventListener.begin(); listener != m_lSoundEventListener.end(); ++listener)
 	{
 		(*listener)->OnSoundEvent(event, this);
 	}
