@@ -258,6 +258,18 @@ function BasicAlien:Reset()
 	self:Cloak(0);
 end
 
+function BasicAlien:OnResetClient()
+	-- create attachment points	
+	self:CreateBoneAttachment(0, "weapon_bone", "right_item_attachment");
+	
+	--sounds
+	self:StopSounds();
+	BasicActor.InitSoundTables(self);
+	
+	--play the idle sound in loop
+	self:PlayIdleSound(self.voiceTable.idle);
+end
+
 
 function BasicAlien:ResetDamageEffects()
   for i,stage in ipairs(self.Vulnerability.DamageEffects) do

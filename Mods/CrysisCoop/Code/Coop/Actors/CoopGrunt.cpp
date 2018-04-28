@@ -113,6 +113,7 @@ bool CCoopGrunt::Init(IGameObject * pGameObject)
 	return true;
 }
 
+
 void CCoopGrunt::PostInit( IGameObject * pGameObject )
 {
 	CPlayer::PostInit(pGameObject);

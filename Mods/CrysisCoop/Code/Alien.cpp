@@ -995,7 +995,10 @@ void CAlien::UpdateStats(float frameTime)
 	m_stats.gravity = simPar.gravity;
 	m_stats.velocity = m_stats.velocityUnconstrained = dynStat.v;
   m_stats.angVelocity = dynStat.w;
-	m_stats.speed = m_stats.speedFlat = m_stats.velocity.len();
+	// Crysis Co-op :: stops the client from overriding server value
+	if (!gEnv->bClient && gEnv->bServer)
+		m_stats.speed = m_stats.speedFlat = m_stats.velocity.len();
+	// ~Crysis Co-op
 
 	// [Mikko] The velocity from the physics in some weird cases have been #INF because of the player
 	// Zero-G movement calculations. If this asserts triggers, the alien might have just collided with
@@ -2476,6 +2479,26 @@ void CAlien::StanceChanged(EStance last)
 	float delta(GetStanceInfo(last)->modelOffset.z - GetStanceInfo(m_stance)->modelOffset.z);
 	if (delta>0.0f)
 		m_modelOffset.z -= delta;
+}
+
+void CAlien::SetHealth(int health)
+{
+	CActor::SetHealth(health);
+
+	GetGameObject()->ChangedNetworkState(ASPECT_HEALTH);
+}
+
+bool CAlien::NetSerialize(TSerialize ser, EEntityAspects aspect, uint8 profile, int flags)
+{
+	if (!CActor::NetSerialize(ser, aspect, profile, flags))
+		return false;
+
+	if (aspect == ASPECT_HEALTH)
+	{
+		ser.Value("health", m_health);
+	}
+
+	return true;
 }
 
 void CAlien::FullSerialize( TSerialize ser )

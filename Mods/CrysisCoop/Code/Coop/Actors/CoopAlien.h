@@ -6,13 +6,29 @@
 #endif
 
 #include "Alien.h"
+#include "..\CoopSystem.h"
 
-
-class CCoopAlien : public CAlien
+class CCoopAlien 
+	: public CAlien
+	, protected ICoopSystemEventListener
 {
 public:
 	CCoopAlien();
 	virtual ~CCoopAlien();
+
+	// ICoopSystemEventListener
+
+	// Summary:
+	//	Called before the game rules have reseted entities.
+	virtual void OnPreResetEntities() override;
+
+	// Summary:
+	//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
+	virtual void OnPostResetEntities() override;
+
+	// ~ICoopSystemEventListener
+
+	void RegisterMultiplayerAI();
 
 	enum CoopTimers
 	{
@@ -31,7 +47,6 @@ protected:
 	static const EEntityAspects ASPECT_ALIVE = eEA_GameServerDynamic;
 	static const EEntityAspects ASPECT_HIDE = eEA_GameServerStatic;
 
-	void RegisterMultiplayerAI();
 	void UpdateMovementState();
 	void DrawDebugInfo();
 

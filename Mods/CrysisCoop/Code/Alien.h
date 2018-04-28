@@ -363,6 +363,7 @@ public:
 		}
 	};
 
+	static const int ASPECT_HEALTH = eEA_GameServerStatic;
 
 	CAlien();
 	virtual ~CAlien();
@@ -384,9 +385,13 @@ public:
 
 	virtual void OnAction(const ActionId& actionId, int activationMode, float value);
 	virtual void FullSerialize( TSerialize ser );
+	virtual bool NetSerialize(TSerialize ser, EEntityAspects aspect, uint8 profile, int flags);
 	virtual void PostSerialize();
 	virtual void SerializeXML( XmlNodeRef& node, bool bLoading );
 	virtual void SetAuthority( bool auth );
+
+	virtual void SetHealth(int health);
+
 	//AI specific
 	virtual void SetActorMovement(SMovementRequestParams &control);
 	virtual void GetActorInfo( SBodyInfo& bodyInfo );

@@ -251,6 +251,9 @@ function CoopAlien_x.Client:OnUpdate(frameTime)
 		self.lastSpeed = speed;
 	end	
 	
+	if (self:IsDead()) then 
+		BasicAlien.StopSounds(self);
+	end
 end
 
 function CoopAlien_x.Client:OnTimer(timerId,mSec)

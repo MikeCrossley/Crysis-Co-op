@@ -1897,7 +1897,7 @@ function BasicActor:Kill(ragdoll, shooterId, weaponId, freeze)
 	end
 
 	-- when a driver ai is dead, something will happen to his vehicle depending on the situation.
-	if ( g_gameRules:IsMultiplayer() == false ) then
+	--if ( g_gameRules:IsMultiplayer() == false ) then
 		if ( self.actor and not self.actor:IsPlayer() ) then
 			local vd = self.actor:GetLinkedVehicleId();
 			if ( vd ) then
@@ -1909,7 +1909,7 @@ function BasicActor:Kill(ragdoll, shooterId, weaponId, freeze)
 				end
 			end
 		end
-	end
+	--end
 
 	-- Notify CLeader about this
 	AI.Signal(SIGNALFILTER_LEADER, 10, "OnUnitDied", self.id);
