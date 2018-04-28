@@ -9,6 +9,7 @@
 *.log
 *.dmp
 *.bat
+*.lastbuildstate
 /user.cfg
 /system.cfg
 /editor.cfg
@@ -27,3 +28,6 @@
 # And the Crysis Co-op mod binaries.
 /Mods/CrysisCoop/Bin32/
 /Mods/CrysisCoop/Bin64/
+
+# And level files (for now)
+/Mods/CrysisCoop/Game/Levels/
