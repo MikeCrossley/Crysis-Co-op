@@ -21,6 +21,19 @@ bool CCoopSoundSystem::Init()
 	return true;
 }
 
+void CCoopSoundSystem::Update(ESoundUpdateMode UpdateMode)
+{
+	const float fFrameTime = gEnv->pTimer->GetFrameTime();
+
+	for (int i = 0; i < COOP_SOUND_SYSTEM_MAXIMUM_SOUNDS; i++)
+	{
+		if (m_pSounds[i].m_nIdentifier != INVALID_SOUNDID)
+		{
+			m_pSounds[i].Update(fFrameTime);
+		}
+	}
+}
+
 ISound* CCoopSoundSystem::GetSound(tSoundID nSoundID) const 
 {
 	int nIndex = (nSoundID & 0x0000FFFF) - 1;
@@ -47,11 +60,16 @@ ISound* CCoopSoundSystem::CreateSound(const char *sGroupAndSoundName, uint32 nFl
 {
 	if (CCoopSound* pSound = this->ReserveSound())
 	{
-		pSound->SetName(sGroupAndSoundName);
-		pSound->SetFlags(nFlags);
-		if(CCoopSystem::GetInstance()->GetDebugLog() == 2)
-			CryLogAlways("[CCoopSoundSystem] Reserved sound %s to slot %d, reuse counter %d.", pSound->m_sSoundName.c_str(), (pSound->m_nIdentifier & 0xFFFF) - 1, (pSound->m_nIdentifier >> 16));
-		return pSound;
+		if (nFlags == (FLAG_SOUND_DEFAULT_3D | FLAG_SOUND_VOICE))
+		{
+			pSound->SetName(sGroupAndSoundName);
+			pSound->SetFlags(nFlags);
+			if (CCoopSystem::GetInstance()->GetDebugLog() == 2)
+				CryLogAlways("[CCoopSoundSystem] Reserved sound %s to slot %d, reuse counter %d.", pSound->m_sSoundName.c_str(), (pSound->m_nIdentifier & 0xFFFF) - 1, (pSound->m_nIdentifier >> 16));
+			return pSound;
+		}
+		// We don't want any sounds that aren't readability related
+		return nullptr;
 	}
 	CryLogAlways("[CCoopSoundSystem] Too many sound instances.");
 	return nullptr;
@@ -88,5 +106,4 @@ void CCoopSoundSystem::OnSoundReleased(CCoopSound& sound)
 	if (CCoopSystem::GetInstance()->GetDebugLog() == 2)
 		CryLogAlways("[CCoopSoundSystem] Releasing sound %s from slot %d, reuse counter %d.", sound.m_sSoundName.c_str(), (sound.m_nIdentifier & 0xFFFF) - 1, (sound.m_nIdentifier >> 16));
 	sound.Reset();
-	//sound.m_
 }

@@ -98,6 +98,7 @@ public:
 
 	CDialogSystem* GetDialogSystem() { return m_pDialogSystem; }
 	CCoopSoundSystem* GetSoundSystem() { return m_pSoundSystem; }
+	CCoopReadability* GetReadability() { return m_pReadability; }
 
 	CCoopReadability* m_pReadability;
 

@@ -16,6 +16,7 @@ public:
 	virtual void OnSoundSystemEvent( ESoundSystemCallbackEvent event,ISound *pSound );
 	//~ISoundSystemEventListener
 
+	void SendSoundToActor(ISound* pSound, EntityId actorId);
 private:
 
 	bool SendSoundToClosestActor(ISound* pSound);

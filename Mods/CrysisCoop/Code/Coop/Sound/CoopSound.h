@@ -12,8 +12,8 @@ public:
 	~CCoopSound();
 
 	// ISound
-	virtual void		AddEventListener(ISoundEventListener *pListener, const char *sWho) { m_lSoundEventListener.push_back(pListener); }
-	virtual void		RemoveEventListener(ISoundEventListener *pListener) { m_lSoundEventListener.remove(pListener); }
+	virtual void		AddEventListener(ISoundEventListener *pListener, const char *sWho);
+	virtual void		RemoveEventListener(ISoundEventListener *pListener);
 	virtual bool		IsPlaying() const { return false; }
 	virtual bool		IsPlayingVirtual() const { return false; }
 	virtual bool		IsLoading() const { return false; }
@@ -84,6 +84,7 @@ public:
 
 	virtual void SetName(const char* szName) { m_sSoundName = szName; }
 	virtual void OnEvent(ESoundCallbackEvent event);
+	virtual void Update(float fFrameTime);
 private:
 
 	void Reset();
@@ -92,9 +93,15 @@ private:
 	tSoundID m_nIdentifier;
 	volatile int m_nReferenceCount;
 	ESoundSemantic	m_nSoundSemantic;
-	std::list<ISoundEventListener*> m_lSoundEventListener;
 	string			m_sSoundName;
 	uint32			m_nFlags;
+	float			m_fTimeLeft;
+
+private:
+	typedef std::vector<SSoundEventListenerInfo> TEventListenerInfoVector;
+	TEventListenerInfoVector m_listeners;
+	TEventListenerInfoVector m_listenersToBeRemoved;
+	TEventListenerInfoVector m_listenersTemp;
 };
 
 

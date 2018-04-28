@@ -16,7 +16,7 @@ public:
 	// ISoundSystem
 	virtual bool Init();
 	virtual void Release() {}
-	virtual void Update(ESoundUpdateMode UpdateMode) {};
+	virtual void Update(ESoundUpdateMode UpdateMode);
 	virtual IMusicSystem* CreateMusicSystem() { return nullptr; }
 	virtual IAudioDevice* GetIAudioDevice()	const { return nullptr; }
 	virtual ISoundMoodManager* GetIMoodManager() const { return nullptr; }
