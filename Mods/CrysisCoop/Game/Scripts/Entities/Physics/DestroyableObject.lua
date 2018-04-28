@@ -454,8 +454,7 @@ function DestroyableObject.Server:OnHit(hit)
 	pass = pass and damage > self.Properties.fDamageTreshold;	-- damage needs to be higher than treshold
 	--Log("%s != %s", tostring(hit.shooterId), tostring(g_localActorId));
 	
-	if (pass and NumberToBool(self.Properties.bPlayerOnly) and
-		  (hit.shooterId and (hit.shooterId ~= g_localActorId))) then -- damage must come from player
+	if (pass and NumberToBool(self.Properties.bPlayerOnly) and (hit.shooterId and (not hit.shooter.actor:IsPlayer())) then -- damage must come from player
 		pass=false;
 	end
 	
