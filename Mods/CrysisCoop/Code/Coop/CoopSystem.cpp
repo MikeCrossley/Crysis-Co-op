@@ -17,6 +17,7 @@
 #include <IConsole.h>
 #include <INetworkService.h>
 #include <IEntityClass.h>
+#include <IGameTokens.h>
 
 
 
@@ -227,6 +228,10 @@ void CCoopSystem::OnPreResetEntities()
 	{
 		(*it)->OnPreResetEntities();
 	}
+
+
+	// Reset the game tokens
+	gEnv->pGame->GetIGameFramework()->GetIGameTokenSystem()->Reset();
 
 	if (!gEnv->bServer)
 		return;
