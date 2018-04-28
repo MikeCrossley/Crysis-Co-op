@@ -2,6 +2,7 @@
 #include "CoopReadability.h"
 #include "Actor.h"
 
+#include <Coop/CoopSystem.h>
 #include <Coop/Sound/CoopSoundSystem.h>
 
 CCoopReadability::CCoopReadability()
@@ -41,7 +42,8 @@ void CCoopReadability::SendSoundToActor(ISound* pSound, EntityId actorId)
 	{
 		if (CActor* pActor = static_cast<CActor*>(gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(actorId)))
 		{
-			CryLogAlways("Actor Sound %s: for actor with Id: %d", pSound->GetName(), actorId);
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+				CryLogAlways("[CCoopReadability::SendSoundToActor] Actor Sound %s: for actor with Id: %d", pSound->GetName(), actorId);
 
 			CActor::PlayReadabilitySoundParams params;
 			params.sSoundEventName = pSound->GetName();
@@ -84,7 +86,8 @@ bool CCoopReadability::SendSoundToClosestActor(ISound* pSound)
  
 		if (pClosestActor)
 		{
-			CryLogAlways("Actor Sound %s: for actor with Id: %d", pSound->GetName(), pClosestActor->GetEntity()->GetId());
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+				CryLogAlways("[CCoopReadability::SendSoundToClosestActor] Actor Sound %s: for actor with Id: %d", pSound->GetName(), pClosestActor->GetEntity()->GetId());
 
 			CActor::PlayReadabilitySoundParams params;
 			params.sSoundEventName = pSound->GetName();

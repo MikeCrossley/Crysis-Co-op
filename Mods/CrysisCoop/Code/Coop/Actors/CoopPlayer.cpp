@@ -37,8 +37,6 @@ void CCoopPlayer::PostInit(IGameObject * pGameObject)
 	CPlayer::PostInit(pGameObject);
 }
 
-#define CCoopPlayerAIGroup 0
-
 void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
 	CPlayer::Update(ctx, updateSlot);
@@ -58,22 +56,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 
     if (IsPlayer() && gEnv->bServer)
     {
-        if (GetHealth() <= 0 && GetEntity()->GetAI())
-        {
-            gEnv->bMultiplayer = false;
- 
-            IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-			
-            gEnv->pScriptSystem->BeginCall(pScriptTable, "CoopRemoveAI");
-            gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-            gEnv->pScriptSystem->EndCall(pScriptTable);
-
-			if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-				CryLogAlways("AI Registered for Player %s", GetEntity()->GetName());
- 
-            gEnv->bMultiplayer = true;
-        }
-        else if (!GetEntity()->GetAI() && GetSpectatorMode() == eASM_None && GetHealth() > 0)
+		if (!GetEntity()->GetAI() && GetSpectatorMode() == eASM_None)
         {
             gEnv->bMultiplayer = false;
  
@@ -84,7 +67,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
             gEnv->pScriptSystem->EndCall(pScriptTable);
 
 			if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-				CryLogAlways("AI Unregistered for Player %s", GetEntity()->GetName());
+				CryLogAlways("AI Registered for Player %s", GetEntity()->GetName());
  
             gEnv->bMultiplayer = true;
         }

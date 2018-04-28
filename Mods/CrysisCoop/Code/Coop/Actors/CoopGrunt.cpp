@@ -113,16 +113,12 @@ bool CCoopGrunt::Init(IGameObject * pGameObject)
 	return true;
 }
 
-
 void CCoopGrunt::PostInit( IGameObject * pGameObject )
 {
 	CPlayer::PostInit(pGameObject);
 
-	
-
 	if (gEnv->bServer)
 		GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
-
 }
 
 void CCoopGrunt::RegisterMultiplayerAI()

@@ -67,7 +67,6 @@ public:
 	//	Updates the CCoopSystem instance.
 	void Update(float fFrameTime);
 
-
 	// Summary:
 	//	Called before the game rules have reseted entities.
 	void OnPreResetEntities();
@@ -75,6 +74,10 @@ public:
 	// Summary:
 	//	Called after the game rules have reseted entities.
 	void OnPostResetEntities();
+
+	// Summary:
+	//	Registers vehicles to the AI system.
+	void RegisterVehicleAI(bool bRegister);
 
 	// ILevelSystemListener
 	virtual void OnLevelNotFound(const char *levelName) { };

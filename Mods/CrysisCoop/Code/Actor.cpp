@@ -37,6 +37,8 @@
 
 #include "IFacialAnimation.h"
 
+#include <Coop/CoopSystem.h>
+
 IItemSystem *CActor::m_pItemSystem=0;
 IGameFramework	*CActor::m_pGameFramework=0;
 IGameplayRecorder	*CActor::m_pGameplayRecorder=0;
@@ -3483,7 +3485,8 @@ IMPLEMENT_RMI(CActor, ClPlayReadabilitySound)
 
 		if (soundID == INVALID_SOUNDID)
 		{
-			CryLogAlways("[Coop] Sound:PlaySound - Can't play sound");
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
+				CryLogAlways("[Coop] Sound:PlaySound - Can't play sound");
 		}
 
 		ISound* pSound = gEnv->pSoundSystem->GetSound(soundID);
@@ -3499,7 +3502,8 @@ IMPLEMENT_RMI(CActor, ClPlayNetworkedAnimation)
 {
 	if (IAnimationGraphState* pGraphState = (this->GetAnimatedCharacter() ? this->GetAnimatedCharacter()->GetAnimationGraphState() : 0))
 	{
-		CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
+		if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+			CryLogAlways("[CActor] Actor %s received animation mode %d for animation %s.", this->GetEntity()->GetName(), params.nMode, params.sAnimation.c_str());
 		if (params.nMode == EAnimationMode::AIANIM_SIGNAL)
 		{
 			pGraphState->SetInput("Signal", params.sAnimation);
@@ -4408,7 +4412,10 @@ void CActor::UpdateAnimEvents(float fFrameTime)
 			this->AnimationEvent(GetEntity()->GetCharacter(0), sEvent);
 
 			m_AnimEventQueue.erase(iterator);
-			CryLogAlways("[CActor::UpdateAnimEvents] Animation Event Played %s", animEvent.sAnimEventName);
+		
+			if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+				CryLogAlways("[CActor::UpdateAnimEvents] Animation Event Played %s", animEvent.sAnimEventName);
+
 			break;
 		}
 	}
@@ -4418,15 +4425,17 @@ void CActor::QueueAnimationEvent(SQueuedAnimEvent sEvent)
 {
 	if (!gEnv->bServer || gEnv->bEditor)
 		return;
-
-	CryLogAlways("[CActor::QueueAnimationEvent] Animation Event Queued %s", sEvent.sAnimEventName);
+	
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+		CryLogAlways("[CActor::QueueAnimationEvent] Animation Event Queued %s", sEvent.sAnimEventName);
 
 	m_AnimEventQueue.push_back(sEvent);
 }
 
 bool CActor::SetAnimationInput(const char * inputID, const char * value)
 {
-	CryLogAlways("[%s] Animation input %s received with animation %s.", GetEntity()->GetName(), inputID, value);
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+		CryLogAlways("[%s] Animation input %s received with animation %s.", GetEntity()->GetName(), inputID, value);
 
 	bool	bSignal = strcmp(inputID, "Signal") == 0;
 	bool	bAction = strcmp(inputID, "Action") == 0;

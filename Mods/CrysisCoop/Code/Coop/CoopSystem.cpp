@@ -141,36 +141,6 @@ void CCoopSystem::Update(float fFrameTime)
 	if (m_pDialogSystem)
 		m_pDialogSystem->Update(fFrameTime);
 
-	// Registers vehicles into the AI system
-	if (gEnv->bServer)
-	{
-		IVehicleIteratorPtr iter = gEnv->pGame->GetIGameFramework()->GetIVehicleSystem()->CreateVehicleIterator();
-		while (IVehicle* pVehicle = iter->Next())
-		{
-			if (IEntity *pEntity = pVehicle->GetEntity())
-			{
-				if (!pEntity->GetAI())
-				{
-					gEnv->bMultiplayer = false;
-
-					HSCRIPTFUNCTION scriptFunction(0);
-					IScriptSystem*	pIScriptSystem = gEnv->pScriptSystem;
-					if (IScriptTable* pScriptTable = pEntity->GetScriptTable())
-					{
-						if (pScriptTable->GetValue("ForceCoopAI", scriptFunction))
-						{
-							Script::Call(pIScriptSystem, scriptFunction, pScriptTable, false);
-							pIScriptSystem->ReleaseFunc(scriptFunction);
-						}
-					}
-
-
-					gEnv->bMultiplayer = true;
-				}
-			}
-		}
-		iter->Release();
-	}
 	CCoopCutsceneSystem::GetInstance()->Update(fFrameTime);
 
 	// Disable server time elapsing on the client ( server synced only )
@@ -232,11 +202,42 @@ void CCoopSystem::OnPreResetEntities()
 
 	// Reset the game tokens
 	gEnv->pGame->GetIGameFramework()->GetIGameTokenSystem()->Reset();
+	ILevel* pLevel = gEnv->pGame->GetIGameFramework()->GetILevelSystem()->GetCurrentLevel();
+	if (pLevel)
+		gEnv->pGame->GetIGameFramework()->GetIGameTokenSystem()->LoadLibs(pLevel->GetLevelInfo()->GetPath() + string("/GameTokens/*.xml"));
 
 	if (!gEnv->bServer)
 		return;
 
 	gEnv->bMultiplayer = true;
+}
+
+// Summary:
+//	Registers vehicles to the AI system.
+void CCoopSystem::RegisterVehicleAI(bool bRegister)
+{
+	// Registers vehicles into the AI system
+	if (!gEnv->bServer)
+		return;
+
+	gEnv->bMultiplayer = false;
+	IVehicleIteratorPtr iter = gEnv->pGame->GetIGameFramework()->GetIVehicleSystem()->CreateVehicleIterator();
+	while (IVehicle* pVehicle = iter->Next())
+	{
+		if (IEntity *pEntity = pVehicle->GetEntity())
+		{
+			if (IScriptTable* pScriptTable = pEntity->GetScriptTable())
+			{
+				// Register the actor's AI on the server.
+				gEnv->pScriptSystem->BeginCall(pScriptTable, "InitAI");
+				gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+				gEnv->pScriptSystem->EndCall(pScriptTable);
+			}
+		}
+	}
+	gEnv->bMultiplayer = true;
+
+	iter->Release();
 }
 
 // Summary:
@@ -256,8 +257,7 @@ void CCoopSystem::OnPostResetEntities()
 		return;
 	}
 
-	if (GetDebugLog() > 0)
-		CryLogAlways("Post-reseting entities.");
+	CryLogAlways("[CCoopSystem::OnPostResetEntities] Post-reseting entities.");
 
 	gEnv->bMultiplayer = false;
 
@@ -284,7 +284,7 @@ void CCoopSystem::OnPostResetEntities()
 				{
 					if (strcmp(sRecreateEntityClasses[nIndex], sClassName) == 0)
 					{
-						if (GetDebugLog() > 0)
+						if (GetDebugLog() > 1)
 							CryLogAlways("[CCoopSystem] Queued entity %s of class %s for re-initialization...", pEntity->GetName(), pEntity->GetClass()->GetName());
 						gEnv->pAISystem->RemoveSmartObject(pEntity);
 						if (pEntity->GetAI())
@@ -299,7 +299,7 @@ void CCoopSystem::OnPostResetEntities()
 		pIterator->Next();
 	} pIterator->Release();
 
-	if (GetDebugLog() > 0)
+	if (GetDebugLog() > 1)
 		CryLogAlways("[CCoopSystem] Gathering list of entities to re-initialize...");
 	// Remove entities to be re-created...
 	for (std::map<EntityId, _smart_ptr<IScriptTable>>::iterator it = recreateObjects.begin(); it != recreateObjects.end(); ++it)
@@ -307,8 +307,8 @@ void CCoopSystem::OnPostResetEntities()
 		gEnv->pEntitySystem->RemoveEntity(it->first, true);
 	}
 
-	if (GetDebugLog() > 0)
-		CryLogAlways("[CCoopSystem] Re-initializing entities...");
+	CryLogAlways("[CCoopSystem::OnPostResetEntities] Re-initializing entities...");
+
 	ILevel*	pLevel = gEnv->pGame->GetIGameFramework()->GetILevelSystem()->GetCurrentLevel();
 	const char* sLevelName = gEnv->pGame->GetIGameFramework()->GetLevelName();
 	ILevelInfo* pLevelInfo = gEnv->pGame->GetIGameFramework()->GetILevelSystem()->GetLevelInfo(sLevelName);
@@ -386,6 +386,8 @@ void CCoopSystem::OnPostResetEntities()
 		gEnv->pEntitySystem->InitEntity(pEntity, sSpawnParams);
 
 	}
+
+	this->RegisterVehicleAI(true);
 
 	// gEnv->bMultiplayer will be true after event listeners.
 	for (auto it = m_eventListeners.begin(); it != m_eventListeners.end(); ++it)
