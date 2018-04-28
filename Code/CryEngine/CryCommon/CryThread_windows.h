@@ -38,7 +38,7 @@ public:
 	bool TryLock() { return TryEnterCriticalSection(&m_cs) != FALSE; }
 
 #ifndef NDEBUG
-	bool IsLocked() { return m_cs.RecursionCount > 0 && (DWORD)m_cs.OwningThread == GetCurrentThreadId(); }
+	bool IsLocked() { return m_cs.RecursionCount > 0 && (uintptr_t)m_cs.OwningThread == GetCurrentThreadId(); }
 #endif
 
 private:

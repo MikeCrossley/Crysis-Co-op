@@ -65,7 +65,6 @@ bool CCoopSystem::Initialize()
 		gEnv->pSoundSystem = m_pSoundSystem;
 	}
 
-
 	gEnv->pGame->GetIGameFramework()->GetILevelSystem()->AddListener(this);
 	m_pReadability = new CCoopReadability();
 
@@ -291,7 +290,7 @@ void CCoopSystem::OnPostResetEntities()
 						if (pEntity->GetAI())
 							gEnv->pAISystem->RemoveObject(pEntity->GetAI());
 						pEntity->SetSmartObject(nullptr);
-						
+
 						recreateObjects.emplace(std::make_pair(pEntity->GetId(), _smart_ptr<IScriptTable>(pEntity->GetScriptTable())));
 					}
 				}
@@ -363,7 +362,7 @@ void CCoopSystem::OnPostResetEntities()
 		pObjectNode->getAttr("CastShadow", bCastShadow);
 		pObjectNode->getAttr("GoodOccluder", bGoodOccluder);
 		pObjectNode->getAttr("OutdoorOnly", bOutdoorOnly);
-		
+
 		sSpawnParams.nFlags |= bCastShadow ? ENTITY_FLAG_CASTSHADOW : 0;
 		sSpawnParams.nFlags |= bGoodOccluder ? ENTITY_FLAG_GOOD_OCCLUDER : 0;
 		sSpawnParams.nFlags |= bOutdoorOnly ? ENTITY_FLAG_OUTDOORONLY : 0;
@@ -382,10 +381,10 @@ void CCoopSystem::OnPostResetEntities()
 		}
 
 		auto instance = recreateObjects.find(sSpawnParams.id);
-		if(instance != recreateObjects.end())
+		if (instance != recreateObjects.end())
 			sSpawnParams.pPropertiesTable = instance->second;
 		gEnv->pEntitySystem->InitEntity(pEntity, sSpawnParams);
-		
+
 	}
 
 	// gEnv->bMultiplayer will be true after event listeners.
