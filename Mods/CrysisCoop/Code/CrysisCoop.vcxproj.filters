@@ -1433,14 +1433,13 @@
     <ClInclude Include="Coop\Sound\CoopSound.h">
       <Filter>Coop\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Alien.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameActions.actions">
       <Filter>Game Files</Filter>
     </None>
-    <None Include="..\Launcher\Cursor_White.cur">
-      <Filter>Resources</Filter>
-    </None>
+    <None Include="Cursor_White.cur" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Crysis.ico">
@@ -1581,15 +1580,11 @@
     <Image Include="G15\Vehicles\ustank.bmp">
       <Filter>Resources\G15\Vehicles</Filter>
     </Image>
+    <Image Include="Wars.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameDll.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Alien.h">
-      <Filter>Actor Files\aliens</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>
