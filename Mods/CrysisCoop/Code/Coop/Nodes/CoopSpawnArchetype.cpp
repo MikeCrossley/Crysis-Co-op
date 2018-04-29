@@ -53,6 +53,9 @@ public:
 	{
 		if (eFE_Activate == event && IsPortActive(pActInfo, EIP_Spawn))
 		{
+			if (!gEnv->bServer)
+				return;
+
 			IEntityArchetype* pEntityArch = gEnv->pEntitySystem->LoadEntityArchetype(GetPortString(pActInfo, EIP_Archetype));
 			
 			if (!pEntityArch)

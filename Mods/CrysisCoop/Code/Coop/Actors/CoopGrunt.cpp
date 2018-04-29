@@ -35,48 +35,53 @@ CCoopGrunt::~CCoopGrunt()
 //	Called before the game rules have reseted entities.
 void CCoopGrunt::OnPreResetEntities()
 {
+	return;
 	if (!gEnv->bServer || gEnv->bEditor)
 		return;
 
-	gEnv->bMultiplayer = false;
+	//gEnv->bMultiplayer = false;
 	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
 		CryLogAlways("[CCoopGrunt] Cleaning actor %s.", this->GetEntity()->GetName());
 
 	// Unregister existing AI....
-	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
+	/*if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
 	{
 		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
 		assert(this->GetEntity()->GetAI() == nullptr);
 	}
-
+	*/
 	// Clear existing inventory...
-	if (IInventory* pInventory = this->GetInventory())
-		pInventory->Clear();
+	//if (IInventory* pInventory = this->GetInventory())
+	//	pInventory->Clear();
 
-	gEnv->bMultiplayer = true;
+	//gEnv->bMultiplayer = true;
 }
 
 // Summary:
 //	Called after the game rules have reseted entities and the coop system has re-created AI objects.
 void CCoopGrunt::OnPostResetEntities()
 {
+	return;
 	if (!gEnv->bServer || gEnv->bEditor)
 		return;
 
-	gEnv->bMultiplayer = false;
+	//gEnv->bMultiplayer = false;
 	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
 		CryLogAlways("[CCoopGrunt] Initializing actor %s.", this->GetEntity()->GetName());
 
 	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
 	{
 		// Register the actor's AI on the server.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
+		/*gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
 		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
 		gEnv->pScriptSystem->EndCall(pScriptTable);
-		assert(this->GetEntity()->GetAI() != nullptr);
+		assert(this->GetEntity()->GetAI() != nullptr);*/
 		
+		if (IInventory* pInventory = this->GetInventory())
+			pInventory->Destroy();
+
 		// Equip the actor's equipment pack.
 		SmartScriptTable pPropertiesTable = nullptr;
 		if (pScriptTable->GetValue("Properties", pPropertiesTable))
@@ -88,7 +93,7 @@ void CCoopGrunt::OnPostResetEntities()
 			const char* sEquipmentPack = nullptr;
 			if (pPropertiesTable->GetValue("equip_EquipmentPack", sEquipmentPack))
 			{
-				bool bResult = gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, sEquipmentPack, true, true);
+				bool bResult = gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, sEquipmentPack, false, true);
 				if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
 				{
 					CryLogAlways(bResult ? "[CCoopGrunt] Succeeded giving actor %s equipment pack %s." : "[CCoopGrunt] Failed to give actor %s equipment pack %s.", this->GetEntity()->GetName(), sEquipmentPack);
@@ -102,8 +107,8 @@ void CCoopGrunt::OnPostResetEntities()
 		gEnv->pScriptSystem->EndCall(pScriptTable);
 	}
 
-	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
-	gEnv->bMultiplayer = true;
+	//this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
+	//gEnv->bMultiplayer = true;
 }
 
 bool CCoopGrunt::Init(IGameObject * pGameObject)
@@ -361,7 +366,8 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
 				OnPreResetEntities();
 			}
-
+			if (GetInventory())
+				GetInventory()->Destroy();
 			break;
 		}
 	case ENTITY_EVENT_UNHIDE:
@@ -371,9 +377,10 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 				GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
 				m_bHidden = false;
 				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
-				OnPostResetEntities();
+				//OnPostResetEntities();
 			}
-
+			if (GetInventory())
+				GetInventory()->Destroy();
 			break;
 		}
 		// Register AI when initializing for dynamically spawned AI, too.
@@ -381,7 +388,7 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 		{
 			if (gEnv->bServer)
 			{
-				OnPostResetEntities();
+				//OnPostResetEntities();
 			}
 		} break;
 		// And clean state when the game is being started for non-hidden AI.
@@ -390,15 +397,18 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 		{
 			if (gEnv->bServer)
 			{
-				OnPreResetEntities();
-				OnPostResetEntities();
+				//OnPreResetEntities();
+				//OnPostResetEntities();
 			}
 		} break;
-	/*case ENTITY_EVENT_TIMER:
+	case ENTITY_EVENT_TIMER:
 		{
 			switch(event.nParam[0])
 			{
 			case eTIMER_WEAPONDELAY:
+				if (GetInventory())
+					GetInventory()->Destroy();
+
 				IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
 				SmartScriptTable props;
 				if(pScriptTable->GetValue("Properties", props))
@@ -410,13 +420,17 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GiveItem(this, "NanoSuit", false, false, false);
 
 					if (props->GetValue("equip_EquipmentPack", equip))
-						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, equip, true, true);
+						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, equip, false, true);
 				}
+
+				gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
+				gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+				gEnv->pScriptSystem->EndCall(pScriptTable);
 
 				break;
 			}
 		}
-		break;*/
+		break;
 	}
 }
 

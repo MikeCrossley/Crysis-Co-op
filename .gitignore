@@ -4,6 +4,8 @@
 /Editor/
 /Game/
 /LogBackups/
+/CryAutoGen/
+/consolecommandsandvars.txt
 
 # Ignore temporary files and user configuration
 *.log
@@ -31,3 +33,8 @@
 
 # And level files (for now)
 /Mods/CrysisCoop/Game/Levels/
+
+# Add CryCooperative.dll
+!/Bin32/CryCooperative.dll
+!/Bin64/CryCooperative.dll
+/Code/Cooperative/CryCooperative/

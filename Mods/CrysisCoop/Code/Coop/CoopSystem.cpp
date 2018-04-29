@@ -50,6 +50,13 @@ CCoopSystem::~CCoopSystem()
 {
 }
 
+// Clean this up
+#include <CryLibrary.h>
+#include <CryCooperative\ICooperativeSystem.h>
+
+static HMODULE hCryCooperativeModule = 0;
+static ICooperativeSystem* pCooperativeSystem = 0;
+
 // Summary:
 //	Initializes the CCoopSystem instance.
 bool CCoopSystem::Initialize()
@@ -76,6 +83,12 @@ bool CCoopSystem::Initialize()
 		pSS->BeginCall("Init");
 		pSS->EndCall();
 	}
+
+	typedef ICooperativeSystem* (__cdecl *PTR_CreateCooperativeSystem)();
+	hCryCooperativeModule = CryLoadLibrary("CryCooperative.dll");
+	PTR_CreateCooperativeSystem CreateCooperativeSystem = (PTR_CreateCooperativeSystem)GetProcAddress(hCryCooperativeModule, "CreateCooperativeSystem");
+	pCooperativeSystem = CreateCooperativeSystem();
+	pCooperativeSystem->Initialize(gEnv->pSystem);
 
 	InitCvars();
 
@@ -125,6 +138,10 @@ void CCoopSystem::Shutdown()
 	CCoopCutsceneSystem::GetInstance()->Unregister();
 
 	gEnv->pGame->GetIGameFramework()->GetILevelSystem()->RemoveListener(this);
+	pCooperativeSystem->Shutdown();
+
+	CryFreeLibrary(hCryCooperativeModule);
+
 	SAFE_DELETE(m_pReadability);
 
 	if (m_pDialogSystem)
@@ -171,13 +188,13 @@ void CCoopSystem::OnLoadingStart(ILevelInfo *pLevel)
 		CryLogAlways("[CCoopSystem] Initializing AI System...");
 
 
-	gEnv->bMultiplayer = false;
+	/*gEnv->bMultiplayer = false;
 	if (!gEnv->pAISystem->Init())
 		CryLogAlways("[CCoopSystem] AI System Initialization Failed");
 
 	gEnv->pAISystem->FlushSystem();
 	gEnv->pAISystem->Enable();
-	gEnv->pAISystem->LoadNavigationData(pLevel->GetPath(), "mission0");
+	gEnv->pAISystem->LoadNavigationData(pLevel->GetPath(), "mission0");*/
 
 	
 }
@@ -209,13 +226,14 @@ void CCoopSystem::OnPreResetEntities()
 	if (!gEnv->bServer)
 		return;
 
-	gEnv->bMultiplayer = true;
+	//gEnv->bMultiplayer = true;
 }
 
 // Summary:
 //	Registers vehicles to the AI system.
 void CCoopSystem::RegisterVehicleAI(bool bRegister)
 {
+	return;
 	// Registers vehicles into the AI system
 	if (!gEnv->bServer)
 		return;
@@ -259,7 +277,7 @@ void CCoopSystem::OnPostResetEntities()
 
 	CryLogAlways("[CCoopSystem::OnPostResetEntities] Post-reseting entities.");
 
-	gEnv->bMultiplayer = false;
+	//gEnv->bMultiplayer = false;
 
 	gEnv->pAISystem->Enable();
 	
@@ -271,7 +289,7 @@ void CCoopSystem::OnPostResetEntities()
 	std::list<EntityId> networkBoundObjects = std::list<EntityId>();
 
 	// Iterate entities to be re-created...
-	IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
+	/*IEntityIt* pIterator = gEnv->pEntitySystem->GetEntityIterator();
 	while (!pIterator->IsEnd())
 	{
 		IEntity* pEntity = nullptr;
@@ -387,7 +405,7 @@ void CCoopSystem::OnPostResetEntities()
 
 	}
 
-	this->RegisterVehicleAI(true);
+	this->RegisterVehicleAI(true);*/
 
 	// gEnv->bMultiplayer will be true after event listeners.
 	for (auto it = m_eventListeners.begin(); it != m_eventListeners.end(); ++it)
@@ -395,7 +413,7 @@ void CCoopSystem::OnPostResetEntities()
 		(*it)->OnPostResetEntities();
 	}
 
-	gEnv->bMultiplayer = true;
+	//gEnv->bMultiplayer = true;
 }
 
 // Summary:

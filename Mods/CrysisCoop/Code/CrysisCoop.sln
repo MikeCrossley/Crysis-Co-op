@@ -20,6 +20,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaunchSandbox", "..\Helpers
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaunchServer", "..\Helpers\LaunchServer\LaunchServer.vcxproj", "{8BBAB364-F0BB-470F-B9C3-2BACBEA51290}"
 	ProjectSection(ProjectDependencies) = postProject
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844} = {93A6306D-FD22-4ACA-B8E5-0BB7B4397844}
 		{B012D69C-C3AA-4589-B782-473C01DD0DBA} = {B012D69C-C3AA-4589-B782-473C01DD0DBA}
 	EndProjectSection
 EndProject
@@ -27,6 +28,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaunchClient", "..\Helpers\
 	ProjectSection(ProjectDependencies) = postProject
 		{B012D69C-C3AA-4589-B782-473C01DD0DBA} = {B012D69C-C3AA-4589-B782-473C01DD0DBA}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CryCooperative", "CryCooperative", "{89181FF4-8F11-4771-BEEE-E5C02D2ED273}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryCooperative", "..\..\..\Code\Cooperative\CryCooperative\CryCooperative.vcxproj", "{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryCooperativeInterfaces", "..\..\..\Code\Cooperative\CryCooperativeInterfaces\CryCooperativeInterfaces.vcxproj", "{F6C791C3-030A-403C-A196-C131D8C89638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +75,22 @@ Global
 		{CC1B76DC-519D-4E25-8ED5-53FECF8037FF}.Debug|x64.ActiveCfg = Debug|x64
 		{CC1B76DC-519D-4E25-8ED5-53FECF8037FF}.Release|Win32.ActiveCfg = Release|Win32
 		{CC1B76DC-519D-4E25-8ED5-53FECF8037FF}.Release|x64.ActiveCfg = Release|x64
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Debug|Win32.ActiveCfg = Debug|Win32
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Debug|Win32.Build.0 = Debug|Win32
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Debug|x64.ActiveCfg = Debug|x64
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Debug|x64.Build.0 = Debug|x64
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Release|Win32.ActiveCfg = Release|Win32
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Release|Win32.Build.0 = Release|Win32
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Release|x64.ActiveCfg = Release|x64
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844}.Release|x64.Build.0 = Release|x64
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Debug|Win32.Build.0 = Debug|Win32
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Debug|x64.ActiveCfg = Debug|x64
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Debug|x64.Build.0 = Debug|x64
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Release|Win32.ActiveCfg = Release|Win32
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Release|Win32.Build.0 = Release|Win32
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Release|x64.ActiveCfg = Release|x64
+		{F6C791C3-030A-403C-A196-C131D8C89638}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +101,8 @@ Global
 		{AFFF5F71-36B9-48FF-B7A3-6BB639720AD8} = {4D9422C0-AF4D-41F7-BAFB-C62E38C6ABE4}
 		{8BBAB364-F0BB-470F-B9C3-2BACBEA51290} = {4D9422C0-AF4D-41F7-BAFB-C62E38C6ABE4}
 		{CC1B76DC-519D-4E25-8ED5-53FECF8037FF} = {4D9422C0-AF4D-41F7-BAFB-C62E38C6ABE4}
+		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844} = {89181FF4-8F11-4771-BEEE-E5C02D2ED273}
+		{F6C791C3-030A-403C-A196-C131D8C89638} = {89181FF4-8F11-4771-BEEE-E5C02D2ED273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A82CF1E-D516-43F5-93C0-5E7312EEAC36}

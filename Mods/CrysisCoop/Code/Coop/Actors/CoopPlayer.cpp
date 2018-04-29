@@ -56,7 +56,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 
     if (IsPlayer() && gEnv->bServer)
     {
-		if (!GetEntity()->GetAI() && GetSpectatorMode() == eASM_None)
+		/*if (!GetEntity()->GetAI() && GetSpectatorMode() == eASM_None)
         {
             gEnv->bMultiplayer = false;
  
@@ -70,7 +70,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
 				CryLogAlways("AI Registered for Player %s", GetEntity()->GetName());
  
             gEnv->bMultiplayer = true;
-        }
+        }*/
     }
 
 	// Fixes cloaking in MP for non-host players
