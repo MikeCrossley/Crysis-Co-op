@@ -58,9 +58,10 @@ void CCoopSoundSystem::RemoveEventListener(ISoundSystemEventListener *pListener)
 
 ISound* CCoopSoundSystem::CreateSound(const char *sGroupAndSoundName, uint32 nFlags)
 {
-	if (CCoopSound* pSound = this->ReserveSound())
+	CryLogAlways("%s %d", sGroupAndSoundName, nFlags);
+	if (nFlags == (FLAG_SOUND_DEFAULT_3D | FLAG_SOUND_VOICE))
 	{
-		if (nFlags == (FLAG_SOUND_DEFAULT_3D | FLAG_SOUND_VOICE))
+		if (CCoopSound* pSound = this->ReserveSound())
 		{
 			pSound->SetName(sGroupAndSoundName);
 			pSound->SetFlags(nFlags);
@@ -68,10 +69,12 @@ ISound* CCoopSoundSystem::CreateSound(const char *sGroupAndSoundName, uint32 nFl
 				CryLogAlways("[CCoopSoundSystem] Reserved sound %s to slot %d, reuse counter %d.", pSound->m_sSoundName.c_str(), (pSound->m_nIdentifier & 0xFFFF) - 1, (pSound->m_nIdentifier >> 16));
 			return pSound;
 		}
-		// We don't want any sounds that aren't readability related
-		return nullptr;
+		else
+		{
+			CryLogAlways("[CCoopSoundSystem] Too many sound instances.");
+			return nullptr;
+		}
 	}
-	CryLogAlways("[CCoopSoundSystem] Too many sound instances.");
 	return nullptr;
 }
 

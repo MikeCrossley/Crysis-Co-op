@@ -10,10 +10,83 @@ CCoopAlien::CCoopAlien() :
 	m_vAimTarget(Vec3(0,0,0)),
 	m_bHidden(false)
 {
+	this->RegisterEventListener();
 }
 
 CCoopAlien::~CCoopAlien()
 {
+	this->UnregisterEventListener();
+}
+
+// Summary:
+//	Called before the game rules have reseted entities.
+void CCoopAlien::OnPreResetEntities()
+{
+	if (!gEnv->bServer || gEnv->bEditor)
+		return;
+
+	gEnv->bMultiplayer = false;
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+		CryLogAlways("[CCoopAlien] Cleaning actor %s.", this->GetEntity()->GetName());
+
+	// Unregister existing AI....
+	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
+	{
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
+		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+		gEnv->pScriptSystem->EndCall(pScriptTable);
+		assert(this->GetEntity()->GetAI() == nullptr);
+	}
+
+	// Clear existing inventory...
+	if (IInventory* pInventory = this->GetInventory())
+		pInventory->Clear();
+
+	gEnv->bMultiplayer = true;
+}
+
+// Summary:
+//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
+void CCoopAlien::OnPostResetEntities()
+{
+	if (!gEnv->bServer || gEnv->bEditor)
+		return;
+
+	gEnv->bMultiplayer = false;
+	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+		CryLogAlways("[CCoopAlien] Initializing actor %s.", this->GetEntity()->GetName());
+
+	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
+	{
+		// Register the actor's AI on the server.
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
+		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+		gEnv->pScriptSystem->EndCall(pScriptTable);
+		assert(this->GetEntity()->GetAI() != nullptr);
+
+		// Equip the actor's equipment pack.
+		SmartScriptTable pPropertiesTable = nullptr;
+		if (pScriptTable->GetValue("Properties", pPropertiesTable))
+		{
+			const char* sEquipmentPack = nullptr;
+			if (pPropertiesTable->GetValue("equip_EquipmentPack", sEquipmentPack))
+			{
+				bool bResult = gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, sEquipmentPack, true, true);
+				if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
+				{
+					CryLogAlways(bResult ? "[CCoopAlien] Succeeded giving actor %s equipment pack %s." : "[CCoopAlien] Failed to give actor %s equipment pack %s.", this->GetEntity()->GetName(), sEquipmentPack);
+				}
+			}
+		}
+
+		// Call CheckWeaponAttachments to attach things.
+		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
+		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
+		gEnv->pScriptSystem->EndCall(pScriptTable);
+	}
+
+	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
+	gEnv->bMultiplayer = true;
 }
 
 bool CCoopAlien::Init(IGameObject * pGameObject)
@@ -35,20 +108,7 @@ void CCoopAlien::PostInit( IGameObject * pGameObject )
 
 void CCoopAlien::RegisterMultiplayerAI()
 {
-	if (GetHealth() <= 0 && GetEntity()->GetAI())
-	{
-		gEnv->bMultiplayer = false;
-
-		IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-			CryLogAlways("AI Unregistered for Alien %s", GetEntity()->GetName());
-
-		gEnv->bMultiplayer = true;
-	}
-	else if (!GetEntity()->GetAI() && GetHealth() > 0)
+	if (!GetEntity()->GetAI() && GetHealth() > 0)
 	{
 		gEnv->bMultiplayer = false;
 
@@ -75,6 +135,7 @@ void CCoopAlien::Update(SEntityUpdateContext& ctx, int updateSlot)
 	if (gEnv->bServer)
 	{
 		SMovementState currMovement = static_cast<CCompatibilityAlienMovementController*>(GetMovementController())->GetMovementReqState();
+		CMovementRequest moveReq = static_cast<CCompatibilityAlienMovementController*>(GetMovementController())->GetMovementReq();
 
 		//Vec3
 		m_vMoveTarget = GetEntity()->GetWorldPos() + currMovement.movementDirection;
@@ -83,7 +144,7 @@ void CCoopAlien::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_vFireTarget = currMovement.fireTarget;
 
 		// Float
-		m_fDesiredSpeed = currMovement.desiredSpeed;
+		m_fDesiredSpeed = m_moveRequest.velocity.GetLength();
 
 		// Int
 		m_nStance = (int)currMovement.stance;
@@ -133,6 +194,10 @@ void CCoopAlien::DrawDebugInfo()
 	gEnv->pRenderer->Draw2dLabel(5, 205, 2, color, false, "Stance %d", m_nStance);
 
 	gEnv->pRenderer->Draw2dLabel(5, 225, 2, color, false, "HasAimTarget %d", (int)m_bHasAimTarget);
+
+	gEnv->pRenderer->Draw2dLabel(5, 305, 2, color, false, "m_input.movementVector x%f y%f z%f", m_input.movementVector.x, m_input.movementVector.y, m_input.movementVector.z);
+	gEnv->pRenderer->Draw2dLabel(5, 325, 2, color, false, "m_stats.speed %f", m_stats.speed);
+
 }
 
 void CCoopAlien::UpdateMovementState()
@@ -144,10 +209,10 @@ void CCoopAlien::UpdateMovementState()
 	request.SetFireTarget(m_vFireTarget);
 
 	request.SetDesiredSpeed(m_fDesiredSpeed);
-	request.SetPseudoSpeed(m_fDesiredSpeed);
+	m_stats.speed = m_fDesiredSpeed;
+	m_stats.fireDir = Vec3(ZERO);
 
 	request.SetStance((EStance)m_nStance);
-
 
 	//if (m_bHasAimTarget)
 	//	request.SetAimTarget(m_vAimTarget);
@@ -230,6 +295,7 @@ bool CCoopAlien::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 
 			//Bool
 			ser.Value("bTarget", m_bHasAimTarget, 'bool');
+
 			break;
 		}
 		case ASPECT_HIDE:
