@@ -1,6 +1,6 @@
 # Ignore default Crysis file system
-/Bin32/
-/Bin64/
+/Bin32/*
+/Bin64/*
 /Editor/
 /Game/
 /LogBackups/
