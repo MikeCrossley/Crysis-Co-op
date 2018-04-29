@@ -36,6 +36,7 @@ CDummyTargetPointVerifier CDummyTargetPointVerifier::Instance = CDummyTargetPoin
 CCoopGruntMovementController::CCoopGruntMovementController(CCoopGrunt* pGrunt)
 	: CPlayerMovementController(pGrunt)
 	, m_pGrunt(pGrunt)
+	, m_bHadActorTarget(false)
 	, m_nQueryStartID(0)
 	, m_nQueryEndID(0)
 	, m_pQueryStartID(&m_nQueryStartID)
@@ -60,9 +61,16 @@ bool CCoopGruntMovementController::RequestMovement(CMovementRequest& request)
 
 	// Special ActorTarget handling for CCoopGrunt on server (RMI to client)
 	// Only send if it has, or desires to remove the actor target!
-	if (gEnv->bServer && (request.HasActorTarget() || request.RemoveActorTarget()))
+	if (gEnv->bServer && request.HasActorTarget())
 	{
 		this->m_pGrunt->SendSpecialMovementRequest(request.m_flags, request.GetActorTarget());
+		m_bHadActorTarget = true;
+	}
+
+	if (gEnv->bServer && request.RemoveActorTarget() && m_bHadActorTarget)
+	{
+		this->m_pGrunt->SendSpecialMovementRequest(request.m_flags, request.GetActorTarget());
+		m_bHadActorTarget = false;
 	}
 
 	// Special ActorTarget handling for CCoopGrunt on clients.

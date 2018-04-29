@@ -32,6 +32,8 @@ private:
 	// Pointer to the owner CCoopGrunt class instance.
 	CCoopGrunt* m_pGrunt;
 
+	// Boolean indicating whether the previous synchronization had an actor target or not.
+	bool m_bHadActorTarget;
 
 	// Query IDs for actor target processing.
 	TAnimationGraphQueryID m_nQueryStartID;

@@ -497,7 +497,7 @@ IMPLEMENT_RMI(CCoopGrunt, ClChangeSuitMode)
 IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 {
 	//if(params.targetParams.animation.c_str() != nullptr && params.targetParams.animation.c_str()[0] != 0)
-	//	CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
+		CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
 
 	if (!gEnv->bServer)
 	{
@@ -521,7 +521,7 @@ IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 
 void CCoopGrunt::SendSpecialMovementRequest(uint32 reqFlags, const SActorTargetParams& targetParams)
 {
-	//if(targetParams.animation.c_str() != nullptr && targetParams.animation.c_str()[0] != 0)
-	//	CryLogAlways("[%s] Sending actor target to clients with %s animation %s.", GetEntity()->GetName(), targetParams.signalAnimation ? "signal" : "action", targetParams.animation.c_str());
+	//if (!targetParams.animation.c_str() || targetParams.animation.c_str()[0] == 0)
+	//	return;
 	GetGameObject()->InvokeRMI(ClSpecialMovementRequest(), SSpecialMovementRequestParams(reqFlags, targetParams, targetParams.animation), eRMI_ToAllClients | eRMI_NoLocalCalls);
 }
