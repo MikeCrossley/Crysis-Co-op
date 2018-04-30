@@ -868,15 +868,12 @@ function VehicleBase.Client:OnHit(hit)
 end
 
 --------------------------------------------------------------------------
-function VehicleBase.Server:OnInitClient(channelId)
-	System.LogAlways("OnInitClient");
-	
+function VehicleBase.Server:OnPostInitClient(channelId)
 	if (self:IsHidden()) then
 		self.onClient:HideVehicle(channelId, true);
 	else
 		self.onClient:HideVehicle(channelId, false);
 	end
-	
 end
 
 --------------------------------------------------------------------------
