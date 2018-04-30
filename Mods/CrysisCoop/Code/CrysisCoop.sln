@@ -20,7 +20,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaunchSandbox", "..\Helpers
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaunchServer", "..\Helpers\LaunchServer\LaunchServer.vcxproj", "{8BBAB364-F0BB-470F-B9C3-2BACBEA51290}"
 	ProjectSection(ProjectDependencies) = postProject
-		{93A6306D-FD22-4ACA-B8E5-0BB7B4397844} = {93A6306D-FD22-4ACA-B8E5-0BB7B4397844}
 		{B012D69C-C3AA-4589-B782-473C01DD0DBA} = {B012D69C-C3AA-4589-B782-473C01DD0DBA}
 	EndProjectSection
 EndProject
