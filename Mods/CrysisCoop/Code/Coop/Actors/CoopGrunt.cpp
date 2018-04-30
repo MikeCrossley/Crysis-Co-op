@@ -352,7 +352,7 @@ void CCoopGrunt::UpdateMovementState()
 		{
 			pWeapon->ActivateLamLight(true, true);
 		}
-		else if (pWeapon->IsLamLaserActivated())
+		else if (pWeapon->IsLamLightActivated())
 		{
 			pWeapon->ActivateLamLight(false, true);
 		}
@@ -463,29 +463,25 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 
 	bool bReading = ser.IsReading();
 
-	if (aspect == ASPECT_HEALTH)
+	if (aspect == EEntityAspects::eEA_GameServerStatic)
 	{
 		ser.Value("health", m_health, 'hlth');
 		bool isFrozen = m_stats.isFrozen;
 		ser.Value("frozen", isFrozen, 'bool');
 		ser.Value("frozenAmount", m_frozenAmount, 'frzn');
-	}
-	else if (aspect == ASPECT_HIDE)
-	{
+
 		ser.Value("hide", m_bHidden, 'bool');
 
 		if (bReading)
 			GetEntity()->Hide(m_bHidden);
-	}
-	else if (aspect == ASPECT_STANCE)
-	{
+
 		//Int
 		ser.Value("nAlert", m_nAlertness, 'i8');
 		ser.Value("nStance", m_nStance, 'i8');
 		ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
 		ser.Value("nWep", m_nWeaponNetworkFlags, 'i8');
 	}
-	else if (aspect == ASPECT_ALIVE)
+	else if (aspect == EEntityAspects::eEA_GameServerDynamic)
 	{
 		//Vec3
 		ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
