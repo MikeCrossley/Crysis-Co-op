@@ -61,8 +61,9 @@ public:
 
 
 protected:
-	static const EEntityAspects ASPECT_ALIVE = eEA_GameServerDynamic;
-	static const EEntityAspects ASPECT_HIDE = eEA_GameServerStatic;
+	static const EEntityAspects ASPECT_ALIVE	= eEA_GameServerDynamic;
+	static const EEntityAspects ASPECT_HIDE		= eEA_GameServerStatic;
+	static const EEntityAspects ASPECT_STANCE	= eEA_GameServerStatic;
 
 	void RegisterMultiplayerAI();
 	void UpdateMovementState();

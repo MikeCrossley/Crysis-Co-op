@@ -197,6 +197,8 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 	// Movement reqeust stuff so proper anims play on client
 	if (gEnv->bServer)
 	{
+		bool bStaticsChanged = false;
+
 		CMovementRequest currMovement = static_cast<CPlayerMovementController*>(m_pMovementController)->GetMovementReqState();
 
 		//Vec3
@@ -211,21 +213,29 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_fDesiredSpeed = currMovement.GetDesiredSpeed();
 
 		// Int
+		int nPreviousStance = m_nStance;
+		int nPreviousAlert = m_nAlertness;
+
 		m_nStance = currMovement.GetStance();
 		m_nAlertness = currMovement.GetAlertness();
-		
+
+		if (m_nAlertness != nPreviousAlert || m_nStance != nPreviousStance) { bStaticsChanged = true; }
+
 		// Bool
+		uint8 nOldMovementFlags = m_nMovementNetworkFlags;
 		m_nMovementNetworkFlags = currMovement.AllowStrafing() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eAllowStrafing) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eAllowStrafing);
 		m_nMovementNetworkFlags = currMovement.HasAimTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasAimTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasAimTarget);
 		m_nMovementNetworkFlags = currMovement.HasBodyTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasBodyTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasBodyTarget);
 		m_nMovementNetworkFlags = currMovement.HasLookTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasLookTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasLookTarget);
 		m_nMovementNetworkFlags = currMovement.HasFireTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasFireTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasFireTarget);
 		m_nMovementNetworkFlags = currMovement.HasMoveTarget() ? (m_nMovementNetworkFlags | EAIMovementNetFlags::eHasMoveTarget) : (m_nMovementNetworkFlags & ~EAIMovementNetFlags::eHasMoveTarget);
+		if (m_nMovementNetworkFlags != nOldMovementFlags) { bStaticsChanged = true; }
 
 		// Weapons
 		IItem* pItem = this->GetCurrentItem();
 		IWeapon* pWeapon = nullptr;
 		if (pItem) { pWeapon = pItem->GetIWeapon(); }
+		uint8 nOldWeaponFlags = m_nWeaponNetworkFlags;
 		if (pWeapon && GetHolsteredItem() != pItem)
 		{
 			m_nWeaponNetworkFlags = pWeapon->IsLamLightActivated() ? (m_nWeaponNetworkFlags | EAIWeaponNetFlags::eFlashlightActive) : (m_nWeaponNetworkFlags & ~EAIWeaponNetFlags::eFlashlightActive);
@@ -235,6 +245,7 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 		{
 			m_nWeaponNetworkFlags = 0;
 		}
+		if (m_nWeaponNetworkFlags != nOldWeaponFlags) {	bStaticsChanged = true;	}
 
 		if (GetNanoSuit())
 		{
@@ -245,6 +256,11 @@ void CCoopGrunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 			}
 		}
 
+		// Update the rarely changing variables
+		if (bStaticsChanged)
+			GetGameObject()->ChangedNetworkState(ASPECT_STANCE);
+
+		// Update the commonly changing variables
 		if (GetHealth() > 0.f)
 			GetGameObject()->ChangedNetworkState(ASPECT_ALIVE);
 	}
@@ -442,44 +458,47 @@ IActorMovementController* CCoopGrunt::CreateMovementController()
 
 bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 profile, int flags )
 {
-	if (!CPlayer::NetSerialize(ser, aspect, profile, flags))
+	if (!CActor::NetSerialize(ser, aspect, profile, flags))
 		return false;
 
 	bool bReading = ser.IsReading();
 
-	switch (aspect)
+	if (aspect == ASPECT_HEALTH)
 	{
-		case ASPECT_ALIVE:
-		{
-			//Vec3
-			ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
-			ser.Value("vAimTarget", m_vAimTarget, 'wrld');
-			ser.Value("vLookTarget", m_vLookTarget, 'wrld');
-			ser.Value("vBodyTarget", m_vBodyTarget, 'wrld');
-			ser.Value("vFireTarget", m_vFireTarget, 'wrld');
-
-			//Float
-			ser.Value("fpSpeed", m_fPseudoSpeed);
-			ser.Value("fdSpeed", m_fDesiredSpeed);
-
-			//Int
-			ser.Value("nAlert", m_nAlertness, 'i8');
-			ser.Value("nStance", m_nStance, 'i8');
-			ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
-			ser.Value("nWep", m_nWeaponNetworkFlags, 'i8');
-
-			break;
-		}
-		case ASPECT_HIDE:
-		{
-			ser.Value("hide", m_bHidden, 'bool');
-
-			if (bReading)
-				GetEntity()->Hide(m_bHidden);
-
-			break;
-		}
+		ser.Value("health", m_health, 'hlth');
+		bool isFrozen = m_stats.isFrozen;
+		ser.Value("frozen", isFrozen, 'bool');
+		ser.Value("frozenAmount", m_frozenAmount, 'frzn');
 	}
+	else if (aspect == ASPECT_HIDE)
+	{
+		ser.Value("hide", m_bHidden, 'bool');
+
+		if (bReading)
+			GetEntity()->Hide(m_bHidden);
+	}
+	else if (aspect == ASPECT_STANCE)
+	{
+		//Int
+		ser.Value("nAlert", m_nAlertness, 'i8');
+		ser.Value("nStance", m_nStance, 'i8');
+		ser.Value("nFlags", m_nMovementNetworkFlags, 'i8');
+		ser.Value("nWep", m_nWeaponNetworkFlags, 'i8');
+	}
+	else if (aspect == ASPECT_ALIVE)
+	{
+		//Vec3
+		ser.Value("vMoveTarget", m_vMoveTarget, 'wrld');
+		ser.Value("vAimTarget", m_vAimTarget, 'wrld');
+		ser.Value("vLookTarget", m_vLookTarget, 'wrld');
+		ser.Value("vBodyTarget", m_vBodyTarget, 'wrld');
+		ser.Value("vFireTarget", m_vFireTarget, 'wrld');
+
+		//Float
+		ser.Value("fpSpeed", m_fPseudoSpeed);
+		ser.Value("fdSpeed", m_fDesiredSpeed);
+	}
+
 	
 	return true;
 }

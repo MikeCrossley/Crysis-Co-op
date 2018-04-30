@@ -58,7 +58,7 @@ void CCoopSoundSystem::RemoveEventListener(ISoundSystemEventListener *pListener)
 
 ISound* CCoopSoundSystem::CreateSound(const char *sGroupAndSoundName, uint32 nFlags)
 {
-	CryLogAlways("%s %d", sGroupAndSoundName, nFlags);
+	//CryLogAlways("%s %d", sGroupAndSoundName, nFlags);
 	if (nFlags == (FLAG_SOUND_DEFAULT_3D | FLAG_SOUND_VOICE))
 	{
 		if (CCoopSound* pSound = this->ReserveSound())
