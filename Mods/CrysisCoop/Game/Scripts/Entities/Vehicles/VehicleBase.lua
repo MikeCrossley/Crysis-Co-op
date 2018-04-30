@@ -868,6 +868,27 @@ function VehicleBase.Client:OnHit(hit)
 end
 
 --------------------------------------------------------------------------
+function VehicleBase.Server:OnInitClient(channelId)
+	System.LogAlways("OnInitClient");
+	
+	if (self:IsHidden()) then
+		self.onClient:HideVehicle(channelId, true);
+	else
+		self.onClient:HideVehicle(channelId, false);
+	end
+	
+end
+
+--------------------------------------------------------------------------
+function VehicleBase.Client:HideVehicle(bHide)
+	if (bHide) then
+		self:Hide(1);
+	else
+		self:Hide(0);
+	end
+end
+
+--------------------------------------------------------------------------
 function VehicleBase:ProcessPassengerDamage(passengerId, actorHealth, damage, damageType, explosion)
 	return self.vehicle:ProcessPassengerDamage(passengerId, actorHealth, damage, damageType, explosion);
 end
@@ -974,10 +995,7 @@ function VehicleBase:OnActorSitDown(seatId, passengerId)
 		AI.Signal(SIGNALFILTER_SENDER, 9, "ENTERING_END", passengerId); -- 9 is to skip normal processing of signal
 	end
 end
---------------------------------------------------------------------------
-function VehicleBase:ForceCoopAI()
-	AI.RegisterWithAI(self.id, self.AIType, self.Properties, self.PropertiesInstance, self.AIMovementAbility);
-end
+
 --------------------------------------------------------------------------
 function VehicleBase:OnActorChangeSeat(passengerId, exiting)
 	-- ai specific

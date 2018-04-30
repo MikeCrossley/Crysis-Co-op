@@ -114,11 +114,15 @@ for i,vehicle in pairs(VehicleSystem.VehicleImpls) do
 
 	gVehicle.Event_Enable = function(self)
 		self:Hide(0);
+		self.allClients:HideVehicle(false);
+		System.LogAlways("[LUA] UnhideVehicle");
 		BroadcastEvent(self, "Enable");
 	end
 	
 	gVehicle.Event_Disable = function(self)
 		self:Hide(1);
+		self.allClients:HideVehicle(true);
+		System.LogAlways("[LUA] HideVehicle");
 		BroadcastEvent(self, "Disable");
 	end
 	
