@@ -1062,11 +1062,15 @@ function VehicleBase:OnActorStandUp(passengerId, exiting)
 			passenger.AI.theVehicle = nil;
 		end
 		
+		-- Crysis Co-op
+		--[[
 		-- for MP record the last player driver, and the time they exited
 		if(seat.isDriver and g_gameRules and g_gameRules:IsMultiplayer()) then
 			self.lastDriverId = passengerId;
 			self:SetTimer(PLAYEREXIT_TIMER, PLAYEREXIT_TIMEOUT);
 		end
+		]]
+		-- ~Crysis Co-op
 	end	
 	
 
