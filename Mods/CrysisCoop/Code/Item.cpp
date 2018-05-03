@@ -32,7 +32,7 @@
 #include "Binocular.h"
 #include "OffHand.h"
 #include "WeaponAttachmentManager.h"
-
+#include <Coop\CoopSystem.h>
 
 #pragma warning(disable: 4355)	// ´this´ used in base member initializer list
 
@@ -119,6 +119,8 @@ CItem::CItem()
 //------------------------------------------------------------------------
 CItem::~CItem()
 {
+	CryLogAlways("[%s : %d] Destroying item of class %s.", GetEntity()->GetName(), GetEntity()->GetId(), GetEntity()->GetClass()->GetName());
+
 	AttachArms(false, false);
 	AttachToBack(false);
 
@@ -166,9 +168,15 @@ bool CItem::Init( IGameObject *pGameObject )
 {
 	SetGameObject(pGameObject);
 
+	bool bIsCoop = CCoopSystem::GetInstance()->IsCoop();
+
 	// if not allowed, don't init
-	if(gEnv->bMultiplayer && g_pGame->GetGameRules() && !g_pGame->GetGameRules()->IsItemAllowed(GetEntity()->GetClass()->GetName()))
+
+	// Crysis Co-op 
+	// We don't want to disallow items in co-op.
+	if(gEnv->bMultiplayer && g_pGame->GetGameRules() && (!bIsCoop && !g_pGame->GetGameRules()->IsItemAllowed(GetEntity()->GetClass()->GetName())))
 		return false;
+	// ~Crysis Co-op	
 
 #ifdef ITEM_DEBUG_MEMALLOC
 	CGame::DumpMemInfo("CItem::Init Instance=%d %p Id=%d Class=%s", gInstanceCount, GetGameObject(), GetEntityId(), gEnv->pEntitySystem->GetEntity(GetEntityId())->GetClass()->GetName());
@@ -222,6 +230,11 @@ bool CItem::Init( IGameObject *pGameObject )
 	// bind to network
 	if (0 == (GetEntity()->GetFlags() & (ENTITY_FLAG_CLIENT_ONLY | ENTITY_FLAG_SERVER_ONLY)))
 	{
+		// Crysis Co-op
+		// RaZoR: CryAction & CryNetwork thought weapons given on AI initialization were static level objects.
+		//		  MUST be called before BindToNetwork for proper behavior.
+		this->GetEntity()->SetFlags(this->GetEntity()->GetFlags() | ENTITY_FLAG_NEVER_NETWORK_STATIC);
+		// ~Crysis Co-op
 		if (!GetGameObject()->BindToNetwork())
 		{
 			GetGameObject()->ReleaseProfileManager(this);
@@ -1015,7 +1028,6 @@ void CItem::SerializeLTL( TSerialize ser )
 void CItem::SetOwnerId(EntityId ownerId)
 {
 	m_ownerId = ownerId;
-
 	GetGameObject()->ChangedNetworkState(ASPECT_OWNER_ID);
 }
 
@@ -1029,7 +1041,6 @@ EntityId CItem::GetOwnerId() const
 void CItem::SetParentId(EntityId parentId)
 {
 	m_parentId = parentId;
-
 	GetGameObject()->ChangedNetworkState(ASPECT_OWNER_ID);
 }
 

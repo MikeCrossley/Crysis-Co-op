@@ -69,11 +69,10 @@ end
 --------------------------------------------------------------------------------------------------------
 function BasicAIEvent:Event_Disable(params)
 	--hide does enable/disable physics as well
-	self:Hide(1);
-	
-	-- Crysis Co-op :: Causes problem in MP
-	--self:TriggerEvent(AIEVENT_DISABLE);
-	-- ~ Crysis Co-op
+	self:Hide(1)
+	--self:EnablePhysics(0);
+	self:TriggerEvent(AIEVENT_DISABLE);
+	--AI.LogEvent(" >>> BasicAI:Event_Disable  "..self:GetName());
 end
  
 --
@@ -131,6 +130,18 @@ end
 --
 --------------------------------------------------------------------------------------------------------
 function BasicAIEvent:Event_Test(sender)
+--
+--	AI.SetPFProperties(self.id, AIPATH_HUMAN);
+--do return end
+--	self:StartAnimation(0,"swim_idle_nw_01",4,.1);
+--do return end
+--
+--	local point = System.GetEntityByName("place");
+--	if (point) then 
+--		g_SignalData.point = point:GetWorldPos();
+--		AI.Signal(SIGNALFILTER_SENDER, 0, "ORDER_MOVE", self.id, g_SignalData);
+--	end
+--		
 	g_SignalData.fValue = 2;
 	AI.Signal(SIGNALFILTER_LEADER,0,"OnScaleFormation",self.id,g_SignalData);
 end
@@ -143,6 +154,10 @@ function BasicAIEvent:Event_TestStealth(sender)
 end
 
 
+--function BasicAIEvent:Event_AlertStatus(sender)
+--	AI.LogEvent("ALERT STATUS CHANGING TO "..sender.Properties.ReferenceName);
+--	AI.Signal(SIGNALFILTER_LEADER, 0, "OnAlertStatus_"..sender.Properties.ReferenceName, self.id);
+--end
 
 
 

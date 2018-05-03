@@ -4,6 +4,7 @@
 #include <IGameFramework.h>
 
 #include <Coop/CoopSystem.h>
+#include <Coop/Utilities/DedicatedServerHackScope.h>
 
 CCoopPlayer::CCoopPlayer() : m_pSystemUpdateRate(0),
 	m_fDetectionTimer(0),
@@ -74,7 +75,7 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
     }
 
 	// Fixes cloaking in MP for non-host players
-    CNanoSuit* pNanoSuit = GetNanoSuit();
+    /*CNanoSuit* pNanoSuit = GetNanoSuit();
     if (pNanoSuit && gEnv->bServer)
     {
         IAIObject* pAI = GetEntity()->GetAI();
@@ -86,7 +87,18 @@ void CCoopPlayer::Update(SEntityUpdateContext& ctx, int updateSlot)
             else
                 agentParams.m_fCloakScale = 0.f;
         }
-    }
+    }*/
+
+	if (IAnimationGraphState* pGraphState = this->GetAnimationGraphState())
+	{
+		// Only update on dedicated server.
+		if (gEnv->bServer && !gEnv->bClient)
+		{
+			CDedicatedServerHackScope::Enter();
+			pGraphState->Update();
+			CDedicatedServerHackScope::Exit();
+		}
+	}
 
 }
 

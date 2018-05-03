@@ -22,7 +22,7 @@ CCoopAlien::~CCoopAlien()
 //	Called before the game rules have reseted entities.
 void CCoopAlien::OnPreResetEntities()
 {
-	if (!gEnv->bServer || gEnv->bEditor)
+	/*if (!gEnv->bServer || gEnv->bEditor)
 		return;
 
 	gEnv->bMultiplayer = false;
@@ -42,14 +42,14 @@ void CCoopAlien::OnPreResetEntities()
 	if (IInventory* pInventory = this->GetInventory())
 		pInventory->Clear();
 
-	gEnv->bMultiplayer = true;
+	gEnv->bMultiplayer = true;*/
 }
 
 // Summary:
 //	Called after the game rules have reseted entities and the coop system has re-created AI objects.
 void CCoopAlien::OnPostResetEntities()
 {
-	if (!gEnv->bServer || gEnv->bEditor)
+	/*if (!gEnv->bServer || gEnv->bEditor)
 		return;
 
 	gEnv->bMultiplayer = false;
@@ -86,7 +86,7 @@ void CCoopAlien::OnPostResetEntities()
 	}
 
 	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
-	gEnv->bMultiplayer = true;
+	gEnv->bMultiplayer = true;*/
 }
 
 bool CCoopAlien::Init(IGameObject * pGameObject)
@@ -252,7 +252,7 @@ void CCoopAlien::ProcessEvent(SEntityEvent& event)
 		}
 	case ENTITY_EVENT_TIMER:
 		{
-			switch(event.nParam[0])
+			/*switch(event.nParam[0])
 			{
 			case eTIMER_WEAPONDELAY:
 				IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
@@ -265,7 +265,7 @@ void CCoopAlien::ProcessEvent(SEntityEvent& event)
 				}
 
 				break;
-			}
+			}*/
 		}
 		break;
 	}

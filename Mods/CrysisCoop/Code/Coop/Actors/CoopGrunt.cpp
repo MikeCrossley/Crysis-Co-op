@@ -35,6 +35,20 @@ CCoopGrunt::~CCoopGrunt()
 //	Called before the game rules have reseted entities.
 void CCoopGrunt::OnPreResetEntities()
 {
+	//CryLogAlways("OnPreResetEntities");
+
+	if (!gEnv->bServer)
+		return;
+
+	/*if (IInventory* pInventory = GetInventory())
+	{
+		GetGameObject()->InvokeRMI(CActor::ClClearInventory(), CActor::NoParams(),
+			eRMI_ToAllClients | eRMI_NoLocalCalls);
+		pInventory->Destroy();
+		pInventory->Clear();
+	}*/
+		
+
 	return;
 	if (!gEnv->bServer || gEnv->bEditor)
 		return;
@@ -63,6 +77,9 @@ void CCoopGrunt::OnPreResetEntities()
 //	Called after the game rules have reseted entities and the coop system has re-created AI objects.
 void CCoopGrunt::OnPostResetEntities()
 {
+	if (gEnv->bServer)
+		GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
+
 	return;
 	if (!gEnv->bServer || gEnv->bEditor)
 		return;
@@ -122,9 +139,6 @@ bool CCoopGrunt::Init(IGameObject * pGameObject)
 void CCoopGrunt::PostInit( IGameObject * pGameObject )
 {
 	CPlayer::PostInit(pGameObject);
-
-	if (gEnv->bServer)
-		GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
 }
 
 void CCoopGrunt::RegisterMultiplayerAI()
@@ -381,23 +395,44 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 				//GetInventory()->Clear();
 				m_bHidden = true;
 				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
-				OnPreResetEntities();
+				//OnPreResetEntities();
 			}
-			if (GetInventory())
-				GetInventory()->Destroy();
+			//if (GetInventory())
+			//	GetInventory()->Destroy();
 			break;
 		}
 	case ENTITY_EVENT_UNHIDE:
 		{
 			if (gEnv->bServer)
 			{
-				GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
+				//GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
 				m_bHidden = false;
 				GetGameObject()->ChangedNetworkState(ASPECT_HIDE);
+
+				IInventory* pInventory = GetInventory();
+				if (pInventory && gEnv->bServer)
+				{
+					CryLogAlways("[%s] Synchronizing inventory...", GetEntity()->GetName());
+					const int nItemCount = pInventory->GetCount();
+					for (int nItem = 0; nItem < nItemCount; ++nItem)
+					{
+						EntityId nCurrentItemId = pInventory->GetCurrentItem();
+						EntityId nItemId = pInventory->GetItem(nItem);
+
+						if (IItem* pItem = gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetItem(nItemId))
+						{
+							// Only call if the item isn't client or server exclusive.
+							if((pItem->GetEntity()->GetFlags() & (ENTITY_FLAG_CLIENT_ONLY | ENTITY_FLAG_SERVER_ONLY)) == 0)
+								pItem->PickUp(GetEntityId(), false, nItemId == nCurrentItemId, false);
+						}
+					}
+					
+				}
+
 				//OnPostResetEntities();
 			}
-			if (GetInventory())
-				GetInventory()->Destroy();
+			//if (GetInventory())
+			//	GetInventory()->Destroy();
 			break;
 		}
 		// Register AI when initializing for dynamically spawned AI, too.
@@ -423,8 +458,10 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 			switch(event.nParam[0])
 			{
 			case eTIMER_WEAPONDELAY:
-				if (GetInventory())
+				/*if (GetInventory())
 					GetInventory()->Destroy();
+
+				//GetEntity()->SendEvent(SEntityEvent(EEntityEvent::ENTITY_EVENT_INIT));
 
 				IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
 				SmartScriptTable props;
@@ -442,8 +479,8 @@ void CCoopGrunt::ProcessEvent(SEntityEvent& event)
 
 				gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
 				gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-				gEnv->pScriptSystem->EndCall(pScriptTable);
-
+				gEnv->pScriptSystem->EndCall(pScriptTable);*/
+				
 				break;
 			}
 		}
@@ -511,8 +548,13 @@ IMPLEMENT_RMI(CCoopGrunt, ClChangeSuitMode)
 
 IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 {
-	//if(params.targetParams.animation.c_str() != nullptr && params.targetParams.animation.c_str()[0] != 0)
-		CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
+	if (CCoopSystem::GetInstance()->GetDebugLog() >= 1)
+	{
+		if (params.targetParams.animation.c_str() != nullptr && params.targetParams.animation.c_str()[0] != 0)
+			CryLogAlways("[%s] Received actor target with %s animation %s.", GetEntity()->GetName(), params.targetParams.signalAnimation ? "signal" : "action", params.targetParams.animation.c_str());
+		else
+			CryLogAlways("[%s] Received actor target removal.", GetEntity()->GetName());
+	}
 
 	if (!gEnv->bServer)
 	{
@@ -536,7 +578,13 @@ IMPLEMENT_RMI(CCoopGrunt, ClSpecialMovementRequest)
 
 void CCoopGrunt::SendSpecialMovementRequest(uint32 reqFlags, const SActorTargetParams& targetParams)
 {
-	//if (!targetParams.animation.c_str() || targetParams.animation.c_str()[0] == 0)
-	//	return;
+	if (CCoopSystem::GetInstance()->GetDebugLog() >= 1)
+	{
+		if (targetParams.animation.c_str() && targetParams.animation.c_str()[0] != 0)
+			CryLogAlways("[%s] Sending actor target with %s animation %s.", GetEntity()->GetName(), targetParams.signalAnimation ? "signal" : "action", targetParams.animation.c_str());
+		else
+			CryLogAlways("[%s] Sending actor target removal.", GetEntity()->GetName());
+	}
+	
 	GetGameObject()->InvokeRMI(ClSpecialMovementRequest(), SSpecialMovementRequestParams(reqFlags, targetParams, targetParams.animation), eRMI_ToAllClients | eRMI_NoLocalCalls);
 }

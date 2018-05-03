@@ -822,6 +822,32 @@ public:
 		}
 	};
 
+	struct SAISelectItemParams
+	{
+		SAISelectItemParams() {
+
+		}
+
+		SAISelectItemParams(EntityId id, bool holsterOnly, bool holstered)
+		{
+			itemId = id;
+			select = !holsterOnly;
+			isHolstered = holstered;
+		}
+
+		EntityId itemId;
+		bool select;
+		bool isHolstered;
+
+		void SerializeWith(TSerialize ser)
+		{
+			ser.Value("item", itemId, 'eid');
+			ser.Value("select", select);
+			ser.Value("holstered", isHolstered);
+		}
+	};
+
+	DECLARE_CLIENT_RMI_PREATTACH(ClAISelectItem, SAISelectItemParams, eNRT_ReliableUnordered);
 	DECLARE_CLIENT_RMI_PREATTACH(ClPlayNetworkedAnimation, SPlayNetworkedAnimationParams, eNRT_ReliableOrdered);
 
 	DECLARE_CLIENT_RMI_PREATTACH(ClLooseHelmet, SLooseHelmetParams, eNRT_ReliableUnordered);

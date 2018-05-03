@@ -10,6 +10,10 @@
 #pragma once
 
 // Summary:
+//	Interface to access the cooperative game framework subsystem.
+struct ICooperativeGameFramework;
+
+// Summary:
 //	Interface to access the Cooperative System.
 struct ICooperativeSystem
 {
@@ -39,4 +43,10 @@ public:
 	// Summary:
 	//	Gets a boolean indicating whether or not the current engine instance is a dedicated server.
 	virtual bool IsDedicated() const = 0;
+
+
+	// Summary:
+	//	Gets a reference to the cooperative game framework instance.
+	virtual ICooperativeGameFramework& GetICooperativeGameFramework() const = 0;
+
 };

@@ -1495,21 +1495,21 @@ end
 
 ----------------------------------------------------------------------------------------------------
 function Coop:EquipActor(actor)
-	--Log(">> SinglePlayer:EquipActor(%s) <<", actor:GetName());
-	if (System.IsEditor()) then
+	-- Restored normal functionality for non-player actors on server.
+	if ((CryAction.IsServer() and not actor.actor:IsPlayer()) or System.IsEditor()) then
 		actor.inventory:Destroy();
 
-		if (not actor.actor:IsPlayer()) then
+		--if (not actor.actor:IsPlayer()) then
 			if (actor.Properties) then		
 				local equipmentPack=actor.Properties.equip_EquipmentPack;
 				if (equipmentPack and equipmentPack ~= "") then
-					ItemSystem.GiveItemPack(actor.id, equipmentPack, false, false);
+					ItemSystem.GiveItemPack(actor.id, equipmentPack, false, true);
 				end
 
 			if(not actor.bGunReady) then
 				actor:HolsterItem(true);
 			end
-		  end
+		 -- end
 		end
 	end
 end

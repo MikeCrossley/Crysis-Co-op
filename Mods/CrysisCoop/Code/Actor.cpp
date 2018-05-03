@@ -2896,6 +2896,11 @@ void CActor::SelectItem(EntityId itemId, bool keepHistory)
 			pInventory->HolsterItem(false);
 
 		m_pItemSystem->SetActorItem(this, pItem->GetEntityId());
+		
+		if (gEnv->bServer && !IsPlayer())
+		{
+			GetGameObject()->InvokeRMI(ClAISelectItem(), SAISelectItemParams(itemId, false, false), eRMI_ToAllClients | eRMI_NoLocalCalls);
+		}
 	}
 }
 
@@ -2907,6 +2912,11 @@ void CActor::HolsterItem(bool holster)
 		return;
 
 	pInventory->HolsterItem(holster);
+
+	if (gEnv->bServer && !IsPlayer())
+	{
+		GetGameObject()->InvokeRMI(ClAISelectItem(), SAISelectItemParams(0, true, holster), eRMI_ToAllClients | eRMI_NoLocalCalls);
+	}
 }
 
 //------------------------------------------------------------------------
@@ -3311,6 +3321,15 @@ void CActor::SetSleepTimer(float timer)
 
 // Crysis Co-op
 //------------------------------------------------------------------------
+
+IMPLEMENT_RMI(CActor, ClAISelectItem)
+{
+	if(params.select)
+		SelectItem(params.itemId, false);
+	HolsterItem(params.isHolstered);
+	return true;
+}
+
 IMPLEMENT_RMI(CActor, ClLooseHelmet)
 {
 	Vec3 hitDir = params.hitPos;
@@ -4178,6 +4197,14 @@ IMPLEMENT_RMI(CActor, ClAddAmmo)
 //------------------------------------------------------------------------
 IMPLEMENT_RMI(CActor, ClPickUp)
 {
+	if (CCoopSystem::GetInstance()->GetDebugLog() >= 1)
+	{
+		IEntity* pItemEntity = gEnv->pEntitySystem->GetEntity(params.itemId);
+		const char* sItemName = pItemEntity ? pItemEntity->GetName() : "INVALID";
+		CryLogAlways("[%s : %d] ClPickUp received, item id: %d, name: %s, select: %s", GetEntity()->GetName(), GetEntity()->GetId(), params.itemId, sItemName, params.select ? "yes" : "no");
+		
+	}
+
 	if (CItem *pItem=GetItem(params.itemId))
 	{
 		pItem->PickUp(GetEntityId(), params.sound, params.select);
