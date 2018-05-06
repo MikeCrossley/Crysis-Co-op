@@ -366,7 +366,7 @@ void CCoopGrunt::UpdateMovementState()
 		{
 			pWeapon->ActivateLamLight(true, true);
 		}
-		else if (pWeapon->IsLamLightActivated())
+		else if (!this->HasWeaponFlag(EAIWeaponNetFlags::eFlashlightActive) && pWeapon->IsLamLightActivated())
 		{
 			pWeapon->ActivateLamLight(false, true);
 		}
@@ -375,7 +375,7 @@ void CCoopGrunt::UpdateMovementState()
 		{
 			pWeapon->ActivateLamLaser(true, true);
 		}
-		else if (pWeapon->IsLamLaserActivated())
+		else if (!this->HasWeaponFlag(EAIWeaponNetFlags::eLaserActive) && pWeapon->IsLamLaserActivated())
 		{
 			pWeapon->ActivateLamLaser(false, true);
 		}

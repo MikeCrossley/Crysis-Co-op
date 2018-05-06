@@ -2896,7 +2896,6 @@ void CWeapon::ActivateLamLaser(bool activate, bool aiRequest /* = true */)
 //------------------------------------------------------------------
 void CWeapon::ActivateLamLight(bool activate, bool aiRequest /* = true */)
 {
-	CryLogAlways("CWeapon::ActivateLamLight");
 	m_lamID = GetLAMAttachment();
 	if(m_lamID==0)
 		m_lamID = GetFlashlightAttachment(); 

@@ -117,9 +117,6 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 	if (m_laserActivated == activate)
 		return;
 
-	if (activate && aiRequest)
-		CryLogAlways("[CLam::ActivateLaser]");
-
 	CItem  *pParent = NULL;
 	EntityId ownerId = 0;
 	bool ok = false;
@@ -128,22 +125,24 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 	{
 		pParent = (CItem *)pOwnerItem;
 		IWeapon *pWeapon = pOwnerItem->GetIWeapon();		
+		
 		if(pWeapon)
 			ownerId = pOwnerItem->GetOwnerId();
 
 		ok = true;
 	}
-  else
-  {
-    pParent = this;
-    ownerId = GetOwnerId();
-  }
+	else
+	{
+		pParent = this;
+		ownerId = GetOwnerId();
+	}
 
-  IActor *pOwnerActor = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(ownerId);
-  if(!pOwnerActor)
-    return;
+	IActor *pOwnerActor = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(ownerId);
 
-	if(activate && !aiRequest && !pOwnerActor->IsPlayer())
+	if(!pOwnerActor)
+		return;
+
+	if (activate && !aiRequest && !pOwnerActor->IsPlayer())
 		return;
 
 	//Special FP stuff
@@ -155,12 +154,12 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 	//Activate or deactivate effect??
 	if (!m_laserActivated)
 	{
-    AttachLAMLaser(false, eIGS_FirstPerson);
-    AttachLAMLaser(false, eIGS_ThirdPerson);
+		AttachLAMLaser(false, eIGS_FirstPerson);
+		AttachLAMLaser(false, eIGS_ThirdPerson);
 	}
 	else
 	{
-    bool tp = pOwnerActor->IsThirdPerson();
+		bool tp = pOwnerActor->IsThirdPerson();
 		if(!tp && ok)
 		{
 			SAccessoryParams *params = pParent->GetAccessoryParams(GetEntity()->GetClass()->GetName());
@@ -171,7 +170,7 @@ void CLam::ActivateLaser(bool activate, bool aiRequest /* = false */)
 			m_laserHelperFP = params->attach_helper.c_str();
 			m_laserHelperFP.replace("_LAM","");
 		}
-    AttachLAMLaser(true, tp?eIGS_ThirdPerson:eIGS_FirstPerson);      
+		AttachLAMLaser(true, tp?eIGS_ThirdPerson:eIGS_FirstPerson);      
 	}
 
 	if (m_laserActivated || m_lightActivated)
@@ -199,21 +198,21 @@ void CLam::ActivateLight(bool activate, bool aiRequest /* = false */)
 			ownerId = pOwnerItem->GetOwnerId();
 	}
 	else   
-  {
-    pParent = this;
-    ownerId = GetOwnerId();
-  }
+	{
+		pParent = this;
+		ownerId = GetOwnerId();
+	}
 
-  IActor *pOwnerActor = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(ownerId);
-  if (activate && !pOwnerActor)
-    return;
+	IActor *pOwnerActor = gEnv->pGame->GetIGameFramework()->GetIActorSystem()->GetActor(ownerId);
+	if (activate && !pOwnerActor)
+		return;
 
 	//Special FP stuff
 	if(pOwnerActor && pOwnerActor->IsPlayer() && !m_lamparams.isFlashLight)
 		return;
 
 	//For AI must be deactivated by default (if they don't request)
-	if(activate && !m_lightWasOn && !aiRequest && !pOwnerActor->IsPlayer())
+	if (activate && !m_lightWasOn && !aiRequest && !pOwnerActor->IsPlayer())
 		return;
 
 	m_lightActivated = activate;
@@ -221,18 +220,18 @@ void CLam::ActivateLight(bool activate, bool aiRequest /* = false */)
 	//Activate or deactivate effect
 	if (!m_lightActivated)
 	{
-    AttachLAMLight(false, pParent, eIGS_FirstPerson);
-    AttachLAMLight(false, pParent, eIGS_ThirdPerson);
+		AttachLAMLight(false, pParent, eIGS_FirstPerson);
+		AttachLAMLight(false, pParent, eIGS_ThirdPerson);
     
 		//GameWarning("Global light count = %d", s_lightCount);		
 	}
 	else
 	{
-    uint8 id = pOwnerActor->IsThirdPerson() ? 1 : 0;
-    if (m_lightID[id] == 0)
-    {
-      AttachLAMLight(true, pParent, id?eIGS_ThirdPerson:eIGS_FirstPerson);      
-    }		
+		uint8 id = pOwnerActor->IsThirdPerson() ? 1 : 0;
+		if (m_lightID[id] == 0)
+		{
+			AttachLAMLight(true, pParent, id?eIGS_ThirdPerson:eIGS_FirstPerson);      
+		}		
 	}
 
 	if (m_laserActivated || m_lightActivated)
