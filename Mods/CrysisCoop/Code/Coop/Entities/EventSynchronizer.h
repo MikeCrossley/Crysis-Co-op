@@ -17,6 +17,7 @@ public:
 		fEventFloats2 = 0;
 		vEventVecs1 = Vec3();
 		vEventVecs2 = Vec3();
+		nEntityId1 = 0;
 	}
 
 	void SerializeWith(TSerialize ser)
@@ -29,7 +30,8 @@ public:
 		ser.Value("fEventFloats1", fEventFloats1);
 		ser.Value("fEventFloats2", fEventFloats2);
 		ser.Value("vEventVecs1", vEventVecs1, 'wrld');
-		ser.Value("vEventVecs1", vEventVecs2, 'wrld');
+		ser.Value("vEventVecs2", vEventVecs2, 'wrld');
+		ser.Value("nEntityId1", nEntityId1, 'eid');
 	}
 
 public:
@@ -42,6 +44,7 @@ public:
 	float fEventFloats2;
 	Vec3 vEventVecs1;
 	Vec3 vEventVecs2;
+	EntityId nEntityId1;
 };
 
 struct IEventSynchronizerListener 

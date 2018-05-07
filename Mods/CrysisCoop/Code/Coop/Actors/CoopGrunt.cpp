@@ -532,7 +532,7 @@ bool CCoopGrunt::NetSerialize( TSerialize ser, EEntityAspects aspect, uint8 prof
 		ser.Value("fdSpeed", m_fDesiredSpeed);
 	}
 
-	
+
 	return true;
 }
 

@@ -119,7 +119,7 @@ CItem::CItem()
 //------------------------------------------------------------------------
 CItem::~CItem()
 {
-	CryLogAlways("[%s : %d] Destroying item of class %s.", GetEntity()->GetName(), GetEntity()->GetId(), GetEntity()->GetClass()->GetName());
+	//CryLogAlways("[%s : %d] Destroying item of class %s.", GetEntity()->GetName(), GetEntity()->GetId(), GetEntity()->GetClass()->GetName());
 
 	AttachArms(false, false);
 	AttachToBack(false);
