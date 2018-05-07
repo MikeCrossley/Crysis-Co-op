@@ -110,7 +110,9 @@ function AreaTrigger:Event_Enter( sender )
 		end
 	end
 	
-	System.LogAlways(self:GetName().." AreaTrigger:Event_Enter "..sender:GetName());
+	if(sender~=nil)then
+		System.LogAlways(self:GetName().." AreaTrigger:Event_Enter "..sender:GetName());
+	end
 	
 	BroadcastEvent( self,"Enter" );
 end
