@@ -119,8 +119,6 @@ CItem::CItem()
 //------------------------------------------------------------------------
 CItem::~CItem()
 {
-	CryLogAlways("[%s : %d] Destroying item of class %s.", GetEntity()->GetName(), GetEntity()->GetId(), GetEntity()->GetClass()->GetName());
-
 	AttachArms(false, false);
 	AttachToBack(false);
 
@@ -408,8 +406,6 @@ void CItem::Update( SEntityUpdateContext& ctx, int slot )
 //------------------------------------------------------------------------
 bool CItem::SetAspectProfile( EEntityAspects aspect, uint8 profile )
 {
-	//CryLogAlways("%s::SetProfile(%d: %s)", GetEntity()->GetName(), profile, profile==eIPhys_Physicalized?"Physicalized":"NotPhysicalized");
-
 	if (aspect == eEA_Physics)
 	{
 		switch (profile)

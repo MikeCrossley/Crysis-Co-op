@@ -10,83 +10,10 @@ CCoopAlien::CCoopAlien() :
 	m_vAimTarget(Vec3(0,0,0)),
 	m_bHidden(false)
 {
-	this->RegisterEventListener();
 }
 
 CCoopAlien::~CCoopAlien()
 {
-	this->UnregisterEventListener();
-}
-
-// Summary:
-//	Called before the game rules have reseted entities.
-void CCoopAlien::OnPreResetEntities()
-{
-	/*if (!gEnv->bServer || gEnv->bEditor)
-		return;
-
-	gEnv->bMultiplayer = false;
-	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
-		CryLogAlways("[CCoopAlien] Cleaning actor %s.", this->GetEntity()->GetName());
-
-	// Unregister existing AI....
-	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
-	{
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "UnregisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		assert(this->GetEntity()->GetAI() == nullptr);
-	}
-
-	// Clear existing inventory...
-	if (IInventory* pInventory = this->GetInventory())
-		pInventory->Clear();
-
-	gEnv->bMultiplayer = true;*/
-}
-
-// Summary:
-//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
-void CCoopAlien::OnPostResetEntities()
-{
-	/*if (!gEnv->bServer || gEnv->bEditor)
-		return;
-
-	gEnv->bMultiplayer = false;
-	if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
-		CryLogAlways("[CCoopAlien] Initializing actor %s.", this->GetEntity()->GetName());
-
-	if (IScriptTable* pScriptTable = this->GetEntity()->GetScriptTable())
-	{
-		// Register the actor's AI on the server.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		assert(this->GetEntity()->GetAI() != nullptr);
-
-		// Equip the actor's equipment pack.
-		SmartScriptTable pPropertiesTable = nullptr;
-		if (pScriptTable->GetValue("Properties", pPropertiesTable))
-		{
-			const char* sEquipmentPack = nullptr;
-			if (pPropertiesTable->GetValue("equip_EquipmentPack", sEquipmentPack))
-			{
-				bool bResult = gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, sEquipmentPack, true, true);
-				if (CCoopSystem::GetInstance()->GetDebugLog() > 1)
-				{
-					CryLogAlways(bResult ? "[CCoopAlien] Succeeded giving actor %s equipment pack %s." : "[CCoopAlien] Failed to give actor %s equipment pack %s.", this->GetEntity()->GetName(), sEquipmentPack);
-				}
-			}
-		}
-
-		// Call CheckWeaponAttachments to attach things.
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "CheckWeaponAttachments");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-	}
-
-	this->GetGameObject()->SetAIActivation(eGOAIAM_Always);
-	gEnv->bMultiplayer = true;*/
 }
 
 bool CCoopAlien::Init(IGameObject * pGameObject)
@@ -101,35 +28,11 @@ void CCoopAlien::PostInit( IGameObject * pGameObject )
 	CAlien::PostInit(pGameObject);
 
 	pGameObject->SetAIActivation(eGOAIAM_Always);
-
-	if (gEnv->bServer)
-		GetEntity()->SetTimer(eTIMER_WEAPONDELAY, 1000);
-}
-
-void CCoopAlien::RegisterMultiplayerAI()
-{
-	if (!GetEntity()->GetAI() && GetHealth() > 0)
-	{
-		gEnv->bMultiplayer = false;
-
-		IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-		gEnv->pScriptSystem->BeginCall(pScriptTable, "RegisterAI");
-		gEnv->pScriptSystem->PushFuncParam(pScriptTable);
-		gEnv->pScriptSystem->EndCall(pScriptTable);
-		if (CCoopSystem::GetInstance()->GetDebugLog() > 0)
-			CryLogAlways("AI Registered for Alien %s", GetEntity()->GetName());
-
-		gEnv->bMultiplayer = true;
-	}
 }
 
 void CCoopAlien::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
 	CAlien::Update(ctx, updateSlot);
-
-	// Register AI System in MP
-	if (gEnv->bServer && !gEnv->bEditor)
-		RegisterMultiplayerAI();
 
 	// Movement reqeust stuff so proper anims play on client
 	if (gEnv->bServer)
@@ -172,7 +75,6 @@ void CCoopAlien::Update(SEntityUpdateContext& ctx, int updateSlot)
 
 	}
 
-	//this->DrawDebugInfo();
 }
 
 void CCoopAlien::DrawDebugInfo()
@@ -250,24 +152,6 @@ void CCoopAlien::ProcessEvent(SEntityEvent& event)
 
 			break;
 		}
-	case ENTITY_EVENT_TIMER:
-		{
-			/*switch(event.nParam[0])
-			{
-			case eTIMER_WEAPONDELAY:
-				IScriptTable* pScriptTable = GetEntity()->GetScriptTable();
-				SmartScriptTable props;
-				if(pScriptTable->GetValue("Properties", props))
-				{
-					char* equip;
-					if (props->GetValue("equip_EquipmentPack", equip))
-						gEnv->pGame->GetIGameFramework()->GetIItemSystem()->GetIEquipmentManager()->GiveEquipmentPack(this, equip, true, true);
-				}
-
-				break;
-			}*/
-		}
-		break;
 	}
 }
 

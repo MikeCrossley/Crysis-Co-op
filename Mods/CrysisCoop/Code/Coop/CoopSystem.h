@@ -7,28 +7,6 @@
 class CCoopSoundSystem;
 class CDialogSystem;
 
-// Summary:
-//	Interface for listening to coop system events.
-struct ICoopSystemEventListener
-{
-protected:
-	// Summary:
-	//	Registers the ICoopSystemEventListener implementation instance to the coop system.
-	void RegisterEventListener();
-
-	// Summary:
-	//	Unregisters the ICoopSystemEventListener implementation instance from the coop system.
-	void UnregisterEventListener();
-public:
-	// Summary:
-	//	Called before the game rules have reseted entities.
-	virtual void OnPreResetEntities() {};
-
-	// Summary:
-	//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
-	virtual void OnPostResetEntities() {};
-};
-
 class CCoopSystem 
 	: public ILevelSystemListener
 {
@@ -75,10 +53,6 @@ public:
 	//	Called after the game rules have reseted entities.
 	void OnPostResetEntities();
 
-	// Summary:
-	//	Registers vehicles to the AI system.
-	void RegisterVehicleAI(bool bRegister);
-
 	// ILevelSystemListener
 	virtual void OnLevelNotFound(const char *levelName) { };
 	virtual void OnLoadingStart(ILevelInfo *pLevel);
@@ -86,10 +60,6 @@ public:
 	virtual void OnLoadingError(ILevelInfo *pLevel, const char *error) { };
 	virtual void OnLoadingProgress(ILevelInfo *pLevel, int progressAmount) { };
 	// ~ILevelSystemListener
-
-	// Summary:
-	//	Dumps debug information about entities to the console.
-	void DumpEntityDebugInformation();
 
 	// Summary:
 	//	Returns the debug log mode the coopsystem is currently using.
@@ -122,8 +92,6 @@ private:
 	CCoopSoundSystem* m_pSoundSystem;
 	CDialogSystem*	m_pDialogSystem;
 	int				m_nDebugLog;
-
-	std::list<ICoopSystemEventListener*> m_eventListeners;
 };
 
 #endif // _CoopSystem_H_

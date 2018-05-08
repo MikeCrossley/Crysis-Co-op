@@ -28,8 +28,6 @@ void CItem::NetSetOwnerId(EntityId id)
 	if (id==m_ownerId)
 		return;
 
-	CryLogAlways("%s::NetSetOwnerId(%s)", GetEntity()->GetName(), GetActor(id)?GetActor(id)->GetEntity()->GetName():"null");
-
 	if (id)
 		PickUp(id, true);
 	else

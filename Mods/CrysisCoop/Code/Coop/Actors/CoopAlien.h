@@ -10,25 +10,10 @@
 
 class CCoopAlien 
 	: public CAlien
-	, protected ICoopSystemEventListener
 {
 public:
 	CCoopAlien();
 	virtual ~CCoopAlien();
-
-	// ICoopSystemEventListener
-
-	// Summary:
-	//	Called before the game rules have reseted entities.
-	virtual void OnPreResetEntities() override;
-
-	// Summary:
-	//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
-	virtual void OnPostResetEntities() override;
-
-	// ~ICoopSystemEventListener
-
-	void RegisterMultiplayerAI();
 
 	enum CoopTimers
 	{

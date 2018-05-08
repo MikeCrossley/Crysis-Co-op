@@ -10,23 +10,10 @@
 
 class CCoopGrunt 
 	: public CPlayer
-	, protected ICoopSystemEventListener
 {
 public:
 	CCoopGrunt();
 	virtual ~CCoopGrunt();
-
-	// ICoopSystemEventListener
-
-	// Summary:
-	//	Called before the game rules have reseted entities.
-	virtual void OnPreResetEntities() override;
-
-	// Summary:
-	//	Called after the game rules have reseted entities and the coop system has re-created AI objects.
-	virtual void OnPostResetEntities() override;
-
-	// ~ICoopSystemEventListener
 
 	//CPlayer
 	virtual bool Init( IGameObject * pGameObject );
@@ -65,7 +52,6 @@ protected:
 	static const EEntityAspects ASPECT_HIDE		= eEA_GameServerStatic;
 	static const EEntityAspects ASPECT_STANCE	= eEA_GameServerStatic;
 
-	void RegisterMultiplayerAI();
 	void UpdateMovementState();
 	void DrawDebugInfo();
 

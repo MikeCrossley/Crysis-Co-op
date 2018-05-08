@@ -28,6 +28,8 @@
 /BinTemp/
 
 # And the Crysis Co-op mod binaries.
+/Mods/
+!/Mods/CrysisCoop/
 /Mods/CrysisCoop/Bin32/
 /Mods/CrysisCoop/Bin64/
 
