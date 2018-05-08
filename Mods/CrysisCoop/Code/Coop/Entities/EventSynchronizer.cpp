@@ -85,6 +85,7 @@ class CEventSynchronizer_SendEventNode : public CFlowBaseNode
 		EIP_Float2,
 		EIP_Vector1,
 		EIP_Vector2,
+		EIP_EntityId1,
 	};
 
 	enum OUTPUTS
@@ -117,6 +118,7 @@ public:
 			InputPortConfig<float>("Float2", _HELP("")),
 			InputPortConfig<Vec3>("Vector1", _HELP("")),
 			InputPortConfig<Vec3>("Vector2", _HELP("")),
+			InputPortConfig<EntityId>("EntityId1", _HELP("")),
 			{ 0 }
 		};
 		static const SOutputPortConfig out_ports[] =
@@ -170,6 +172,8 @@ public:
 					sEvent.fEventFloats2 = GetPortFloat(pActInfo, EIP_Float2);
 					sEvent.vEventVecs1 = GetPortVec3(pActInfo, EIP_Vector1);
 					sEvent.vEventVecs2 = GetPortVec3(pActInfo, EIP_Vector2);
+					sEvent.vEventVecs2 = GetPortVec3(pActInfo, EIP_Vector2);
+					sEvent.nEntityId1 = GetPortEntityId(pActInfo, EIP_EntityId1);
 
 					if (!bToServer)
 						pSynchronizer->SendEvent(bLocal, sEvent);
@@ -206,6 +210,7 @@ class CEventSynchronizer_ListenEventNode : public CFlowBaseNode, public IEventSy
 		EOP_Float2,
 		EOP_Vector1,
 		EOP_Vector2,
+		EOP_EntityId1,
 	};
 
 public:
@@ -258,6 +263,7 @@ public:
 			OutputPortConfig<float>("Float2", _HELP("")),
 			OutputPortConfig<Vec3>("Vector1", _HELP("")),
 			OutputPortConfig<Vec3>("Vector2", _HELP("")),
+			OutputPortConfig<EntityId>("EntityId1", _HELP("")),
 			{ 0 }
 		};
 		config.pInputPorts = in_ports;
@@ -278,6 +284,7 @@ public:
 		ActivateOutput(&m_actInfo, EOP_Float2, sEvent.fEventFloats2);
 		ActivateOutput(&m_actInfo, EOP_Vector1, sEvent.vEventVecs1);
 		ActivateOutput(&m_actInfo, EOP_Vector2, sEvent.vEventVecs2);
+		ActivateOutput(&m_actInfo, EOP_EntityId1, sEvent.nEntityId1);
 	}
 
 	virtual void GetMemoryStatistics(ICrySizer * s)
